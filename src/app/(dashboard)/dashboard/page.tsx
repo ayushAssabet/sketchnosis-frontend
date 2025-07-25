@@ -1,13 +1,7 @@
-import PrivateView from "@/views/PrivateView"
+import PrivateView from "@/views/PrivateView";
 
-const DashboardIndexPage : React.FC = () => {
-    return(
-        <>
-            <PrivateView>
-                hello
-            </PrivateView>
-        </>
-    )
-}
+const DashboardIndexPage: React.FC = () => {
+    return <>hello</>;
+};
 
-export default DashboardIndexPage
+export default DashboardIndexPage;

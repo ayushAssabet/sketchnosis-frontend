@@ -1,11 +1,12 @@
+import { PageProps } from "@/utils/type";
 import IllustrationActionContent from "./_partials/IllustrationActionContent";
 
-export async function generateMetadata({
-    searchParams,
-}: {
-    searchParams: { update?: string };
-}) {
-    const isUpdate = searchParams?.update != null && searchParams.update !== "";
+export async function generateMetadata({ searchParams }: PageProps) {
+    const resolvedSearchParams = await searchParams;
+    const isUpdate =
+        resolvedSearchParams?.update != null &&
+        resolvedSearchParams.update !== "";
+
     return {
         title: isUpdate ? "UPDATE Illustration" : "ADD Illustration",
     };

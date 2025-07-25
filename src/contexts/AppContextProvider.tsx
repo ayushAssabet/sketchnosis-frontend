@@ -1,23 +1,20 @@
-'use client'
-import { AuthProvider } from "./AuthContextProvider"
-import SidebarProvider from "./SidebarContextProvider"
+"use client";
+import { Suspense } from "react";
+import { AuthProvider } from "./AuthContextProvider";
+import SidebarProvider from "./SidebarContextProvider";
 
-const AppContextProvider : React.FC<{
-    children : React.ReactNode
-}> = (
-    {
-        children
-    }
-) => {
-    return(
+const AppContextProvider: React.FC<{
+    children: React.ReactNode;
+}> = ({ children }) => {
+    return (
         <>
-            <AuthProvider>
-                <SidebarProvider>
-                    {children}
-                </SidebarProvider>
-            </AuthProvider>
+            <Suspense>
+                <AuthProvider>
+                    <SidebarProvider>{children}</SidebarProvider>
+                </AuthProvider>
+            </Suspense>
         </>
-    )
-}
+    );
+};
 
-export default AppContextProvider
+export default AppContextProvider;
