@@ -33,11 +33,12 @@ const ClinicActionForm: React.FC<{
     };
 
     const defaultCategories =
-    data?.data?.areaOfConcerns?.map((category: Record<string, any> , index : number) => ({
-        label: category?.name,
-        value: category?.id,
-    })) ?? [];
-
+        data?.data?.areaOfConcerns?.map(
+            (category: Record<string, any>, index: number) => ({
+                label: category?.name,
+                value: category?.id,
+            })
+        ) ?? [];
 
     const handleAreaOfConcernsChange = (
         selected: { label: string; value: string }[]
@@ -47,7 +48,6 @@ const ClinicActionForm: React.FC<{
             areaOfConcernIds: selected.map((item) => item.value),
         }));
     };
-
 
     const handleFileChange = (key: string, file: any | null) => {
         setFormData((prev) => ({
@@ -61,7 +61,9 @@ const ClinicActionForm: React.FC<{
             console.log(data?.data?.areaOfConcerns);
             setFormData({
                 name: data?.data?.name,
-                areaOfConcernIds: data?.data?.areaOfConcerns?.map((concern  :Record<string,any> , index : number) => concern.id),
+                areaOfConcernIds: data?.data?.areaOfConcerns?.map(
+                    (concern: Record<string, any>, index: number) => concern.id
+                ),
                 description: data?.data?.description,
                 email: data?.data?.email,
                 address: data?.data?.address,
@@ -71,9 +73,6 @@ const ClinicActionForm: React.FC<{
             });
         }
     }, [data]);
-
-    console.log(formData);
-
 
     if (isLoading) {
         return <Loader className="animate-spin duration-300 repeat-infinite" />;
