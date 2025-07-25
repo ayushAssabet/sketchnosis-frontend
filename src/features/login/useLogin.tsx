@@ -5,7 +5,7 @@ import { LoginFormData, loginSchema } from "@/features/login/login.schema";
 import { createApiRequest } from "@/helpers/fetch.helper";
 import { BACKEND_HOST } from "@/utils/constants";
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from "@/context/AuthContextProvider";
+import { useAuth } from "@/contexts/AuthContextProvider";
 import { setTokens } from "@/helpers/cookie.helper";
 import { useRouter } from "next/navigation";
 import { appRoutes } from "@/lib/routes";
@@ -54,7 +54,6 @@ export const useLogin = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-
         try {
             // Validate entire form
             const validatedData = loginSchema.parse(formData);
@@ -65,11 +64,14 @@ export const useLogin = () => {
                 method: "POST",
                 body: validatedData,
             });
-            console.log(res);
-
             setTokens(res?.data?.accessToken, res?.data?.refreshToken);
-
             await fetchUser();
+
+            showToast({
+                variant: "success",
+                description: res?.message,
+            });
+
             routes.push(appRoutes.DASHBOARD_INDEX_PAGE);
         } catch (error: any) {
             if (error instanceof z.ZodError) {
@@ -84,9 +86,9 @@ export const useLogin = () => {
             } else {
                 console.error("Login error:", error);
                 setErrors(error?.error);
+
                 showToast({
                     variant: "destructive",
-                    title: "Failed to login",
                     description: error?.message,
                 });
             }

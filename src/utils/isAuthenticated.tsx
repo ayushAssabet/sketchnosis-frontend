@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import { useAuth } from "@/context/AuthContextProvider";
+import { useAuth } from "@/contexts/AuthContextProvider";
 import { Loader } from "lucide-react";
 import { appRoutes } from "@/lib/routes";
 
@@ -14,6 +14,7 @@ const isAuthenticated = <P extends object>(
         const { loading, user } = useAuth();
 
         useEffect(() => {
+            console.log(loading, user);
             if (!loading && !user) {
                 router.push(appRoutes.LOGIN_INDEX_PAGE);
             }

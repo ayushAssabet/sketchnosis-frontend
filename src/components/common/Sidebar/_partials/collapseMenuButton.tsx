@@ -66,11 +66,11 @@ export function CollapseMenuButton({
       >
         <Button
           variant={isSubmenuActive ? "secondary" : "ghost"}
-          className="w-full justify-start h-10"
+          className={`w-full justify-start h-10 ${isSubmenuActive ? 'text-primary' : ''}`}
         >
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
-              <span className="mr-4">
+              <span className="">
                 <Icon size={18} />
               </span>
               <p

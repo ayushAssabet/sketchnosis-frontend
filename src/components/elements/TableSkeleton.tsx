@@ -1,9 +1,9 @@
 import React from 'react'
-import { Skeleton } from '../ui/skeleton'
 import {
   TableRow,
   TableCell,
 } from "@/components/ui/table"
+import { Skeleton } from '../ui/skeleton'
 
 interface TableSkeletonProps {
   columns?: number

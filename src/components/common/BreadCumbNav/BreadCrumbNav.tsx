@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Link } from "lucide-react"
 
-interface BreadCrumbItemInterface {
+export interface BreadCrumbItemInterface {
     title : string
     href : string
   
@@ -32,11 +32,11 @@ const BreadCrumbNav : React.FC<BreadCrumbNavPropsInterface> = ({
         const isLastItem = index === breadCrumbItems.length - 1;
         return (
           <React.Fragment key={index}>
-            <BreadcrumbItem>
+            <BreadcrumbItem className="text-sm">
               {isLastItem ? (
-                <BreadcrumbPage>{item.title}</BreadcrumbPage>
+                <BreadcrumbPage className="text-primary">{item.title}</BreadcrumbPage>
               ) : (
-                <BreadcrumbLink href={item.href}>
+                <BreadcrumbLink href={item.href} className="text-dark-gray">
                   {item.title}
                 </BreadcrumbLink>
               )}

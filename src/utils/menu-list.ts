@@ -4,7 +4,12 @@ import {
   Settings,
   LayoutGrid,
   LucideIcon,
-  Split
+  Split,
+  PlusIcon,
+  PlusSquare,
+  Megaphone,
+  Palette,
+  Shapes
 } from "lucide-react";
 
 type Submenu = {
@@ -39,19 +44,55 @@ export function getMenuList(): Group[] {
       ]
     },
     {
-      groupLabel: "Settings",
+      groupLabel: "",
       menus: [
         {
-          href: "/users",
-          label: "Users",
-          icon: Users
-        },
-        {
-          href: "/account",
-          label: "Account",
-          icon: Settings
+          href: appRoutes.CATEGORY_INDEX_PAGE,
+          label: "Category",
+          icon: Shapes,
         }
       ]
-    }
+    },
+    {
+      groupLabel: "",
+      menus: [
+        {
+          href: appRoutes.CLINIC_INDEX_PAGE,
+          label: "Clinics",
+          icon: PlusSquare,
+        }
+      ]
+    },
+    {
+      groupLabel: "",
+      menus: [
+        {
+          href: appRoutes.PATIENT_INDEX_PAGE,
+          label: "Patients",
+          icon: Users,
+        }
+      ]
+    },
+    {
+      groupLabel: "",
+      menus: [
+        {
+          href: appRoutes.CAMPAIGN_INDEX_PAGE,
+          label: "Campigns",
+          icon: Megaphone,
+        }
+      ]
+    },
+    {
+      groupLabel: "",
+      menus: [
+        {
+          href: appRoutes.ILLUSTRATIONS_INDEX_PAGE,
+          label: "Illustrations",
+          icon: Palette,
+        }
+      ]
+    },
+    
   ];
 }

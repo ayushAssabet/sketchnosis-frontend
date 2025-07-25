@@ -189,7 +189,7 @@ export function DataTable<TData>({
           )}
           {customFilter}
         </div>
-        <DropdownMenu>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto" disabled={isLoading}>
               Columns <ChevronDown className="ml-2 h-4 w-4" />
@@ -210,9 +210,9 @@ export function DataTable<TData>({
                 </DropdownMenuCheckboxItem>
               ))}
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md">
         <Table className="custom-scrollbar">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

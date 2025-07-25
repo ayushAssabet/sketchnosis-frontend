@@ -22,7 +22,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   refreshToken: () => Promise<boolean>;
-  fetchUser : () => Promise<any>
+  fetchUser : () => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -70,11 +70,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const fetchUser = async (): Promise<User | null> => {
+  const fetchUser = async (): Promise<void> => {
+    setLoading(true);
+    console.log('fetchinguserfrom provider' , loading)
     const tokens = getAccessToken();
     const accessToken = tokens?.accessToken;
 
-    if (!accessToken) return null;
+    if (!accessToken) return ;
 
     try {
       const response = await fetch(`${BACKEND_HOST}/v1/auth/user-data`, {
@@ -99,10 +101,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       const data = await response.json();
-      return data.data as User;
+      setUser(data?.data)
     } catch (error) {
       console.error("Error fetching user:", error);
-      return null;
+      return ;
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -136,19 +140,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const initAuth = async () => {
       setLoading(true);
       try {
-        let userData = await fetchUser();
-        if (!userData) {
-          const refreshed = await refreshToken();
-          if (refreshed) {
-            userData = await fetchUser();
-          }
-        }
-
-        if (userData) {
-          setUser(userData);
-        } else {
-          clearTokens();
-        }
+        await fetchUser();
       } catch (error) {
         console.error("Authentication initialization error:", error);
         clearTokens();

@@ -18,6 +18,7 @@ const LoginForm: React.FC = () => {
     } = useLogin();
     return (
         <form onSubmit={handleSubmit} className="min-w-[536px] space-y-14">
+            
             <AuthIntro
                 title="Login"
                 supportText="Please enter your credentials to access your account."
@@ -67,9 +68,9 @@ const LoginForm: React.FC = () => {
                     disabled={disableSubmit}
                     isLoading={isSubmitting}
                     loadingText="Signing In..."
-                    className="w-full py-4"
+                    className="w-full py-6 text-base cursor-pointer"
                 >
-                    Sign In
+                    Login
                 </AppButton>
             </div>
         </form>
