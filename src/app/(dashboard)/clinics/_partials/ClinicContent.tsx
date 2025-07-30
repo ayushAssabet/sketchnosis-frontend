@@ -17,9 +17,9 @@ const ClinicContent: React.FC = () => {
   return (
     <div>
       <PrivateView
-        title="Clinic"
+        title="Clinics"
         breadCrumbItems={[
-          { title: "Clinic", href: appRoutes.CLINIC_INDEX_PAGE },
+          { title: "Clinics", href: appRoutes.CLINIC_INDEX_PAGE },
         ]}
       >
         <CommonContainer title="clinic-list-section">

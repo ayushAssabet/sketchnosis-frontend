@@ -19,6 +19,7 @@ import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, FileSearch, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { ClinicAvatarWrapper } from "./ClinicAvatarWrapper";
 
 export const ClinicListTableHeading = ({
   onDelete,
@@ -66,17 +67,7 @@ export const ClinicListTableHeading = ({
     ),
     cell: ({ row }) => (
       <div className="lowercase flex items-center gap-1">
-        <Avatar>
-          <AvatarImage src={row.original?.logoUrl} alt="Clinic logo" />
-          <AvatarFallback className="bg-gray-300">
-            {(row.original?.title ?? "")
-              .split(" ")
-              .map((word: string) => word[0])
-              .join("")
-              .substring(0, 2)
-              .toUpperCase() || "CL"}
-          </AvatarFallback>
-        </Avatar>
+        <ClinicAvatarWrapper row={row} />
         {row.original?.name}
       </div>
     ),
