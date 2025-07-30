@@ -8,12 +8,12 @@ export const SelectIllustrationAvatarWrapper = ({ image }: { image: any }) => {
     const [imageUrl, setImageUrl] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    console.log(image)
+    console.log(image);
 
     useEffect(() => {
         const loadImage = async () => {
             if (image.fileUrl) {
-                const url = `http://localhost:4001/v1/illustration/view-illustration?url=${image.fileUrl}`;
+                const url = `${process.env.NEXT_PUBLIC_BACKEND_HOST}/v1/illustration/view-illustration?url=${image.fileUrl}`;
                 const blobUrl = await viewImage(url);
                 if (blobUrl) {
                     setImageUrl(blobUrl);
