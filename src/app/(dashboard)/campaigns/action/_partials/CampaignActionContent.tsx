@@ -17,7 +17,7 @@ const CampaignActionContent: React.FC = () => {
 
     return (
         <PrivateView
-            title="Illustrations"
+            title="Campaign"
             breadCrumbItems={[
                 { title: "Campaign", href: appRoutes.CAMPAIGN_INDEX_PAGE },
                 {
