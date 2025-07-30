@@ -3,27 +3,27 @@ import { viewImage } from "@/helpers/viewImage.helper";
 import { useEffect, useState } from "react";
 
 export const IllustrationAvatarWrapper = ({ row }: { row: any }) => {
-    const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
 
-    useEffect(() => {
-        const loadImage = async () => {
-            if (row.original?.fileUrl) {
-                const url = `http://localhost:4001/v1/illustration/view-illustration?url=${row.original.fileUrl}`;
-                const blobUrl = await viewImage(url);
-                if (blobUrl) {
-                    setImageUrl(blobUrl);
-                }
-            }
-        };
+  useEffect(() => {
+    const loadImage = async () => {
+      if (row.original?.fileUrl) {
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_HOST}/v1/illustration/view-illustration?url=${row.original.fileUrl}`;
+        const blobUrl = await viewImage(url);
+        if (blobUrl) {
+          setImageUrl(blobUrl);
+        }
+      }
+    };
 
-        loadImage();
+    loadImage();
 
-        return () => {
-            if (imageUrl) {
-                URL.revokeObjectURL(imageUrl);
-            }
-        };
-    }, [row.original?.fileUrl]);
+    return () => {
+      if (imageUrl) {
+        URL.revokeObjectURL(imageUrl);
+      }
+    };
+  }, [row.original?.fileUrl]);
 
     return (
         

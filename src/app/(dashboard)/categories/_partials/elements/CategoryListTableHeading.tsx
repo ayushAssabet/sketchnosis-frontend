@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { categoryInterface } from "@/interface/category.interface";
 import { appRoutes } from "@/lib/routes";
 import { Checkbox } from "@radix-ui/react-checkbox";
@@ -7,15 +12,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, FileSearch, Trash2 } from "lucide-react";
 import Link from "next/link";
 
-export const CategoryListTableHeading = (
-  { 
-    onDelete , 
-    onEdit
-  }
-  : {
-     onDelete: (id: string) => void 
-     onEdit : (value : categoryInterface) => void
-    }) : ColumnDef<any>[] => [
+export const CategoryListTableHeading = ({
+  onDelete,
+  onEdit,
+}: {
+  onDelete: (id: string) => void;
+  onEdit: (value: categoryInterface) => void;
+}): ColumnDef<any>[] => [
   {
     id: "select",
     header: ({ table }: { table: any }) => (
@@ -40,7 +43,7 @@ export const CategoryListTableHeading = (
   },
   {
     accessorKey: "id",
-    header: "SN",
+    header: "S.N.",
     cell: ({ row }) => <div className="capitalize">{row.index + 1}</div>,
   },
   {
@@ -56,12 +59,12 @@ export const CategoryListTableHeading = (
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="lowercase flex items-center gap-1">
+      <div className="capitalize flex items-center gap-1">
         {row.original?.name}
       </div>
     ),
   },
-  
+
   {
     accessorKey: "description",
     header: ({ column }) => (
@@ -74,7 +77,9 @@ export const CategoryListTableHeading = (
         <ArrowUpDown className="ml-1 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <div className="lowercase">{row.original?.description ?? "-"}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.original?.description ?? "-"}</div>
+    ),
   },
   {
     id: "actions",
@@ -92,28 +97,21 @@ export const CategoryListTableHeading = (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link href={appRoutes.CLINIC_INDIVIDUAL_PAGE.replace(":id", row.original?.id)}>
-                  <Button variant="ghost" className="!px-2 cursor-pointer text-yellow-500">
-                    <FileSearch />
-                  </Button>
-                </Link>
+                <Button
+                  variant="ghost"
+                  className="!px-2 cursor-pointer text-green-500"
+                  onClick={(e) =>
+                    onEdit({
+                      name: row.original.name,
+                      description: row?.original?.description,
+                      id: row?.original?.id,
+                    })
+                  }
+                >
+                  <Edit />
+                </Button>
               </TooltipTrigger>
-              <TooltipContent>View Detail</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                  <Button variant="ghost" className="!px-2 cursor-pointer text-green-500" onClick={(e) => onEdit({
-                    name : row.original.name , 
-                    description : row?.original?.description , 
-                    id : row?.original?.id
-                  })}>
-                    <Edit />
-                  </Button>
-              </TooltipTrigger>
-              <TooltipContent>Edit Detail</TooltipContent>
+              <TooltipContent>Edit Category</TooltipContent>
             </Tooltip>
           </TooltipProvider>
 
@@ -128,7 +126,7 @@ export const CategoryListTableHeading = (
                   <Trash2 />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Delete Clinic</TooltipContent>
+              <TooltipContent>Delete Category</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>

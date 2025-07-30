@@ -9,7 +9,7 @@ import {
   PlusSquare,
   Megaphone,
   Palette,
-  Shapes
+  Shapes,
 } from "lucide-react";
 
 type Submenu = {
@@ -40,18 +40,18 @@ export function getMenuList(): Group[] {
           href: appRoutes.DASHBOARD_INDEX_PAGE,
           label: "Dashboard",
           icon: LayoutGrid,
-        }
-      ]
+        },
+      ],
     },
     {
       groupLabel: "",
       menus: [
         {
           href: appRoutes.CATEGORY_INDEX_PAGE,
-          label: "Category",
+          label: "Categories",
           icon: Shapes,
-        }
-      ]
+        },
+      ],
     },
     {
       groupLabel: "",
@@ -60,28 +60,28 @@ export function getMenuList(): Group[] {
           href: appRoutes.CLINIC_INDEX_PAGE,
           label: "Clinics",
           icon: PlusSquare,
-        }
-      ]
+        },
+      ],
     },
-    {
-      groupLabel: "",
-      menus: [
-        {
-          href: appRoutes.PATIENT_INDEX_PAGE,
-          label: "Patients",
-          icon: Users,
-        }
-      ]
-    },
+    // {
+    //   groupLabel: "",
+    //   menus: [
+    //     {
+    //       href: appRoutes.PATIENT_INDEX_PAGE,
+    //       label: "Patients",
+    //       icon: Users,
+    //     },
+    //   ],
+    // },
     {
       groupLabel: "",
       menus: [
         {
           href: appRoutes.CAMPAIGN_INDEX_PAGE,
-          label: "Campigns",
+          label: "Campaigns",
           icon: Megaphone,
-        }
-      ]
+        },
+      ],
     },
     {
       groupLabel: "",
@@ -90,9 +90,8 @@ export function getMenuList(): Group[] {
           href: appRoutes.ILLUSTRATIONS_INDEX_PAGE,
           label: "Illustrations",
           icon: Palette,
-        }
-      ]
+        },
+      ],
     },
-    
   ];
 }
