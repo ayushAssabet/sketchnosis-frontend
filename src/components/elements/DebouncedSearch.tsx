@@ -1,9 +1,15 @@
-'use client'
-import React, { useState, useEffect, useCallback, InputHTMLAttributes } from 'react';
-import { Search } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+"use client";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  InputHTMLAttributes,
+} from "react";
+import { Search } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
-interface DebouncedSearchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+interface DebouncedSearchProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
   mutate: () => Promise<void>;
   placeholder?: string;
   debounceMs?: number;
@@ -11,55 +17,62 @@ interface DebouncedSearchProps extends Omit<InputHTMLAttributes<HTMLInputElement
   className?: string;
 }
 
-export const DebouncedSearch: React.FC<DebouncedSearchProps> = ({ 
-  mutate, 
-  placeholder = "search", 
+export const DebouncedSearch: React.FC<DebouncedSearchProps> = ({
+  mutate,
+  placeholder = "Search",
   debounceMs = 500,
   minCharacters = 1,
   className = "",
-  ...props 
+  ...props
 }) => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const router = useRouter();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
   // Debounce function
-  const debounce = useCallback(<T extends (...args: any[]) => void>(func: T, delay: number) => {
-    let timeoutId: NodeJS.Timeout;
-    return (...args: Parameters<T>) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func(...args), delay);
-    };
-  }, []);
+  const debounce = useCallback(
+    <T extends (...args: any[]) => void>(func: T, delay: number) => {
+      let timeoutId: NodeJS.Timeout;
+      return (...args: Parameters<T>) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func(...args), delay);
+      };
+    },
+    []
+  );
 
   // Handle search mutation
-  const handleSearch = useCallback(async (term: string) => {
-    if (term.trim().length < minCharacters) {
-      return;
-    }
+  const handleSearch = useCallback(
+    async (term: string) => {
+      if (term.trim().length < minCharacters) {
+        return;
+      }
 
-    setIsLoading(true);
-    try {
+      setIsLoading(true);
+      try {
         const params = new URLSearchParams(searchParams);
-        params.set('q', term);
+        params.set("q", term);
 
         router.push(`?${params.toString()}`);
-      
-      await mutate();
-    } catch (error) {
-      console.error('Search error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [mutate, minCharacters]);
+
+        await mutate();
+      } catch (error) {
+        console.error("Search error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [mutate, minCharacters]
+  );
 
   // Create debounced search function
-  const debouncedSearch = useCallback(
-    debounce(handleSearch, debounceMs),
-    [handleSearch, debounceMs, debounce]
-  );
+  const debouncedSearch = useCallback(debounce(handleSearch, debounceMs), [
+    handleSearch,
+    debounceMs,
+    debounce,
+  ]);
 
   //trigger search when searchTerm changes
   useEffect(() => {
@@ -73,7 +86,7 @@ export const DebouncedSearch: React.FC<DebouncedSearchProps> = ({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && searchTerm.trim()) {
+    if (e.key === "Enter" && searchTerm.trim()) {
       handleSearch(searchTerm.trim());
     }
   };
@@ -91,10 +104,10 @@ export const DebouncedSearch: React.FC<DebouncedSearchProps> = ({
         disabled={isLoading}
         {...props}
       />
-      <Search 
-        size={14} 
+      <Search
+        size={14}
         className={`absolute top-1/2 left-3 -translate-y-1/2 ${
-          isLoading ? 'text-blue-500 animate-pulse' : 'text-gray-400'
+          isLoading ? "text-blue-500 animate-pulse" : "text-gray-400"
         }`}
       />
     </div>

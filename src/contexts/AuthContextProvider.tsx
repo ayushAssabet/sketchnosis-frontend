@@ -1,10 +1,20 @@
 "use client";
 
-import React, { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import { BACKEND_HOST } from "@/utils/constants";
 import { useToast } from "@/hooks/use-toast";
-import { clearTokens, getAccessToken, setTokens } from "@/helpers/cookie.helper";
+import {
+  clearTokens,
+  getAccessToken,
+  setTokens,
+} from "@/helpers/cookie.helper";
 import { appRoutes } from "@/lib/routes";
 
 // Define types
@@ -22,7 +32,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   refreshToken: () => Promise<boolean>;
-  fetchUser : () => Promise<any>;
+  fetchUser: () => Promise<any>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,7 +45,9 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,11 +84,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const fetchUser = async (): Promise<void> => {
     setLoading(true);
-    console.log('fetchinguserfrom provider' , loading)
+    console.log("fetchinguserfrom provider", loading);
     const tokens = getAccessToken();
     const accessToken = tokens?.accessToken;
 
-    if (!accessToken) return ;
+    console.log(accessToken);
+    if (!accessToken) return;
 
     try {
       const response = await fetch(`${BACKEND_HOST}/v1/auth/user-data`, {
@@ -86,6 +99,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           Accept: "application/json",
         },
       });
+
+      console.log(response);
 
       if (response.status === 401) {
         // Try to refresh token
@@ -101,12 +116,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       const data = await response.json();
-      setUser(data?.data)
+      setUser(data?.data);
     } catch (error) {
       console.error("Error fetching user:", error);
-      return ;
-    }finally{
-      setLoading(false)
+      return;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -159,7 +174,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     logout,
     refreshToken,
     setUser,
-    fetchUser ,
+    fetchUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

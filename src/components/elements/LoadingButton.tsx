@@ -6,15 +6,19 @@ const LoadingButton = ({
   isUpdate,
   isLoading,
   title,
-  className
+  className,
 }: {
   isUpdate: boolean;
   isLoading: boolean;
   title: string;
-  className? : string
+  className?: string;
 }) => {
   return (
-    <Button type="submit" className={cn("w-full" , className)} disabled={isLoading}>
+    <Button
+      type="submit"
+      className={cn("w-full", className)}
+      disabled={isLoading}
+    >
       {isLoading ? (
         <>
           <Loader2 className="animate-spin mr-2 h-4 w-4" />
@@ -22,8 +26,8 @@ const LoadingButton = ({
         </>
       ) : (
         <>
-          {!isUpdate && <Plus className="mr-2 h-4 w-4" />}
-          {isUpdate ? `Update ${title}` : `Add new ${title}`}
+          {!isUpdate && <Plus className="h-4 w-2" />}
+          {isUpdate ? `Update ${title}` : `Add ${title}`}
         </>
       )}
     </Button>
