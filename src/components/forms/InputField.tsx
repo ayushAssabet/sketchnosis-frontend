@@ -17,6 +17,8 @@ interface InputFieldProps {
     required?: boolean;
     className?: string;
     variant?: "dashboard" | "app";
+    min? :string , 
+    max? : string
 }
 
 const AppInputField: React.FC<InputFieldProps> = ({
@@ -33,6 +35,8 @@ const AppInputField: React.FC<InputFieldProps> = ({
     required = false,
     className = "",
     variant = "app",
+    min , 
+    max
 }) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -70,6 +74,8 @@ const AppInputField: React.FC<InputFieldProps> = ({
                     )}
                     placeholder={placeholder}
                     disabled={disabled}
+                    min={min}
+                    max={max}
                 />
 
                 {/* Password Toggle Button */}

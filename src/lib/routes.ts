@@ -16,5 +16,6 @@ export const appRoutes = {
 
     // action pages
     CLINIC_ACTION_PAGE: "/clinics/action",
+    CAMPAIGN_ACTION_PAGE: "/campaigns/action",
     ILLUSTRATIONS_ACTION_PAGE: "/illustrations/action",
 };

@@ -5,15 +5,13 @@ import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 
 export const useCampaignsList = () => {
-    
     const searchParams = useSearchParams();
     const { data, isLoading, mutate } = useSWR(
-        `${BACKEND_HOST}/v1/clinics${
+        `${BACKEND_HOST}/v1/campaign${
             searchParams?.toString() == "" ? "" : `?${searchParams?.toString()}`
         }`,
         defaultFetcher
     );
-
     return {
         data,
         isLoading,

@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { useClinicActionForm } from "@/features/clinic/useClinicActionForm";
 import { useClinic } from "@/features/clinic/useClinicActions";
 import { useGetClinicDetail } from "@/features/clinic/useGetClinic";
+import { appRoutes } from "@/lib/routes";
 import { Loader } from "lucide-react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect } from "react";
 
@@ -189,9 +191,11 @@ const ClinicActionForm: React.FC<{
 
                 <div className="">
                     <div className="gap-5 grid grid-cols-2">
-                        <Button variant="outline" className="h-full w-full">
-                            Cancel
-                        </Button>
+                        <Link href={appRoutes.CLINIC_INDEX_PAGE}>
+                            <Button variant="outline" className="h-full w-full">
+                                Cancel
+                            </Button>
+                        </Link>
                         <LoadingButton
                             title="Clinic"
                             isLoading={isAddingClinic || isUpdatingClinic}

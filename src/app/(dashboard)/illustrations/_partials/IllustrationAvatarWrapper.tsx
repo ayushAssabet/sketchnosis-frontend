@@ -26,6 +26,7 @@ export const IllustrationAvatarWrapper = ({ row }: { row: any }) => {
     }, [row.original?.fileUrl]);
 
     return (
+        
         <Avatar>
             {imageUrl && (
                 <AvatarImage

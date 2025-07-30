@@ -8,7 +8,9 @@ import { useGetIllustrationDetail } from "@/features/illustrations/useGetIllustr
 import { useIllusrationActionForm } from "@/features/illustrations/useIllustrationActionForm";
 import { useIllustration } from "@/features/illustrations/useIllustrations";
 import { viewImage } from "@/helpers/viewImage.helper";
+import { appRoutes } from "@/lib/routes";
 import { Loader } from "lucide-react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
@@ -155,9 +157,11 @@ const IllustrationActionForm: React.FC<{
 
                 <div className="">
                     <div className="gap-5 grid grid-cols-2">
-                        <Button variant="outline" className="h-full w-full">
-                            Cancel
-                        </Button>
+                        <Link href={appRoutes.ILLUSTRATIONS_INDEX_PAGE}>
+                            <Button variant="outline" className="h-full w-full">
+                                Cancel
+                            </Button>
+                        </Link>
                         <LoadingButton
                             title="Clinic"
                             isLoading={
