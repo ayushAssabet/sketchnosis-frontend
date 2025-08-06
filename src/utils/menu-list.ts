@@ -63,16 +63,16 @@ export function getMenuList(): Group[] {
                 },
             ],
         },
-        {
-            groupLabel: "",
-            menus: [
-                {
-                    href: appRoutes.PATIENT_INDEX_PAGE,
-                    label: "Patients",
-                    icon: Users,
-                },
-            ],
-        },
+        // {
+        //     groupLabel: "",
+        //     menus: [
+        //         {
+        //             href: appRoutes.PATIENT_INDEX_PAGE,
+        //             label: "Patients",
+        //             icon: Users,
+        //         },
+        //     ],
+        // },
         {
             groupLabel: "",
             menus: [
