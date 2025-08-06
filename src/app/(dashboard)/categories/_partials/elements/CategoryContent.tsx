@@ -54,14 +54,14 @@ const CategoryContent: React.FC = () => {
             />
             <div className="flex items-center justify-between mt-12">
               <Pagination
-                currentPage={2}
-                totalPages={3}
-                onPageChange={() => {}}
+                  currentPage={data?.data?.currentPage}
+                  totalPages={data?.data?.lastPage}
+                  onPageChange={() => {}}
               />
               <PageSelector
-                currentPage={2}
-                totalPages={10}
-                onPageChange={() => {}}
+                  currentCount={data?.data?.perPage}
+                  totalCount={data?.data?.total}
+                  onCountChange={() => {}}
               />
             </div>
 

@@ -9,7 +9,7 @@ import { BACKEND_HOST } from "@/utils/constants";
 import useConfirmDialog from "@/hooks/use-confirmation";
 import { CampaignFormData } from "./campaign.schema";
 
-export const useCampaign= (
+export const useCampaign = (
     mutate?: () => Promise<void>,
     data?: any,
     isLoading?: boolean,
@@ -44,7 +44,7 @@ export const useCampaign= (
                 });
                 setIsAddingCampaign(false);
 
-                router.replace(appRoutes.CLINIC_INDEX_PAGE);
+                // router.replace(appRoutes.CLINIC_INDEX_PAGE);
             } catch (error: any) {
                 console.error("Error adding clinic:", error);
                 showToast({
@@ -80,7 +80,7 @@ export const useCampaign= (
 
                 setIsUpdatingCampaign(false);
 
-                router.replace(appRoutes.CLINIC_INDEX_PAGE);
+                // router.replace(appRoutes.CLINIC_INDEX_PAGE);
 
                 return response;
             } catch (error: any) {

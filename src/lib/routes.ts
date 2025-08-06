@@ -1,6 +1,9 @@
 export const appRoutes = {
   LOGIN_INDEX_PAGE: "/auth/login",
+  
   CAMPAIGN_INDEX_PAGE: "/campaigns",
+  CAMPAIGN_INDIVIDUAL_PAGE: "/campaigns/detail/:id",
+  
   CATEGORY_INDEX_PAGE: "/categories",
   CHANGE_PASSWORD_INDEX_PAGE: "/auth/change-password",
 
@@ -18,4 +21,5 @@ export const appRoutes = {
     CLINIC_ACTION_PAGE: "/clinics/action",
     CAMPAIGN_ACTION_PAGE: "/campaigns/action",
     ILLUSTRATIONS_ACTION_PAGE: "/illustrations/action",
+    PATIENT_ACTION_PAGE: '/patients/action'
 };

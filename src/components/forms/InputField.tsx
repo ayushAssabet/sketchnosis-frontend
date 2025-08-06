@@ -7,7 +7,7 @@ interface InputFieldProps {
     id: string;
     name: string;
     label: string;
-    type: "text" | "email" | "password" | "number";
+    type: "text" | "email" | "password" | "number" | "date" | "tel";
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
@@ -17,8 +17,8 @@ interface InputFieldProps {
     required?: boolean;
     className?: string;
     variant?: "dashboard" | "app";
-    min? :string , 
-    max? : string
+    min?: string;
+    max?: string;
 }
 
 const AppInputField: React.FC<InputFieldProps> = ({
@@ -35,8 +35,8 @@ const AppInputField: React.FC<InputFieldProps> = ({
     required = false,
     className = "",
     variant = "app",
-    min , 
-    max
+    min,
+    max,
 }) => {
     const [showPassword, setShowPassword] = useState(false);
 

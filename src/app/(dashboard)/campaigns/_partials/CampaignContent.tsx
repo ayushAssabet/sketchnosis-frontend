@@ -6,20 +6,21 @@ import FilterDropdown from "@/components/elements/FilterDropDown";
 import { appRoutes } from "@/lib/routes";
 import Pagination from "@/components/elements/Pagination";
 import PageSelector from "@/components/elements/PageSelector";
-import { useGetClinicList } from "@/features/clinic/useGetClinic";
 import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
 import CampaignList from "./CampaignList";
+import { useCampaignsList } from "@/features/campaigns/useGetCampaigns";
 
 const CampaignContent: React.FC = () => {
-    const { data, isLoading, mutate } = useGetClinicList();
+    
+    const { data, isLoading, mutate } = useCampaignsList();
 
     return (
         <div>
             <PrivateView
-                title="Campaign"
+                title="Campaigns"
                 breadCrumbItems={[
-                    { title: "Campaign", href: appRoutes.CAMPAIGN_INDEX_PAGE },
+                    { title: "Campaigns", href: appRoutes.CAMPAIGN_INDEX_PAGE },
                 ]}
             >
                 <CommonContainer title="campaign-list-section">
@@ -37,14 +38,14 @@ const CampaignContent: React.FC = () => {
                         <CampaignList CampaignList={data?.data?.data ?? []} />
                         <div className="flex items-center justify-between mt-12">
                             <Pagination
-                                currentPage={2}
-                                totalPages={3}
+                                currentPage={data?.data?.meta.currentPage}
+                                totalPages={data?.data?.meta.lastPage}
                                 onPageChange={() => {}}
                             />
                             <PageSelector
-                                currentPage={2}
-                                totalPages={10}
-                                onPageChange={() => {}}
+                                currentCount={data?.data?.meta.perPage}
+                                totalCount={data?.data?.meta.total}
+                                onCountChange={() => {}}
                             />
                         </div>
                     </>

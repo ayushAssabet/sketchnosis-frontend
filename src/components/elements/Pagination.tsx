@@ -53,7 +53,7 @@ const Pagination: React.FC<PaginationProps> = ({
                 variant="outline"
                 className="flex items-center gap-1 text-sm rounded-none px-2.5 py-1.5 border-[#F0F0F0] cursor-pointer font-normal"
                 onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
-                disabled={currentPage === 0}
+                disabled={currentPage <= 1}
             >
                 <ArrowLeft className="h-4 w-4" /> Previous
             </Button>

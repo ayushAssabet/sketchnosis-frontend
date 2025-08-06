@@ -14,14 +14,13 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { dateHelper } from "@/helpers/date.helper";
 import { appRoutes } from "@/lib/routes";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, FileSearch, Trash2 } from "lucide-react";
 import Link from "next/link";
 
-export const CampaignListTableHeading = ({
+export const PatientListTableHeading = ({
     onDelete,
 }: {
     onDelete: (id: string) => void;
@@ -52,7 +51,7 @@ export const CampaignListTableHeading = ({
     },
     {
         accessorKey: "id",
-        header: "SN",
+        header: "S.N.",
         cell: ({ row }) => <div className="capitalize">{row.index + 1}</div>,
     },
     {
@@ -71,12 +70,25 @@ export const CampaignListTableHeading = ({
         ),
         cell: ({ row }) => (
             <div className="lowercase flex items-center gap-1">
-                {row.original?.name}
+                <Avatar>
+                    <AvatarImage
+                        src={row.original?.fileUrl}
+                        alt={`${row.original?.name || "Patient"} logo`}
+                    />
+                    <AvatarFallback className="bg-gray-300">
+                        {(row.original?.name ?? "")
+                            .split(" ")
+                            .map((word: string) => word[0])
+                            .join("")
+                            .substring(0, 2)
+                            .toUpperCase() || "CL"}
+                    </AvatarFallback>
+                </Avatar>
             </div>
         ),
     },
     {
-        accessorKey: "description",
+        accessorKey: "campaign",
         header: ({ column }) => (
             <Button
                 variant="ghost"
@@ -85,14 +97,37 @@ export const CampaignListTableHeading = ({
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }
             >
-                Email
+                Campaign
                 <ArrowUpDown className="ml-1 h-4 w-4" />
             </Button>
         ),
         cell: ({ row }) => (
-            <div className="lowercase">{row.original?.description ?? "-"}</div>
+            <div className="lowercase">
+                {row.original?.campaign?.name ?? "-"}
+            </div>
         ),
     },
+    {
+        accessorKey: "campaign",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                className="text-xs uppercase !hover:bg-transparent !px-0"
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                }
+            >
+                Campaign Start Date
+                <ArrowUpDown className="ml-1 h-4 w-4" />
+            </Button>
+        ),
+        cell: ({ row }) => (
+            <div className="lowercase">
+                {row.original?.campaign?.startDate ?? "-"}
+            </div>
+        ),
+    },
+
     {
         accessorKey: "areaOfConcerns",
         header: ({ column }) => (
@@ -112,7 +147,6 @@ export const CampaignListTableHeading = ({
 
             type badge = "default" | "secondary" | "destructive" | "outline";
 
-            // Badge variants array
             const badgeVariants: badge[] = [
                 "default",
                 "secondary",
@@ -178,7 +212,7 @@ export const CampaignListTableHeading = ({
         },
     },
     {
-        accessorKey: "repeatType",
+        accessorKey: "email",
         header: ({ column }) => (
             <Button
                 variant="ghost"
@@ -187,16 +221,16 @@ export const CampaignListTableHeading = ({
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }
             >
-                Repeat Type
+                Email
                 <ArrowUpDown className="ml-1 h-4 w-4" />
             </Button>
         ),
         cell: ({ row }) => (
-            <div className="capitalize">{row.original?.repeatType ?? "-"}</div>
+            <div className="lowercase">{row.original?.email ?? "-"}</div>
         ),
     },
     {
-        accessorKey: "numberOfDays",
+        accessorKey: "phone",
         header: ({ column }) => (
             <Button
                 variant="ghost"
@@ -205,18 +239,17 @@ export const CampaignListTableHeading = ({
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }
             >
-                Days
+                Phone
                 <ArrowUpDown className="ml-1 h-4 w-4" />
             </Button>
         ),
         cell: ({ row }) => (
-            <div className="lowercase">
-                {row.original?.numberOfDays ?? row?.original?.numberOfWeeks}
-            </div>
+            <div className="lowercase">{row.original?.phone ?? "-"}</div>
         ),
     },
+
     {
-        accessorKey: "createdAt",
+        accessorKey: "gender",
         header: ({ column }) => (
             <Button
                 variant="ghost"
@@ -225,16 +258,15 @@ export const CampaignListTableHeading = ({
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }
             >
-                created at
+                Gender
                 <ArrowUpDown className="ml-1 h-4 w-4" />
             </Button>
         ),
         cell: ({ row }) => (
-            <div className="lowercase">
-                {dateHelper(row?.original?.createdAt)}
-            </div>
+            <div className="lowercase">{row.original?.gender ?? "-"}</div>
         ),
     },
+
     {
         id: "actions",
         enableHiding: false,
@@ -252,19 +284,20 @@ export const CampaignListTableHeading = ({
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Link
-                                    href={appRoutes.CAMPAIGN_INDIVIDUAL_PAGE.replace(
-                                        ":id",
-                                        row.original?.id
-                                    )}
+                                {/* <Link
+                  href={appRoutes.CLINIC_INDIVIDUAL_PAGE.replace(
+                    ":id",
+                    row.original?.id
+                  )}
+                > */}
+                                <Button
+                                    variant="ghost"
+                                    className="!px-2 cursor-not-allowed text-grey-50"
+                                    // className="!px-2 cursor-pointer text-yellow-500"
                                 >
-                                    <Button
-                                        variant="ghost"
-                                        className="!px-2 cursor-pointer text-yellow-500"
-                                    >
-                                        <FileSearch />
-                                    </Button>
-                                </Link>
+                                    <FileSearch />
+                                </Button>
+                                {/* </Link> */}
                             </TooltipTrigger>
                             <TooltipContent>View Detail</TooltipContent>
                         </Tooltip>
@@ -275,7 +308,7 @@ export const CampaignListTableHeading = ({
                             <TooltipTrigger asChild>
                                 <Link
                                     href={
-                                        appRoutes.CAMPAIGN_ACTION_PAGE +
+                                        appRoutes.CLINIC_ACTION_PAGE +
                                         `?update=${row.original?.id}`
                                     }
                                 >

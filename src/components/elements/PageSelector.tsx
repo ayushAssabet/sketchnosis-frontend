@@ -3,20 +3,20 @@ import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 interface PageSelectorProps {
-    currentPage: number;
-    totalPages: number;
-    onPageChange: (page: number) => void;
+    currentCount: number;
+    totalCount: number;
+    onCountChange: (page: number) => void;
 }
 
 const PageSelector: React.FC<PageSelectorProps> = ({
-    currentPage,
-    totalPages,
-    onPageChange,
+    currentCount,
+    totalCount,
+    onCountChange,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handlePageSelect = (page: number) => {
-        onPageChange(page);
+        onCountChange(page);
         setIsOpen(false);
     };
 
@@ -27,7 +27,7 @@ const PageSelector: React.FC<PageSelectorProps> = ({
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex  items-center gap-2 cursor-pointer px-3 py-2 h-full text-sm text-gray-700 bg-white border border-gray-200 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-                <span className="text-gray-500">{totalPages}</span>
+                <span className="text-gray-500">{totalCount}</span>
                 <ChevronDown className="h-4 w-4" />
             </button>
 
@@ -39,7 +39,7 @@ const PageSelector: React.FC<PageSelectorProps> = ({
                                 key={page}
                                 onClick={() => handlePageSelect(page)}
                                 className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-100 ${
-                                    page === currentPage
+                                    page === currentCount
                                         ? "bg-blue-50 text-blue-600 font-medium"
                                         : "text-gray-700"
                                 }`}

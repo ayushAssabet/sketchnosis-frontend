@@ -27,14 +27,14 @@ const IllustrationContent: React.FC = () => {
             <IllustrationList illustrationList={illustration ?? []} />
             <div className="flex items-center justify-between mt-12">
                 <Pagination
-                    currentPage={2}
-                    totalPages={3}
+                    currentPage={0}
+                    totalPages={0}
                     onPageChange={() => {}}
                 />
                 <PageSelector
-                    currentPage={2}
-                    totalPages={10}
-                    onPageChange={() => {}}
+                    currentCount={0}
+                    totalCount={0}
+                    onCountChange={() => {}}
                 />
             </div>
         </>

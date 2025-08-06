@@ -2,12 +2,22 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { ZodError } from "zod";
 import { CampaignFormData, campaignSchema } from "./campaign.schema";
 
-export const useCampaignActionForm = (data?: CampaignFormData | null) => {
+interface CampaignDetailData extends CampaignFormData {
+    scheduleImages: {
+        id: string;
+        dayNumber: number;
+        dayOfWeek: string;
+        weekNumber: number;
+        imageUrl: string;
+    }[];
+}
+
+export const useCampaignActionForm = (data?: Record<string, any> | null) => {
     const [formData, setFormData] = useState<Partial<CampaignFormData>>({
         name: "",
         areaOfConcernIds: [],
         description: "",
-        repeat: "daily",
+        repeatType: "daily",
         numberOfWeeks: "2",
         numberOfDays: "5",
         selectedDays: [],
@@ -18,7 +28,20 @@ export const useCampaignActionForm = (data?: CampaignFormData | null) => {
 
     useEffect(() => {
         if (data) {
-            setFormData(data);
+            setFormData({
+                name: data?.name,
+                areaOfConcernIds: data?.areaOfConcerns?.map(
+                    (concern, index) => concern?.id
+                ),
+                description: data?.description,
+                repeatType: data?.repeatType,
+                numberOfWeeks: data?.numberOfWeeks?.toString(),
+                numberOfDays: data?.numberOfWeeks?.toString(),
+                selectedDays: data?.scheduleImages?.map(
+                    (image, index) => image?.dayOfWeek
+                ),
+                images: data?.scheduleImages?.map((image, index) => image?.id),
+            });
         }
     }, [data]);
 
@@ -44,12 +67,14 @@ export const useCampaignActionForm = (data?: CampaignFormData | null) => {
         }
     };
 
-    const validateForm = () => {
+    const validateForm = (data) => {
         try {
-            const validated = campaignSchema.parse(formData);
+            const validated = campaignSchema.parse(data);
+            console.log(validated)
             setErrors({});
             return { success: true, data: validated };
         } catch (err) {
+            console.log(err)
             if (err instanceof ZodError) {
                 const formatted: Record<string, string> = {};
                 err.errors.forEach((e) => {
@@ -66,7 +91,7 @@ export const useCampaignActionForm = (data?: CampaignFormData | null) => {
             name: "",
             areaOfConcernIds: [],
             description: "",
-            repeat: "daily",
+            repeatType: "daily",
             numberOfWeeks: "2",
             numberOfDays: "5",
             selectedDays: [],

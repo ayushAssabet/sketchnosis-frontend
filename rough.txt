@@ -1,0 +1,60 @@
+areaOfConcerns
+: 
+[,…]
+createdAt
+: 
+"2025-08-04T10:04:30.025Z"
+description
+: 
+"This is description"
+id
+: 
+"f68cba72-189b-4544-83e1-cdf99091c0a9"
+name
+: 
+"Ayush camp"
+numberOfDays
+: 
+null
+numberOfWeeks
+: 
+2
+repeatType
+: 
+"weekly"
+scheduleImages
+: 
+[{id: "3f230ec1-9c31-4188-bf29-be72db5c0440", campaignId: "f68cba72-189b-4544-83e1-cdf99091c0a9",…},…]
+0
+: 
+{id: "3f230ec1-9c31-4188-bf29-be72db5c0440", campaignId: "f68cba72-189b-4544-83e1-cdf99091c0a9",…}
+campaignId
+: 
+"f68cba72-189b-4544-83e1-cdf99091c0a9"
+createdAt
+: 
+"2025-08-04T10:04:30.051Z"
+dayNumber
+: 
+null
+dayOfWeek
+: 
+"Sun"
+id
+: 
+"3f230ec1-9c31-4188-bf29-be72db5c0440"
+imageUrl
+: 
+"illustrations/725ad3b9-0303-41b4-aa35-aee3842cd43a.jpg"
+updatedAt
+: 
+"2025-08-04T10:04:30.051Z"
+weekNumber
+: 
+1
+1
+: 
+{id: "a98e021c-34fb-405c-9377-08f335fb47ed", campaignId: "f68cba72-189b-4544-83e1-cdf99091c0a9",…}
+updatedAt
+: 
+"2025-08-04T10:04:30.025Z"

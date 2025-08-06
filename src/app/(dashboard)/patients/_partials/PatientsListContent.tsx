@@ -4,40 +4,39 @@ import AppAddButton from "@/components/elements/AddButton";
 import { DebouncedSearch } from "@/components/elements/DebouncedSearch";
 import FilterDropdown from "@/components/elements/FilterDropDown";
 import { appRoutes } from "@/lib/routes";
-import ClinicList from "./ClinicList";
 import Pagination from "@/components/elements/Pagination";
 import PageSelector from "@/components/elements/PageSelector";
-import { useGetClinicList } from "@/features/clinic/useGetClinic";
 import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
+import PatientList from "./PatientsList";
+import { useGetPatientList } from "@/features/patients/useGetPatient";
 
-const ClinicContent: React.FC = () => {
-    const { data, isLoading, mutate } = useGetClinicList();
-
+const PatientListContent: React.FC = () => {
+    const { data, isLoading, mutate } = useGetPatientList();
     return (
         <div>
             <PrivateView
-                title="Clinics"
+                title="Patients"
                 breadCrumbItems={[
-                    { title: "Clinics", href: appRoutes.CLINIC_INDEX_PAGE },
+                    { title: "Patients", href: appRoutes.PATIENT_INDEX_PAGE },
                 ]}
             >
-                <CommonContainer title="clinic-list-section">
+                <CommonContainer title="patient-list-section">
                     <>
                         <div className="flex justify-between items-center">
                             <DebouncedSearch
                                 mutate={mutate}
-                                placeholder="Search Clinic"
+                                placeholder="Search Patient"
                             />
                             <div className="space-x-5">
                                 <AppAddButton
-                                    href={appRoutes.CLINIC_ACTION_PAGE}
-                                    title="Add Clinic"
+                                    href={appRoutes.PATIENT_ACTION_PAGE}
+                                    title="Add Patient"
                                 />
                                 <FilterDropdown />
                             </div>
                         </div>
-                        <ClinicList clinicList={data?.data?.data ?? []} />
+                        <PatientList patientList={data?.data?.data ?? []} />
                         <div className="flex items-center justify-between mt-12">
                             <Pagination
                                 currentPage={data?.data?.currentPage}
@@ -57,4 +56,4 @@ const ClinicContent: React.FC = () => {
     );
 };
 
-export default ClinicContent;
+export default PatientListContent;

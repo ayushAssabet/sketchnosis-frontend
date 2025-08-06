@@ -6,10 +6,9 @@ import PrivateView from "@/views/PrivateView";
 import { useSearchParams } from "next/navigation";
 import CategoryProvider from "@/contexts/CategoryContextProvider";
 import { appRoutes } from "@/lib/routes";
-import CampaignActionForm from "./CampaignActionForm";
-import IllustrationProvider from "@/contexts/IllustrationContextProvider";
+import PatientActionForm from "./PatientsActionForm";
 
-const CampaignActionContent: React.FC = () => {
+const PatientActionContent: React.FC = () => {
     const searchParams = useSearchParams();
     const isUpdate =
         searchParams?.get("update") != null &&
@@ -17,29 +16,25 @@ const CampaignActionContent: React.FC = () => {
 
     return (
         <PrivateView
-            title="Campaigns"
+            title="Patient"
             breadCrumbItems={[
-                { title: "Campaigns", href: appRoutes.CAMPAIGN_INDEX_PAGE },
+                { title: "Patient", href: appRoutes.CLINIC_INDEX_PAGE },
                 {
-                    title: !isUpdate ? "Add Campaign" : "Edit Campaign",
+                    title: !isUpdate ? "Add Patient" : "Edit Patient",
                     href: "/",
                 },
             ]}
         >
             <CategoryProvider>
-                <CommonContainer title="Campaign-list-section">
+                <CommonContainer title="patient-list-section">
                     <ActionTitle
-                        title={`${
-                            !isUpdate ? "Add Campaign" : "Edit Campaign"
-                        }`}
+                        title={`${!isUpdate ? "Add Patient" : "Edit Patient"}`}
                     />
-                    <IllustrationProvider>
-                        <CampaignActionForm isUpdate={isUpdate} />
-                    </IllustrationProvider>
+                    <PatientActionForm isUpdate={isUpdate} />
                 </CommonContainer>
             </CategoryProvider>
         </PrivateView>
     );
 };
 
-export default CampaignActionContent;
+export default PatientActionContent;
