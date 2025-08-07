@@ -11,7 +11,7 @@ import { appRoutes } from "@/lib/routes";
 import { Loader } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { FormEvent, useEffect } from "react";
+import { FormEvent, useEffect, useMemo } from "react";
 
 const ClinicActionForm: React.FC<{
     isUpdate: boolean;
@@ -34,13 +34,16 @@ const ClinicActionForm: React.FC<{
         isUpdate ? updateClinic(clinicId!, formData!) : addClinic(formData!);
     };
 
-    const defaultCategories =
-        data?.data?.areaOfConcerns?.map(
-            (category: Record<string, any>, index: number) => ({
-                label: category?.name,
-                value: category?.id,
-            })
-        ) ?? [];
+    const defaultCategories = useMemo(() => {
+        return (
+            data?.data?.areaOfConcerns?.map(
+                (category: Record<string, any>) => ({
+                    label: category?.name,
+                    value: category?.id,
+                })
+            ) ?? []
+        );
+    }, [data]);
 
     const handleAreaOfConcernsChange = (
         selected: { label: string; value: string }[]
@@ -111,7 +114,7 @@ const ClinicActionForm: React.FC<{
                     id="email"
                     name="email"
                     className=" text-sm"
-                    label="Email Address"
+                    label="Email"
                     type="text"
                     value={formData?.email ?? ""}
                     onChange={handleChange}
@@ -138,7 +141,7 @@ const ClinicActionForm: React.FC<{
                     id="contactPersonName"
                     name="contactPersonName"
                     className=" text-sm"
-                    label="Name of Contact Person"
+                    label="Contact Person Name"
                     type="text"
                     value={formData?.contactPersonName ?? ""}
                     onChange={handleChange}
@@ -167,7 +170,7 @@ const ClinicActionForm: React.FC<{
                         id="description"
                         name="description"
                         className=" text-sm"
-                        label="Description"
+                        label="Clinic Description"
                         value={formData?.description ?? ""}
                         onChange={handleChange}
                         placeholder="Eg: Work on orthopedics"

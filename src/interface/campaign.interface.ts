@@ -13,6 +13,7 @@ export interface Campaign {
         id: string;
         campaignId: string;
         imageUrl: string;
+        dayOfWeek? : string
     }[];
-
+    status?: "active" | "draft";
 }

@@ -1,11 +1,8 @@
 import { appRoutes } from "@/lib/routes";
 import {
     Users,
-    Settings,
     LayoutGrid,
     LucideIcon,
-    Split,
-    PlusIcon,
     PlusSquare,
     Megaphone,
     Palette,
@@ -63,16 +60,16 @@ export function getMenuList(): Group[] {
                 },
             ],
         },
-        // {
-        //     groupLabel: "",
-        //     menus: [
-        //         {
-        //             href: appRoutes.PATIENT_INDEX_PAGE,
-        //             label: "Patients",
-        //             icon: Users,
-        //         },
-        //     ],
-        // },
+        {
+            groupLabel: "",
+            menus: [
+                {
+                    href: appRoutes.PATIENT_INDEX_PAGE,
+                    label: "Patients",
+                    icon: Users,
+                },
+            ],
+        },
         {
             groupLabel: "",
             menus: [

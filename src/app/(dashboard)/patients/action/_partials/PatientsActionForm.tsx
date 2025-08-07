@@ -12,7 +12,7 @@ import { appRoutes } from "@/lib/routes";
 import { Loader } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { FormEvent, useEffect } from "react";
+import { FormEvent, useEffect, useMemo } from "react";
 import { Label } from "@/components/ui/label";
 import CampaignSelector from "@/components/elements/SelectCampaignDialog";
 
@@ -39,21 +39,25 @@ const PatientActionForm: React.FC<{
         isUpdate ? updatePatient(patientId!, formData!) : addPatient(formData!);
     };
 
-    const defaultCategories =
-        data?.data?.areaOfConcerns?.map(
-            (category: Record<string, any>, index: number) => ({
-                label: category?.name,
-                value: category?.id,
-            })
-        ) ?? [];
+    const defaultCategories = useMemo(() => {
+        return (
+            data?.data?.areaOfConcerns?.map(
+                (category: Record<string, any>) => ({
+                    label: category?.name,
+                    value: category?.id,
+                })
+            ) ?? []
+        );
+    }, [data]);
 
     const handleAreaOfConcernsChange = (
         selected: { label: string; value: string }[]
     ) => {
-        // setFormData((prev) => ({
-        //     ...prev,
-        //     areaOfConcernIds: selected.map((item) => item.value),
-        // }));
+        console.log(selected)
+        setFormData((prev) => ({
+            ...prev,
+            areaOfConcernIds: selected.map((item) => item.value),
+        }));
     };
 
     const handleGenderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -73,7 +77,7 @@ const PatientActionForm: React.FC<{
     };
 
     useEffect(() => {
-        if (data?.data) {
+        if (data?.data && patientId) {
             setFormData({
                 firstName: data?.data?.firstName,
                 lastName: data?.data?.lastName,
@@ -91,6 +95,8 @@ const PatientActionForm: React.FC<{
             });
         }
     }, [data, setFormData]);
+
+    console.log(formData);
 
     return (
         <>
@@ -220,11 +226,13 @@ const PatientActionForm: React.FC<{
                 />
 
                 <CampaignSelector
-                    selectedCampaign={data?.data?.campaign}
+                    selectedCampaign={
+                        data?.data?.campaign || formData?.campaignId
+                    }
                     selectedStartDate={formData?.campaignStartDate ?? ""}
                     onCampaignSelect={handleCampaignSelect}
                     disabled={isAddingPatient || isUpdatingPatient}
-                    showStartDate
+                    showStartDate={true}
                 />
                 <AppInputField
                     id="campaignStartDate"
