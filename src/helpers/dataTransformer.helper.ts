@@ -6,9 +6,9 @@ interface campaignDataInterface {
     areaOfConcernIds?: string[];
     scheduleImages: {
         dayNumber: number;
-        imageUrl: string;
+        illustrationId: string;
     }[];
-    numberOfWeeks? : number
+    numberOfWeeks?: number;
 }
 
 export const transformCampaignData = (
@@ -25,7 +25,7 @@ export const transformCampaignData = (
         numberOfDays: null,
         areaOfConcernIds: formData.areaOfConcernIds || [],
         scheduleImages: [],
-        numberOfWeeks : null
+        numberOfWeeks: null,
     };
 
     console.log(formData);
@@ -41,7 +41,7 @@ export const transformCampaignData = (
                 const dayNumber = parseInt(key.replace("day", ""));
                 return {
                     dayNumber: dayNumber,
-                    imageUrl: `${image?.fileUrl}`,
+                    illustrationId: `${image?.id}`,
                 };
             })
             .sort((a, b) => a.dayNumber - b.dayNumber);
@@ -49,19 +49,19 @@ export const transformCampaignData = (
 
     // Handle weekly campaigns
     else if (formData.repeatType === "weekly") {
-        const numberOfWeeks = formData.numberOfWeeks
+        const numberOfWeeks = formData.numberOfWeeks;
         const daysPerWeek = selectedDays.length;
         campaignData.numberOfWeeks = numberOfWeeks;
 
         // Create a mapping for day keys to day numbers within a week
         const dayKeyToNumber = {
-            Sun : 'Sun' , 
-            Mon : 'Mon' , 
-            Tue : 'Tue' , 
-            Wed : 'Wed' , 
-            Thu : 'Thu' , 
-            Fri : 'Fri' , 
-            Sat : 'Sat'
+            Sun: "Sun",
+            Mon: "Mon",
+            Tue: "Tue",
+            Wed: "Wed",
+            Thu: "Thu",
+            Fri: "Fri",
+            Sat: "Sat",
         };
 
         // Transform weekly images to scheduleImages format
@@ -72,7 +72,7 @@ export const transformCampaignData = (
                 // Parse key like "week1_M" or "week2_T2"
                 const match = key.match(/week(\d+)_(.+)/);
                 if (match) {
-                    console.log(match)
+                    console.log(match);
                     const weekNumber = parseInt(match[1]);
                     const dayKey = match[2];
                     const dayOfWeek = dayKeyToNumber[dayKey];
@@ -83,7 +83,7 @@ export const transformCampaignData = (
                     scheduleImages.push({
                         weekNumber: weekNumber,
                         dayOfWeek: dayOfWeek,
-                        imageUrl: `${image?.fileUrl || image?.url}`,
+                        illustrationId: `${image?.id}`,
                     });
                 }
             });
