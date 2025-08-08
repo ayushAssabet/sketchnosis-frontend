@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const patientSchema = z.object({
-    firstName: z.string().min(1, "First name is required"),
+    firstName: z.string().max(255).min(1, "First name is required"),
 
-    lastName: z.string().min(1, "Last name is required"),
+    lastName: z.string().max(255).min(1, "Last name is required"),
 
     email: z
         .string()
@@ -15,7 +15,7 @@ export const patientSchema = z.object({
         .regex(/^\d+$/, "Phone number must contain only digits")
         .min(10, "Phone number must be at least 10 digits"),
 
-    address: z.string().optional(),
+    address: z.string().max(255).optional(),
 
     areaOfConcernIds: z
         .array(z.string().min(1, "Each area of concern is required"))
@@ -29,9 +29,12 @@ export const patientSchema = z.object({
 
     campaignId: z.string().min(1, "Campaign is required"),
 
-    campaignStartDate: z.string().min(1, "Campaign start date is required"),
+    campaignStartDate: z
+        .string()
+        .min(1, "Campaign start date is required")
+        .optional(),
 
-    description: z.string().optional(),
+    description: z.string().max(500).optional(),
 
     profile: z
         .instanceof(File)

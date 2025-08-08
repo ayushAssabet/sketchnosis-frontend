@@ -121,7 +121,7 @@ const AsyncSearchableDropdown: React.FC<{
         <div className="w-full">
             <div className="">
                 <h3 className="text-sm font-medium text-gray-900 mb-2">
-                    Category
+                    Area of Concern
                     {required && <span className="text-red-500"> *</span>}
                 </h3>
 

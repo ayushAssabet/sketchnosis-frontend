@@ -74,7 +74,7 @@ const CategoryActionModal = ({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-primary text-xl">
-            {isEditing ? "Edit Category" : "Add Category"}
+            {isEditing ? "Edit Area of Concern" : "Add Area of Concern"}
           </DialogTitle>
         </DialogHeader>
 
@@ -121,7 +121,7 @@ const CategoryActionModal = ({
               </Button>
 
               <LoadingButton
-                title="Category"
+                title="Area of Concern"
                 isUpdate={isEditing}
                 isLoading={isAddingCategory || isUpdatingCategory}
                 className="!w-fit"

@@ -8,7 +8,7 @@ export const campaignSchema = z
       .max(100, "Name must be less than 100 characters"),
     areaOfConcernIds: z
       .array(z.string())
-      .min(1, "At least one category must be selected"),
+      .min(1, "At least one area of concern must be selected"),
     description: z
       .string()
       .min(10, "Description must be at least 10 characters long")

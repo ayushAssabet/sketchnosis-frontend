@@ -9,10 +9,9 @@ import PageSelector from "@/components/elements/PageSelector";
 import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
 import CampaignList from "./CampaignList";
-import { useCampaignsList } from "@/features/campaigns/useGetCampaigns";
+import { useCampaignsList } from "@/features/campaigns/hooks/useGetCampaigns";
 
 const CampaignContent: React.FC = () => {
-    
     const { data, isLoading, mutate } = useCampaignsList();
 
     return (

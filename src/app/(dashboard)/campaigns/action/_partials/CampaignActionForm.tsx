@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import IllustrationDialog from "./SelectIllustrationDialog";
 import { transformCampaignData } from "@/helpers/dataTransformer.helper";
-import { useGetCampaignDetail } from "@/features/campaigns/useGetCampaigns";
+import { useGetCampaignDetail } from "@/features/campaigns/hooks/useGetCampaigns";
 import renderImageUploadSection from "./ImageUploadSection";
 
 const CampaignActionForm: React.FC<{
@@ -217,7 +217,7 @@ const CampaignActionForm: React.FC<{
                     <AsyncSearchableDropdown
                         defaultOption={defaultCategories}
                         onSelectionChange={handleAreaOfConcernsChange}
-                        error={errors?.category}
+                        error={errors?.areaOfConcernIds}
                         required
                     />
                 </div>

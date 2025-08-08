@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "../ui/badge";
-import { useCampaignsList } from "@/features/campaigns/useGetCampaigns";
+import { useCampaignsList } from "@/features/campaigns/hooks/useGetCampaigns";
 import { Campaign } from "@/interface/campaign.interface";
 import { Button } from "../ui/button";
 

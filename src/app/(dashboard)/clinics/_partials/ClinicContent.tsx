@@ -7,7 +7,7 @@ import { appRoutes } from "@/lib/routes";
 import ClinicList from "./ClinicList";
 import Pagination from "@/components/elements/Pagination";
 import PageSelector from "@/components/elements/PageSelector";
-import { useGetClinicList } from "@/features/clinic/useGetClinic";
+import { useGetClinicList } from "@/features/context/useGetClinic";
 import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
 

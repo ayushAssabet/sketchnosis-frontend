@@ -53,7 +53,7 @@ const PatientActionForm: React.FC<{
     const handleAreaOfConcernsChange = (
         selected: { label: string; value: string }[]
     ) => {
-        console.log(selected)
+        console.log(selected);
         setFormData((prev) => ({
             ...prev,
             areaOfConcernIds: selected.map((item) => item.value),

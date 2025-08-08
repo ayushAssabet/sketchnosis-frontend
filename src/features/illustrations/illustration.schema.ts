@@ -3,7 +3,9 @@ import z from "zod";
 export const illustrationSchema = z.object({
     title: z.string().min(1, "Title is required"),
     areaOfConcernIds: z
-        .array(z.string().min(1, "Each category is required"))
+        .array(
+            z.string().min(1, "At least one area of concern must be selected ")
+        )
         .min(1, "At least one area of concern is required"),
     description: z.string().optional(),
     illustration: z

@@ -16,7 +16,7 @@ import {
     TooltipContent,
     TooltipProvider,
 } from "@/components/ui/tooltip";
-import { useAuth } from "@/contexts/AuthContextProvider";
+import { useAuth } from "@/features/login/context/AuthContextProvider";
 
 interface MenuProps {
     isOpen: boolean | undefined;

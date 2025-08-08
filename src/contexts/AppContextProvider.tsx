@@ -1,6 +1,6 @@
 "use client";
 import { Suspense } from "react";
-import { AuthProvider } from "./AuthContextProvider";
+import { AuthProvider } from "../features/login/context/AuthContextProvider";
 import SidebarProvider from "./SidebarContextProvider";
 
 const AppContextProvider: React.FC<{

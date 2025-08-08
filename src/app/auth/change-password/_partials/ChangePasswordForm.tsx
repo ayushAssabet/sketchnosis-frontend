@@ -1,13 +1,11 @@
 "use client";
 import React from "react";
 import AuthIntro from "@/components/elements/AuthIntro";
-import { useLogin } from "@/features/login/useLogin";
 import AppInputField from "@/components/forms/InputField";
-import { Checkbox } from "@/components/ui/checkbox";
-import Link from "next/link";
 import AppButton from "@/components/elements/AppButton";
+import { useChangePassword } from "@/features/change-password/hooks/useChangePassword";
 
-const ChagePasswordForm: React.FC = () => {
+const ChagePasswordForm: React.FC = ({ token }: { token: string }) => {
     const {
         handleSubmit,
         formData,
@@ -15,52 +13,41 @@ const ChagePasswordForm: React.FC = () => {
         errors,
         isSubmitting,
         disableSubmit,
-    } = useLogin();
+    } = useChangePassword(token);
 
     return (
         <form onSubmit={handleSubmit} className="min-w-[536px] space-y-14">
             <AuthIntro
-                title="Login"
-                supportText="Please enter your credentials to access your account."
+                title="Change Password"
+                supportText="Please enter passwords"
             />
 
             <div className="form_group mt-16">
                 <div className="space-y-5 mb-8">
                     <AppInputField
-                        id="email"
-                        name="email"
-                        label="Email Address"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Enter your email"
-                        error={errors.email}
-                        disabled={isSubmitting}
-                    />
-                    <AppInputField
-                        id="password"
-                        name="password"
-                        label="Password"
+                        id="newPassword"
+                        name="newPassword"
+                        label="New Password"
                         type="password"
-                        value={formData.password}
+                        value={formData.newPassword}
                         onChange={handleChange}
-                        placeholder="Enter your password"
-                        error={errors.password}
+                        placeholder="Enter your new password"
+                        error={errors.newPassword}
                         disabled={isSubmitting}
                         showPasswordToggle={true}
                     />
-                    <div className="flex items-center text-sm justify-between">
-                        <div className="flex items-center gap-1">
-                            <Checkbox className="border-" />
-                            Remember Me
-                        </div>
-                        <Link
-                            href={"#"}
-                            className="text-primary hover:underline"
-                        >
-                            Forgot Password ?
-                        </Link>
-                    </div>
+                    <AppInputField
+                        id="password"
+                        name="confirmPassword"
+                        label="Confirm Password"
+                        type="password"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        placeholder="Confirm your password"
+                        error={errors.confirmPassword}
+                        disabled={isSubmitting}
+                        showPasswordToggle={true}
+                    />
                 </div>
 
                 <AppButton
@@ -68,9 +55,9 @@ const ChagePasswordForm: React.FC = () => {
                     disabled={disableSubmit}
                     isLoading={isSubmitting}
                     loadingText="Signing In..."
-                    className="w-full py-4"
+                    className="w-full py-6"
                 >
-                    Sign In
+                    Change Password
                 </AppButton>
             </div>
         </form>

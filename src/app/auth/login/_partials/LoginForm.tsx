@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import AuthIntro from "@/components/elements/AuthIntro";
-import { useLogin } from "@/features/login/useLogin";
+import { useLogin } from "@/features/login/hooks/useLogin";
 import AppInputField from "@/components/forms/InputField";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -18,7 +18,6 @@ const LoginForm: React.FC = () => {
     } = useLogin();
     return (
         <form onSubmit={handleSubmit} className="min-w-[536px] space-y-14">
-            
             <AuthIntro
                 title="Login"
                 supportText="Please enter your credentials to access your account."

@@ -4,9 +4,9 @@ import AppDropZone from "@/components/forms/DropZone";
 import AppInputField from "@/components/forms/InputField";
 import AppTextArea from "@/components/forms/TextArea";
 import { Button } from "@/components/ui/button";
-import { useClinicActionForm } from "@/features/clinic/useClinicActionForm";
-import { useClinic } from "@/features/clinic/useClinicActions";
-import { useGetClinicDetail } from "@/features/clinic/useGetClinic";
+import { useClinicActionForm } from "@/features/context/useClinicActionForm";
+import { useClinic } from "@/features/context/useClinicActions";
+import { useGetClinicDetail } from "@/features/context/useGetClinic";
 import { appRoutes } from "@/lib/routes";
 import { Loader } from "lucide-react";
 import Link from "next/link";
@@ -106,7 +106,7 @@ const ClinicActionForm: React.FC<{
                 <AsyncSearchableDropdown
                     defaultOption={defaultCategories}
                     onSelectionChange={handleAreaOfConcernsChange}
-                    error={errors?.AreaOfConcerns}
+                    error={errors?.areaOfConcernIds}
                     required
                 />
 
