@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { ZodError } from "zod";
-import { CampaignFormData, campaignSchema } from "./campaign.schema";
+import { CampaignFormData , campaignSchema } from "../schema/campaign.schema";
 
 interface CampaignDetailData extends CampaignFormData {
     scheduleImages: {

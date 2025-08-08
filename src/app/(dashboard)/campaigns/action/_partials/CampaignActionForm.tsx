@@ -4,14 +4,14 @@ import AsyncSearchableDropdown from "@/components/elements/SearchableCategorySel
 import AppInputField from "@/components/forms/InputField";
 import AppTextArea from "@/components/forms/TextArea";
 import { Button } from "@/components/ui/button";
-import { useCampaign } from "@/features/campaigns/useCampaign";
-import { useCampaignActionForm } from "@/features/campaigns/useCampaignActionForm";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import IllustrationDialog from "./SelectIllustrationDialog";
 import { transformCampaignData } from "@/helpers/dataTransformer.helper";
 import { useGetCampaignDetail } from "@/features/campaigns/hooks/useGetCampaigns";
 import renderImageUploadSection from "./ImageUploadSection";
+import { useCampaignActionForm } from "@/features/campaigns/hooks/useCampaignActionForm";
+import { useCampaign } from "@/features/campaigns/hooks/useCampaign";
 
 const CampaignActionForm: React.FC<{
     isUpdate: boolean;
@@ -138,7 +138,9 @@ const CampaignActionForm: React.FC<{
     };
 
     useEffect(() => {
-        setSelectedDays([...new Set(formData?.selectedDays)]);
+        setSelectedDays([
+            ...(new Set(formData?.selectedDays) as unknown as string[]),
+        ]);
     }, [formData]);
 
     useEffect(() => {

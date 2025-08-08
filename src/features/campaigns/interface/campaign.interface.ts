@@ -1,4 +1,4 @@
-import { categoryInterface } from "./category.interface";
+import { categoryInterface } from "@/interface/category.interface";
 
 export interface Campaign {
     id: string;

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { appRoutes } from "@/lib/routes";
 import { BACKEND_HOST } from "@/utils/constants";
 import useConfirmDialog from "@/hooks/use-confirmation";
-import { CampaignFormData } from "./campaign.schema";
+import { CampaignFormData } from "../schema/campaign.schema";
 
 export const useCampaign = (
     mutate?: () => Promise<void>,

@@ -11,8 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "../ui/badge";
 import { useCampaignsList } from "@/features/campaigns/hooks/useGetCampaigns";
-import { Campaign } from "@/interface/campaign.interface";
 import { Button } from "../ui/button";
+import { Campaign } from "@/features/campaigns/interface/campaign.interface";
 
 interface CampaignSelectorProps {
     selectedCampaign?: string | null;
