@@ -27,10 +27,10 @@ const CategoryContent: React.FC = () => {
     return (
         <div>
             <PrivateView
-                title="Categories"
+                title="Area of Concern List"
                 breadCrumbItems={[
                     {
-                        title: "Categories",
+                        title: "Area of Concerns",
                         href: appRoutes.CATEGORY_INDEX_PAGE,
                     },
                 ]}

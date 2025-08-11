@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import { ChevronDown, Sliders } from 'lucide-react';
 import { Button } from '../ui/button';
+import { useGetCategoriesList } from '@/features/categories/useGetCategories';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 interface Category {
   id: string;
   name: string;
+
 }
 
 interface FilterDropdownProps {
   categories?: Category[];
   onApplyFilters?: (selectedCategories: string[]) => void;
   onClearAll?: () => void;
+  mutate? : ()=> void
 }
 
 const FilterDropdown: React.FC<FilterDropdownProps> = ({
-  categories = [
-    { id: 'oncologist-1', name: 'Oncologist' },
-    { id: 'nephrologist-1', name: 'Nephrologist' },
-    { id: 'oncologist-2', name: 'Oncologist' },
-    { id: 'nephrologist-2', name: 'Nephrologist' },
-    { id: 'otorhinolaryngologist-1', name: 'Otorhinolaryngologist' }
-  ],
   onApplyFilters,
   onClearAll
 }) => {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  const {data} = useGetCategoriesList()
+  
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
@@ -41,6 +43,11 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   };
 
   const applyFilters = (): void => {
+    const params = new URLSearchParams(searchParams.toString());
+    selectedCategories.forEach((category) => {
+      params.append('areaOfConcerns', category);
+    });
+    router.replace(`${pathname}?${params?.toString()}`)
     onApplyFilters?.(selectedCategories);
     setIsOpen(false);
   };
@@ -80,7 +87,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
 
           {/* Categories List */}
           <div className="py-2 space-y-1">
-            {categories.map((category) => {
+            {data?.data?.map((category) => {
               const isSelected = selectedCategories.includes(category.id);
               
               return (

@@ -45,7 +45,7 @@ export function getMenuList(): Group[] {
             menus: [
                 {
                     href: appRoutes.CATEGORY_INDEX_PAGE,
-                    label: "Categories",
+                    label: "Area of Concerns",
                     icon: Shapes,
                 },
             ],

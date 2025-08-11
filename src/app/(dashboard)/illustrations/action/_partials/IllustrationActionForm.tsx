@@ -115,7 +115,7 @@ const IllustrationActionForm: React.FC<{
                     value={formData?.title ?? ""}
                     onChange={handleChange}
                     placeholder="Eg: Tuberculosis "
-                    error={errors?.name}
+                    error={errors?.title}
                     disabled={isAddingIllustration || isUpdatingIllustration}
                     variant="dashboard"
                     required

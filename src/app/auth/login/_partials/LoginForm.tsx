@@ -66,7 +66,7 @@ const LoginForm: React.FC = () => {
                     type="submit"
                     disabled={disableSubmit}
                     isLoading={isSubmitting}
-                    loadingText="Signing In..."
+                    loadingText="Logging In..."
                     className="w-full py-6 text-base cursor-pointer"
                 >
                     Login

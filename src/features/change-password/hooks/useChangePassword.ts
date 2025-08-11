@@ -52,7 +52,8 @@ export const useChangePassword = (token: string) => {
         setIsSubmitting(true);
 
         try {
-            changePasswordSchema.parse(formData);
+            const result = changePasswordSchema.parse(formData);
+            console.log(result)
             setErrors({});
 
             const res = await fetch(
@@ -81,8 +82,6 @@ export const useChangePassword = (token: string) => {
                 });
                 setErrors(fieldErrors);
             } else {
-                console.error("Login error:", error);
-                alert("Login failed. Please try again.");
             }
         } finally {
             setIsSubmitting(false);

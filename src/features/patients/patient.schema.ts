@@ -7,13 +7,22 @@ export const patientSchema = z.object({
 
     email: z
         .string()
-        .min(1, "Email is required")
-        .email("Please enter a valid email"),
+        .min(2, "Email is required")
+        .refine((val) => val === "" || /\S+@\S+\.\S+/.test(val), {
+            message: "Please enter a valid email",
+        }),
 
-    phone: z
+    phone : z
         .string()
-        .regex(/^\d+$/, "Phone number must contain only digits")
-        .min(10, "Phone number must be at least 10 digits"),
+        .min(1, "Phone number is required")
+        .refine((val) => /^\d+$/.test(val), {
+            message: "Phone number must contain only digits",
+            path: [],
+        })
+        .refine((val) => val.length >= 10, {
+            message: "Phone number must be at least 10 digits",
+        }),
+
 
     address: z.string().max(255).optional(),
 
@@ -32,6 +41,7 @@ export const patientSchema = z.object({
     campaignStartDate: z
         .string()
         .min(1, "Campaign start date is required")
+        .nullable()
         .optional(),
 
     description: z.string().max(500).optional(),

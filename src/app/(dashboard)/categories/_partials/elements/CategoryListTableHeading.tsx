@@ -6,11 +6,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { categoryInterface } from "@/interface/category.interface";
-import { appRoutes } from "@/lib/routes";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Edit, FileSearch, Trash2 } from "lucide-react";
-import Link from "next/link";
+import { ArrowUpDown, Edit,Trash2 } from "lucide-react";
 
 export const CategoryListTableHeading = ({
   onDelete,

@@ -7,11 +7,13 @@ export const clinicSchema = z.object({
             z.string().min(1, "At least one area of concern must be selected")
         )
         .min(1, "At least one area of concern is required"),
-    description: z.string().max(255).optional(),
+    description: z.string().max(500).optional(),
     email: z
         .string()
         .min(1, "Email is required")
-        .email("Please enter valid email"),
+        .refine((val) => val === "" || /\S+@\S+\.\S+/.test(val), {
+            message: "Please enter a valid email",
+        }),
     address: z.string().max(255).optional(),
     contactPersonName: z
         .string()
@@ -32,7 +34,7 @@ export const clinicSchema = z.object({
             (file) =>
                 ["image/jpeg", "image/jpg", "image/png"].includes(file.type),
             {
-                message: "Logo must be a JPEG or PNG image",
+                message: "Logo must be a JPEG or PNG or JPG image",
             }
         )
         .optional(),

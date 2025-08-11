@@ -5,7 +5,10 @@ import AppInputField from "@/components/forms/InputField";
 import AppButton from "@/components/elements/AppButton";
 import { useChangePassword } from "@/features/change-password/hooks/useChangePassword";
 
-const ChagePasswordForm: React.FC = ({ token }: { token: string }) => {
+const ChagePasswordForm: React.FC<{ token: string; title: string | null }> = ({
+    token,
+    title,
+}) => {
     const {
         handleSubmit,
         formData,
@@ -18,7 +21,7 @@ const ChagePasswordForm: React.FC = ({ token }: { token: string }) => {
     return (
         <form onSubmit={handleSubmit} className="min-w-[536px] space-y-14">
             <AuthIntro
-                title="Change Password"
+                title={title ?? "Change Password"}
                 supportText="Please enter passwords"
             />
 
@@ -54,10 +57,12 @@ const ChagePasswordForm: React.FC = ({ token }: { token: string }) => {
                     type="submit"
                     disabled={disableSubmit}
                     isLoading={isSubmitting}
-                    loadingText="Signing In..."
+                    loadingText={
+                        title ? "Setting Password..." : "Changing Password ..."
+                    }
                     className="w-full py-6"
                 >
-                    Change Password
+                    {title ? "Change Password" : "Set Password"}
                 </AppButton>
             </div>
         </form>

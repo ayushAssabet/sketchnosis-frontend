@@ -31,7 +31,7 @@ const CampaignContent: React.FC = () => {
                                     href={appRoutes.CAMPAIGN_ACTION_PAGE}
                                     title="Add Campaign"
                                 />
-                                <FilterDropdown />
+                                <FilterDropdown mutate={mutate}/>
                             </div>
                         </div>
                         <CampaignList CampaignList={data?.data?.data ?? []} />

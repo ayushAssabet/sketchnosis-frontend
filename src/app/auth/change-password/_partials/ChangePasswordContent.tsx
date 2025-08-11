@@ -6,9 +6,11 @@ import { useEffect } from "react";
 import { appRoutes } from "@/lib/routes";
 
 export default function ChangePasswordContent() {
-    const searchParams = useSearchParams();
+
     const router = useRouter();
+    const searchParams = useSearchParams();
     const token = searchParams.get("token");
+    const title = searchParams.get('title')
 
     useEffect(() => {
         if (!token) router.replace(appRoutes.CHANGE_PASSWORD_INDEX_PAGE);
@@ -17,10 +19,14 @@ export default function ChangePasswordContent() {
     return (
         <>
             <SplashScreen
-                title="Set Your Password"
-                description="To activate your account, please create a secure password. This will complete your registration and give you access to your dashboard."
+                title={title ?? "Set Your Password"}
+                description={
+                    title 
+                        ? 'To change credentail of your account, please create a password. This will replace your existing credentail and give you access to your dashboard.'
+                        : "To activate your account, please create a secure password. This will complete your registration and give you access to your dashboard."
+                }
             >
-                <ChagePasswordForm />
+                <ChagePasswordForm token={token} title={title}/>
             </SplashScreen>
         </>
     );
