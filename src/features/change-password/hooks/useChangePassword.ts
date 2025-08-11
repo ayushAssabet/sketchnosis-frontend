@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import {
+    changePasswordBase,
     ChangePasswordFormData,
     changePasswordSchema,
 } from "../schema/changePassword.schema";
@@ -28,7 +29,13 @@ export const useChangePassword = (token: string) => {
         value: string
     ) => {
         try {
-            changePasswordSchema.shape[name].parse(value);
+            changePasswordBase
+                .pick({ newPassword: true, confirmPassword: true })
+                .parse({
+                    newPassword: formData.newPassword,
+                    confirmPassword: value,
+                });
+
             setErrors((prev) => ({ ...prev, [name]: undefined }));
         } catch (error) {
             if (error instanceof z.ZodError) {
@@ -52,12 +59,11 @@ export const useChangePassword = (token: string) => {
         setIsSubmitting(true);
 
         try {
-            const result = changePasswordSchema.parse(formData);
-            console.log(result)
+            changePasswordSchema.parse(formData);
             setErrors({});
 
             const res = await fetch(
-                `${BACKEND_HOST}/v1/password/set/${token}`,
+                `${BACKEND_HOST}/v1/password/set?token=${token}`,
                 {
                     method: "POST",
                     body: JSON.stringify({
@@ -82,6 +88,7 @@ export const useChangePassword = (token: string) => {
                 });
                 setErrors(fieldErrors);
             } else {
+                console.log(error);
             }
         } finally {
             setIsSubmitting(false);

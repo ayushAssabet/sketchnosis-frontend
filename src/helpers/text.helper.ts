@@ -1,3 +1,3 @@
-const trimText = (text : string , maxChar : number) => {
-    return text.
+// const trimText = (text : string , maxChar : number) => {
+//     return text.
 }
