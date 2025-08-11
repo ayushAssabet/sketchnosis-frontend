@@ -63,7 +63,7 @@ export const useChangePassword = (token: string) => {
             setErrors({});
 
             const res = await fetch(
-                `${BACKEND_HOST}/v1/password/set?token=${token}`,
+                `${BACKEND_HOST}/v1/password/set/${token}`,
                 {
                     method: "POST",
                     body: JSON.stringify({
