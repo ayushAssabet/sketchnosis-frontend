@@ -123,6 +123,7 @@ const ClinicActionForm: React.FC<{
                     disabled={isAddingClinic || isUpdatingClinic}
                     variant="dashboard"
                     required
+                    readonly={isUpdate}
                 />
                 <AppInputField
                     id="address"
@@ -164,6 +165,7 @@ const ClinicActionForm: React.FC<{
                     disabled={isAddingClinic || isUpdatingClinic}
                     variant="dashboard"
                     required
+                    readonly={isUpdate}
                 />
                 <div className="col-span-2">
                     <AppTextArea

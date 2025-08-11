@@ -147,6 +147,7 @@ const PatientActionForm: React.FC<{
                     disabled={isAddingPatient || isUpdatingPatient}
                     variant="dashboard"
                     required
+                    readonly={isUpdate}
                 />
 
                 <AppInputField
@@ -162,6 +163,7 @@ const PatientActionForm: React.FC<{
                     disabled={isAddingPatient || isUpdatingPatient}
                     variant="dashboard"
                     required
+                    readonly={isUpdate}
                 />
 
                 <AppInputField

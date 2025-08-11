@@ -58,6 +58,8 @@ export const useChangePassword = (token: string) => {
         e.preventDefault();
         setIsSubmitting(true);
 
+        console.log(formData);
+
         try {
             changePasswordSchema.parse(formData);
             setErrors({});
@@ -66,6 +68,9 @@ export const useChangePassword = (token: string) => {
                 `${BACKEND_HOST}/v1/password/set/${token}`,
                 {
                     method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                     body: JSON.stringify({
                         newPassword: formData.newPassword,
                         confirmPassword: formData.confirmPassword,

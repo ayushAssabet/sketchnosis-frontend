@@ -44,7 +44,7 @@ export const useCampaign = (
                 });
                 setIsAddingCampaign(false);
 
-                // router.replace(appRoutes.CLINIC_INDEX_PAGE);
+                router.replace(appRoutes.CLINIC_INDEX_PAGE);
             } catch (error: any) {
                 console.error("Error adding clinic:", error);
                 showToast({
@@ -80,7 +80,7 @@ export const useCampaign = (
 
                 setIsUpdatingCampaign(false);
 
-                // router.replace(appRoutes.CLINIC_INDEX_PAGE);
+                router.replace(appRoutes.CLINIC_INDEX_PAGE);
 
                 return response;
             } catch (error: any) {

@@ -167,12 +167,13 @@ const CampaignActionForm: React.FC<{
                     const key = `week${image.weekNumber}_${image.dayOfWeek}`;
                     weeklyImagesData[key] = {
                         id: image?.id,
-                        url: image?.imageUrl,
-                        title: image?.title,
+                        url: image?.illustration?.imageUrl,
+                        title: image?.illustration?.title,
                     };
                 });
 
                 setWeeklyImages(weeklyImagesData);
+                
             } else {
                 const dailyImagesData: Record<
                     string,
@@ -184,8 +185,8 @@ const CampaignActionForm: React.FC<{
                     const key = `day${image.dayNumber || image.day}`;
                     dailyImagesData[key] = {
                         id: image?.id,
-                        url: image?.imageUrl,
-                        title: image?.title,
+                        url: image?.illustration?.imageUrl,
+                        title: image?.illustration?.title,
                     };
                 });
 
@@ -193,9 +194,6 @@ const CampaignActionForm: React.FC<{
             }
         }
     }, [campaignDetail]);
-
-    console.log(campaignDetail);
-    console.log(weeklyImages, dailyImages);
 
     return (
         <>

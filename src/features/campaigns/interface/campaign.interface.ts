@@ -12,7 +12,10 @@ export interface Campaign {
     scheduleImages?: {
         id: string;
         campaignId: string;
-        imageUrl: string;
+        illustration : {
+            id : string , 
+            fileUrl : string
+        }
         dayOfWeek? : string
     }[];
     status?: "active" | "draft";
