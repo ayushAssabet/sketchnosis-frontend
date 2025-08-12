@@ -1,25 +1,26 @@
 export const appRoutes = {
-  LOGIN_INDEX_PAGE: "/auth/login",
-  
-  CAMPAIGN_INDEX_PAGE: "/campaigns",
-  CAMPAIGN_INDIVIDUAL_PAGE: "/campaigns/detail/:id",
-  
-  CATEGORY_INDEX_PAGE: "/categories",
-  CHANGE_PASSWORD_INDEX_PAGE: "/auth/change-password",
+    LOGIN_INDEX_PAGE: "/auth/login",
 
-  CLINIC_INDEX_PAGE: "/clinics",
-  CLINIC_INDIVIDUAL_PAGE: "/clinics/detail/:id",
+    CAMPAIGN_INDEX_PAGE: "/campaigns",
+    CAMPAIGN_INDIVIDUAL_PAGE: "/campaigns/detail/:id",
 
-  DASHBOARD_INDEX_PAGE: "/dashboard",
+    CATEGORY_INDEX_PAGE: "/categories",
+    CHANGE_PASSWORD_INDEX_PAGE: "/auth/change-password",
 
-  ILLUSTRATIONS_INDEX_PAGE: "/illustrations",
+    CLINIC_INDEX_PAGE: "/clinics",
+    CLINIC_INDIVIDUAL_PAGE: "/clinics/detail/:id",
 
-  PATIENT_INDEX_PAGE: "/patients",
-  PATIENT_DETAIL_PAGE: "/patients/detail/:id",
+    DASHBOARD_INDEX_PAGE: "/dashboard",
+
+    ILLUSTRATIONS_INDEX_PAGE: "/illustrations",
+
+    PATIENT_INDEX_PAGE: "/patients",
+    PATIENT_DETAIL_PAGE: "/patients/detail/:id",
+    PERMISSION_MANAGEMENT_INDEX_PAGE: "/access",
 
     // action pages
     CLINIC_ACTION_PAGE: "/clinics/action",
     CAMPAIGN_ACTION_PAGE: "/campaigns/action",
     ILLUSTRATIONS_ACTION_PAGE: "/illustrations/action",
-    PATIENT_ACTION_PAGE: '/patients/action'
+    PATIENT_ACTION_PAGE: "/patients/action",
 };

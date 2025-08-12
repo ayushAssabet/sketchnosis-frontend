@@ -3,7 +3,7 @@ import React from "react";
 import AuthIntro from "@/components/elements/AuthIntro";
 import AppInputField from "@/components/forms/InputField";
 import AppButton from "@/components/elements/AppButton";
-import { useChangePassword } from "@/features/change-password/hooks/useChangePassword";
+import { useChangePassword } from "@/features/set-password/hooks/useSetPassword";
 
 const ChagePasswordForm: React.FC<{ token: string; title: string | null }> = ({
     token,
@@ -62,7 +62,7 @@ const ChagePasswordForm: React.FC<{ token: string; title: string | null }> = ({
                     }
                     className="w-full py-6"
                 >
-                    {title ? "Change Password" : "Set Password"}
+                    {title ? "Set Password" : "Change Password"}
                 </AppButton>
             </div>
         </form>

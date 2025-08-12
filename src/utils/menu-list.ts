@@ -7,6 +7,9 @@ import {
     Megaphone,
     Palette,
     Shapes,
+    Lock,
+    Shield,
+    ShieldBan,
 } from "lucide-react";
 
 type Submenu = {
@@ -87,6 +90,16 @@ export function getMenuList(): Group[] {
                     href: appRoutes.ILLUSTRATIONS_INDEX_PAGE,
                     label: "Illustrations",
                     icon: Palette,
+                },
+            ],
+        },
+        {
+            groupLabel: "",
+            menus: [
+                {
+                    href: appRoutes.PERMISSION_MANAGEMENT_INDEX_PAGE,
+                    label: "Access Management",
+                    icon: Shield,
                 },
             ],
         },

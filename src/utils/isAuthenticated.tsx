@@ -12,9 +12,6 @@ const isAuthenticated = <P extends object>(
     const Wrapper: React.FC<P> = (props) => {
         const router = useRouter();
         const { loading, user } = useAuth();
-
-        console.log("loading", loading, user);
-
         useEffect(() => {
             console.log(loading, user);
             if (!loading && !user) {

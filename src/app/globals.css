@@ -128,6 +128,32 @@
   font-family: "Poppins", sans-serif;
 }
 
+/* [data-slot="table-head"]:not(:nth-child(2)),
+[data-slot="table-cell"]:not(:nth-child(2)) {
+  width: 1%;
+}
+
+[data-slot="table-head"]:not(:nth-child(3)),
+[data-slot="table-cell"]:not(:nth-child(3)) {
+  width: 5%;
+} */
+
+td > div {
+  max-width: 30ch; /* roughly 20 characters */
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* [data-slot="table-head"],
+[data-slot="table-cell"] {
+  width: auto;
+  white-space: nowrap;
+} */
+
+
+
 a { 
   cursor: pointer;
 }

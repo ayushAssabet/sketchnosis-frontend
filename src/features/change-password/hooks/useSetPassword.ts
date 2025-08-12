@@ -8,6 +8,8 @@ import {
 } from "../schema/changePassword.schema";
 import { BACKEND_HOST } from "@/utils/constants";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { appRoutes } from "@/lib/routes";
 
 interface FormErrors {
     newPassword?: string;
@@ -16,6 +18,7 @@ interface FormErrors {
 
 export const useChangePassword = (token: string) => {
     const { showToast } = useToast();
+    const router = useRouter();
     const [formData, setFormData] = useState<ChangePasswordFormData>({
         newPassword: "",
         confirmPassword: "",
@@ -82,6 +85,7 @@ export const useChangePassword = (token: string) => {
                 variant: "success",
                 description: data?.message,
             });
+            router.replace(appRoutes.LOGIN_INDEX_PAGE);
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const fieldErrors: FormErrors = {};
