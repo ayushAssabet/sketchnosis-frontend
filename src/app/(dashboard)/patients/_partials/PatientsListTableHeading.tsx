@@ -308,7 +308,7 @@ export const PatientListTableHeading = ({
                             <TooltipTrigger asChild>
                                 <Link
                                     href={
-                                        appRoutes.CLINIC_ACTION_PAGE +
+                                        appRoutes.PATIENT_ACTION_PAGE +
                                         `?update=${row.original?.id}`
                                     }
                                 >
