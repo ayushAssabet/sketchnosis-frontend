@@ -93,15 +93,15 @@ export function getMenuList(): Group[] {
                 },
             ],
         },
-        {
-            groupLabel: "",
-            menus: [
-                {
-                    href: appRoutes.PERMISSION_MANAGEMENT_INDEX_PAGE,
-                    label: "Access Management",
-                    icon: Shield,
-                },
-            ],
-        },
+        // {
+        //     groupLabel: "",
+        //     menus: [
+        //         {
+        //             href: appRoutes.PERMISSION_MANAGEMENT_INDEX_PAGE,
+        //             label: "Access Management",
+        //             icon: Shield,
+        //         },
+        //     ],
+        // },
     ];
 }
