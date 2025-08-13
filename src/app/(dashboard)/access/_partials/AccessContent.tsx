@@ -27,7 +27,7 @@ const CampaignContent: React.FC = () => {
                 ]}
             >
                 <CommonContainer title="campaign-list-section">
-                    <AccessList permission={permissionData?.data} roles={data?.data} />
+                    <AccessList permission={permissionData?.data} roles={data?.data} mutatePermission={permissionMutate} mutateRoles={mutate} />
                 </CommonContainer>
             </PrivateView>
         </div>
