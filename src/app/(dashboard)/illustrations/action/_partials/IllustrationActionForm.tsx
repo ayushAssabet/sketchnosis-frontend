@@ -22,8 +22,12 @@ const IllustrationActionForm: React.FC<{
 
     const [blobURL, setBlobURL] = useState<string | undefined>();
 
+    const { data, isLoading } = useGetIllustrationDetail(
+        searchParams?.get("update")
+    );
+
     const { formData, handleChange, errors, setFormData, validateForm } =
-        useIllusrationActionForm();
+        useIllusrationActionForm(data?.data);
 
     const {
         addIllustration,
@@ -32,13 +36,13 @@ const IllustrationActionForm: React.FC<{
         isUpdatingIllustration,
     } = useIllustration();
 
-    const { data, isLoading } = useGetIllustrationDetail(
-        searchParams?.get("update")
-    );
+    
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const result = validateForm();
+
+        console.log(result)
         if (!result.success) return;
         isUpdate
             ? updateIllustration(clinicId!, formData!)
@@ -86,7 +90,7 @@ const IllustrationActionForm: React.FC<{
             console.log(data?.data?.areaOfConcerns);
             setFormData({
                 title: data?.data?.title,
-                areaOfConcernIds: data?.data?.areaOfConcerns,
+                areaOfConcernIds: data?.data?.areaOfConcerns?.map((data) => data?.id),
                 description: data?.data?.description,
             });
 
@@ -94,7 +98,6 @@ const IllustrationActionForm: React.FC<{
         }
     }, [data]);
 
-    console.log(formData);
 
     if (isLoading) {
         return <Loader className="animate-spin duration-300 repeat-infinite" />;

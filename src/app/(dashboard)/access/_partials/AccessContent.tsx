@@ -3,14 +3,17 @@
 import { appRoutes } from "@/lib/routes";
 import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
-import { useCampaignsList } from "@/features/campaigns/hooks/useGetCampaigns";
 import AccessList from "./AccessList";
-import { useGetAllRoles } from "@/features/access/useAccess";
+import { useGetAllRoles } from "@/features/access/hooks/useRole";
+import { useGetAllPermissions } from "@/features/access/hooks/usePermissions";
 
 const CampaignContent: React.FC = () => {
     
     const { data, isLoading, mutate } = useGetAllRoles();
+    const { data : permissionData , isLoading : isPermissionLoading , mutate : permissionMutate } = useGetAllPermissions();
+    
     console.log(data)
+    console.log(permissionData)
 
     return (
         <div>
@@ -24,7 +27,7 @@ const CampaignContent: React.FC = () => {
                 ]}
             >
                 <CommonContainer title="campaign-list-section">
-                    <AccessList />
+                    <AccessList permission={permissionData?.data} roles={data?.data} />
                 </CommonContainer>
             </PrivateView>
         </div>

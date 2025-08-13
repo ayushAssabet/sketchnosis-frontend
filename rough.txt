@@ -1,60 +1,290 @@
-areaOfConcerns
-: 
-[,…]
-createdAt
-: 
-"2025-08-04T10:04:30.025Z"
-description
-: 
-"This is description"
-id
-: 
-"f68cba72-189b-4544-83e1-cdf99091c0a9"
-name
-: 
-"Ayush camp"
-numberOfDays
-: 
-null
-numberOfWeeks
-: 
-2
-repeatType
-: 
-"weekly"
-scheduleImages
-: 
-[{id: "3f230ec1-9c31-4188-bf29-be72db5c0440", campaignId: "f68cba72-189b-4544-83e1-cdf99091c0a9",…},…]
-0
-: 
-{id: "3f230ec1-9c31-4188-bf29-be72db5c0440", campaignId: "f68cba72-189b-4544-83e1-cdf99091c0a9",…}
-campaignId
-: 
-"f68cba72-189b-4544-83e1-cdf99091c0a9"
-createdAt
-: 
-"2025-08-04T10:04:30.051Z"
-dayNumber
-: 
-null
-dayOfWeek
-: 
-"Sun"
-id
-: 
-"3f230ec1-9c31-4188-bf29-be72db5c0440"
-imageUrl
-: 
-"illustrations/725ad3b9-0303-41b4-aa35-aee3842cd43a.jpg"
-updatedAt
-: 
-"2025-08-04T10:04:30.051Z"
-weekNumber
-: 
-1
-1
-: 
-{id: "a98e021c-34fb-405c-9377-08f335fb47ed", campaignId: "f68cba72-189b-4544-83e1-cdf99091c0a9",…}
-updatedAt
-: 
-"2025-08-04T10:04:30.025Z"
+import React, { useState } from 'react';
+import { Search, Filter, Edit, Trash2, ChevronRight, Plus } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+const DentalClinicDashboard = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(2);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
+
+  const patients = [
+    {
+      id: 1,
+      name: "Bessie Cooper",
+      campaign: "Heart Health",
+      category: "Oncologist",
+      contact: "+009 789478324"
+    },
+    {
+      id: 2,
+      name: "Bessie Cooper",
+      campaign: "Heart Health",
+      category: "Oncologist",
+      contact: "+009 789478324",
+      hasMultiple: true
+    },
+    {
+      id: 3,
+      name: "Bessie Cooper",
+      campaign: "Add Campaign",
+      category: "Oncologist",
+      contact: "+009 789478324",
+      isAddCampaign: true,
+      hasMultiple: true
+    },
+    {
+      id: 4,
+      name: "Bessie Cooper",
+      campaign: "Brain Awareness",
+      category: "Oncologist",
+      contact: "+009 789478324"
+    },
+    {
+      id: 5,
+      name: "Bessie Cooper",
+      campaign: "Brain Awareness",
+      category: "Oncologist",
+      contact: "+009 789478324"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Sidebar */}
+        <div className="flex gap-6">
+          <div className="w-64 bg-white rounded-lg p-4 h-fit">
+            <div className="mb-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  placeholder="Search"
+                  className="pl-10 bg-gray-50 border-0"
+                />
+              </div>
+            </div>
+            
+            <div className="mb-4">
+              <button className="text-blue-600 text-sm font-medium">View all</button>
+            </div>
+
+            <div className="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-500">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <div className="w-4 h-4 bg-blue-600 rounded"></div>
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-900">Alka Dental Clinic</div>
+                  <div className="text-xs text-gray-500">89 Newyork, USA</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1">
+            {/* Header */}
+            <Card className="mb-6">
+              <CardHeader className="pb-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <div className="w-8 h-8 bg-blue-600 rounded"></div>
+                    </div>
+                    <div>
+                      <h1 className="text-2xl font-bold text-gray-900">Alka Dental Clinic</h1>
+                      <p className="text-gray-600">89 Newyork, USA</p>
+                      <p className="text-sm text-gray-500">Added on July 1st, 2025</p>
+                      <div className="flex gap-2 mt-2">
+                        <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Oncologist</Badge>
+                        <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Neurology</Badge>
+                        <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Orthopedic</Badge>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col gap-4">
+                    <div className="flex gap-4">
+                      <Button variant="outline" size="sm">
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    
+                    <div className="text-right">
+                      <div className="text-sm text-gray-600 mb-1">Contact Person</div>
+                      <div className="text-sm text-gray-900 mb-1">Info@gmail.com</div>
+                      <div className="text-sm text-gray-900">+880 1725241323</div>
+                    </div>
+                    
+                    <div className="text-right">
+                      <div className="text-sm text-gray-600 mb-1">Total No. Of Patients</div>
+                      <div className="text-sm text-gray-900 mb-1">450 Adults</div>
+                      <div className="text-sm text-gray-900">100 children</div>
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+              
+              <CardContent>
+                <p className="text-gray-600">
+                  Success is built on consistent effort. Time moves differently when you're 
+                  fully engaged. The sun cast long shadows across the quiet street.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Filters and Search */}
+            <div className="flex justify-between items-center mb-6">
+              <div className="relative w-80">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+              
+              <Button variant="outline" className="flex items-center gap-2">
+                <Filter className="w-4 h-4" />
+                Filter
+              </Button>
+            </div>
+
+            {/* Patients Table */}
+            <Card>
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-blue-50">
+                    <TableHead className="font-semibold text-gray-700">S.N</TableHead>
+                    <TableHead className="font-semibold text-gray-700">PATIENT NAME</TableHead>
+                    <TableHead className="font-semibold text-gray-700">CAMPAIGN</TableHead>
+                    <TableHead className="font-semibold text-gray-700">CATEGORY</TableHead>
+                    <TableHead className="font-semibold text-gray-700">CONTACT</TableHead>
+                    <TableHead className="w-12"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {patients.map((patient, index) => (
+                    <TableRow key={patient.id} className="hover:bg-gray-50">
+                      <TableCell className="font-medium">{index + 1}.</TableCell>
+                      <TableCell className="font-medium">{patient.name}</TableCell>
+                      <TableCell>
+                        {patient.isAddCampaign ? (
+                          <div className="flex items-center gap-1 text-gray-700">
+                            <Plus className="w-4 h-4" />
+                            {patient.campaign}
+                          </div>
+                        ) : (
+                          patient.campaign
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          {patient.category}
+                          {patient.hasMultiple && (
+                            <Badge variant="secondary" className="text-xs">+2</Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>{patient.contact}</TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="sm" className="p-1">
+                          <ChevronRight className="w-4 h-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+
+              {/* Pagination */}
+              <div className="flex justify-between items-center p-4 border-t">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="flex items-center gap-1"
+                  >
+                    ← Previous
+                  </Button>
+                  
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((page) => (
+                      <Button
+                        key={page}
+                        variant={currentPage === page ? "default" : "ghost"}
+                        size="sm"
+                        onClick={() => setCurrentPage(page)}
+                        className="w-8"
+                      >
+                        {page}
+                      </Button>
+                    ))}
+                    <span className="px-2 py-1">...</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setCurrentPage(10)}
+                      className="w-8"
+                    >
+                      10
+                    </Button>
+                  </div>
+                  
+                  <Button
+                    variant="ghost"
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    className="flex items-center gap-1"
+                  >
+                    Next →
+                  </Button>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <span>Showing</span>
+                  <Select value={entriesPerPage.toString()} onValueChange={(value) => setEntriesPerPage(parseInt(value))}>
+                    <SelectTrigger className="w-16 h-8">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="5">5</SelectItem>
+                      <SelectItem value="10">10</SelectItem>
+                      <SelectItem value="20">20</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <span>entries</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DentalClinicDashboard;

@@ -36,7 +36,7 @@ export const patientSchema = z.object({
         required_error: "Gender is required",
     }),
 
-    campaignId: z.string().min(1, "Campaign is required"),
+    campaignId: z.string().min(1, "Campaign is required")?.optional(),
 
     campaignStartDate: z
         .string()

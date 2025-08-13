@@ -4,12 +4,11 @@ import { BACKEND_HOST } from "@/utils/constants";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 
-export const useGetAllRoles = () => {
-    
+export const useGetAllPermissions = () => {
     const searchParams = useSearchParams();
 
     const { data, isLoading, mutate } = useSWR(
-        `${BACKEND_HOST}/v1/admin/management/role${
+        `${BACKEND_HOST}/v1/admin/management/permissions${
             searchParams?.toString() == "" ? "" : `?${searchParams?.toString()}`
         }`,
         defaultFetcher

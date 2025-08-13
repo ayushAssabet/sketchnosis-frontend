@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { ZodError } from "zod";
 import { IllustrationFormData, illustrationSchema } from "./illustration.schema";
 
-export const useIllusrationActionForm = (data? : IllustrationFormData | null) => {
+export const useIllusrationActionForm = (data? : any | null) => {
 
     const [formData, setFormData] = useState<Partial<IllustrationFormData>>({
         title: "",
@@ -14,7 +14,11 @@ export const useIllusrationActionForm = (data? : IllustrationFormData | null) =>
     const [errors , setErrors] = useState<Record<string , any>>({});
 
     useEffect(() => {
-        if(data) setFormData(data)
+        if(data) setFormData({
+            title : data?.title , 
+            description : data?.description , 
+            areaOfConcernIds : data?.areaOfConcerns?.map((category) => category?.id)
+        })
     },[data])
 
 
@@ -25,6 +29,7 @@ export const useIllusrationActionForm = (data? : IllustrationFormData | null) =>
 
     const validateForm = () => {
         try {
+            console.log(formData)
         const validated = illustrationSchema.parse(formData);
         setErrors({});
         return { success: true, data: validated };

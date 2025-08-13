@@ -1,27 +1,27 @@
+"use client";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ZodError } from "zod";
-import { PatientFormData, patientSchema } from "./patient.schema";
+import {
+    ProfileInfoFormData,
+    profileInfoSchema,
+} from "../schema/profile.schema";
+import { ProfileFormData } from "../interface/profile.interface";
 
-export const usePatientActionForm = (data?: PatientFormData | null) => {
-    const [formData, setFormData] = useState<Partial<PatientFormData>>({
+export const useProfileActionForm = (data?: ProfileInfoFormData | null) => {
+    const [formData, setFormData] = useState<Partial<ProfileFormData>>({
         firstName: "",
         lastName: "",
         email: "",
         phone: "",
         address: "",
-        areaOfConcernIds: [],
-        dob: "",
-        gender: null,
-        campaignId: null,
-        campaignStartDate: null,
         description: "",
     });
 
     const [errors, setErrors] = useState<Record<string, any>>({});
 
     useEffect(() => {
-        if(data) setFormData(data)
-    },[data])
+        if (data) setFormData(data);
+    }, [data]);
 
     const handleChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,8 +35,7 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
 
     const validateForm = () => {
         try {
-            const validated = patientSchema.parse(formData);
-            console.log(validated)
+            const validated = profileInfoSchema.parse(formData);
             setErrors({});
             return { success: true, data: validated };
         } catch (err) {
