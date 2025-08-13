@@ -40,7 +40,7 @@ export const usePatient = (
         });
         setIsAddingPatient(false);
 
-        // router.replace(appRoutes.PATIENT_INDEX_PAGE)
+        router.replace(appRoutes.PATIENT_INDEX_PAGE)
       } catch (error: any) {
         console.error("Error adding Patient:", error);
         showToast({
