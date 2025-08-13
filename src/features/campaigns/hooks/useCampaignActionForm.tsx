@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { ZodError } from "zod";
-import { CampaignFormData , campaignSchema } from "../schema/campaign.schema";
+import { CampaignFormData, campaignSchema } from "../schema/campaign.schema";
 
 interface CampaignDetailData extends CampaignFormData {
     scheduleImages: {
@@ -20,7 +20,7 @@ export const useCampaignActionForm = (data?: Record<string, any> | null) => {
         repeatType: "daily",
         numberOfWeeks: "2",
         numberOfDays: "5",
-        selectedDays: [],
+        selectedDays: ["Sun", "Mon"],
         images: {},
     });
 
@@ -36,10 +36,10 @@ export const useCampaignActionForm = (data?: Record<string, any> | null) => {
                 description: data?.description,
                 repeatType: data?.repeatType,
                 numberOfWeeks: data?.numberOfWeeks?.toString(),
-                numberOfDays: data?.numberOfWeeks?.toString(),
-                selectedDays: data?.scheduleImages?.map(
+                numberOfDays: data?.numberOfDays?.toString(),
+                selectedDays: data?.scheduleImages ? data?.scheduleImages?.map(
                     (image, index) => image?.dayOfWeek
-                ),
+                ) : ["Sun", "Mon"],
                 images: data?.scheduleImages?.map((image, index) => image?.id),
             });
         }
@@ -70,11 +70,11 @@ export const useCampaignActionForm = (data?: Record<string, any> | null) => {
     const validateForm = (data) => {
         try {
             const validated = campaignSchema.parse(data);
-            console.log(validated)
+            console.log(validated);
             setErrors({});
             return { success: true, data: validated };
         } catch (err) {
-            console.log(err)
+            console.log(err);
             if (err instanceof ZodError) {
                 const formatted: Record<string, string> = {};
                 err.errors.forEach((e) => {

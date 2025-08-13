@@ -18,7 +18,7 @@ const PatientActionContent: React.FC = () => {
         <PrivateView
             title="Patient"
             breadCrumbItems={[
-                { title: "Patient", href: appRoutes.CLINIC_INDEX_PAGE },
+                { title: "Patient", href: appRoutes.PATIENT_INDEX_PAGE },
                 {
                     title: !isUpdate ? "Add Patient" : "Edit Patient",
                     href: "/",

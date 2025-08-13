@@ -9,7 +9,6 @@ import { usePatient } from "@/features/patients/usePatientAction";
 import { usePatientActionForm } from "@/features/patients/usePatientActionForm";
 import { useGetPatientDetail } from "@/features/patients/useGetPatient";
 import { appRoutes } from "@/lib/routes";
-import { Loader } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo } from "react";
@@ -68,11 +67,15 @@ const PatientActionForm: React.FC<{
         }));
     };
 
-    const handleCampaignSelect = (campaign: any, startDate: string) => {
+    const handleCampaignSelect = (campaign: any, startDate?: string) => {
         setFormData((prev) => ({
             ...prev,
-            campaignId: campaign?.id || null,
-            campaignStartDate: startDate || null,
+            campaigns: [
+                {
+                    id: campaign?.id || null,
+                    startDate: startDate || null,
+                },
+            ],
         }));
     };
 
@@ -89,8 +92,12 @@ const PatientActionForm: React.FC<{
                 ),
                 dob: data?.data?.dob,
                 gender: data?.data?.gender,
-                campaignId: data?.data?.campaignId,
-                campaignStartDate: data?.data?.campaignStartDate,
+                campaign: [
+                    {
+                        id: data?.data?.campaignId,
+                        startDate: data?.data?.campaignStartDate,
+                    },
+                ],
                 description: data?.data?.description,
             });
         }
@@ -229,12 +236,13 @@ const PatientActionForm: React.FC<{
 
                 <CampaignSelector
                     selectedCampaign={
-                        data?.data?.campaign || formData?.campaignId
+                        (data?.data?.campaign || formData?.campaign[0]?.id) ??
+                        ""
                     }
-                    selectedStartDate={formData?.campaignStartDate ?? ""}
+                    selectedStartDate={formData?.campaign[0]?.startDate ?? ""}
                     onCampaignSelect={handleCampaignSelect}
                     disabled={isAddingPatient || isUpdatingPatient}
-                    showStartDate={true}
+                    showStartDate={false}
                 />
                 <AppInputField
                     id="campaignStartDate"
@@ -242,7 +250,7 @@ const PatientActionForm: React.FC<{
                     className="text-sm"
                     label="Campaign Start Date"
                     type="date"
-                    value={formData?.campaignStartDate ?? ""}
+                    value={formData?.campaign[0]?.startDate ?? ""}
                     onChange={handleChange}
                     error={errors?.campaignStartDate}
                     disabled={isAddingPatient || isUpdatingPatient}

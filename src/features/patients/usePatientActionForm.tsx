@@ -3,35 +3,34 @@ import { ZodError } from "zod";
 import { PatientFormData, patientSchema } from "./patient.schema";
 
 export const usePatientActionForm = (data?: PatientFormData | null) => {
-    const [formData, setFormData] = useState<Partial<PatientFormData>>({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        address: "",
-        areaOfConcernIds: [],
-        dob: "",
-        gender: null,
-        campaignId: null,
-        campaignStartDate: null,
-        description: "",
-    });
+  const [formData, setFormData] = useState<Partial<PatientFormData>>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    areaOfConcernIds: [],
+    dob: "",
+    gender: null,
+    campaign: [],
+    description: "",
+  });
 
-    const [errors, setErrors] = useState<Record<string, any>>({});
+  const [errors, setErrors] = useState<Record<string, any>>({});
 
-    useEffect(() => {
-        if(data) setFormData(data)
-    },[data])
+  useEffect(() => {
+    if (data) setFormData(data);
+  }, [data]);
 
-    const handleChange = (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { value, id } = e.currentTarget;
-        setFormData((prev) => ({
-            ...prev,
-            [id]: id == "phone" ? value.toString() : value,
-        }));
-    };
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { value, id } = e.currentTarget;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: id == "phone" ? value.toString() : value,
+    }));
+  };
 
     const validateForm = () => {
         try {
@@ -51,12 +50,12 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
         }
     };
 
-    return {
-        formData,
-        setFormData,
-        handleChange,
-        errors,
-        setErrors,
-        validateForm,
-    };
+  return {
+    formData,
+    setFormData,
+    handleChange,
+    errors,
+    setErrors,
+    validateForm,
+  };
 };

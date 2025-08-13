@@ -33,9 +33,7 @@ const CampaignActionForm: React.FC<{
         isUpdatingCampaign,
     } = useCampaign();
 
-    const [selectedDays, setSelectedDays] = useState<string[]>(
-        formData?.selectedDays
-    );
+    const [selectedDays, setSelectedDays] = useState<string[]>(["Sun", "Mon"]);
 
     // Changed from File to illustration object
     const [weeklyImages, setWeeklyImages] = useState<
@@ -126,22 +124,41 @@ const CampaignActionForm: React.FC<{
     const handleRepeatToggle = (type: "daily" | "weekly") => {
         setFormData((prev) => ({
             ...prev,
+            numberOfWeeks : '2' ,
             repeatType: type,
         }));
+
+        
 
         // Clear images when switching types
         if (type === "weekly") {
             setDailyImages({});
+            setSelectedDays((prev) => {
+                if (!prev || prev.length < 2) {
+                    return ["Sun", "Mon"];
+                }
+                return prev;
+            });
         } else {
             setWeeklyImages({});
         }
     };
 
+    const [hasInitializedDays, setHasInitializedDays] = useState(false);
+
     useEffect(() => {
-        setSelectedDays([
-            ...(new Set(formData?.selectedDays) as unknown as string[]),
-        ]);
-    }, [formData]);
+        if (
+            !hasInitializedDays &&
+            (formData?.selectedDays || formData?.repeatType)
+        ) {
+            if (formData?.selectedDays && formData.selectedDays.length > 0) {
+                setSelectedDays([...new Set(formData.selectedDays)]);
+            } else if (formData?.repeatType === "weekly") {
+                setSelectedDays(["Sun", "Mon"]);
+            }
+            setHasInitializedDays(true);
+        }
+    }, [formData?.selectedDays, formData?.repeatType, hasInitializedDays]);
 
     useEffect(() => {
         if (campaignDetail?.data) {
@@ -167,13 +184,12 @@ const CampaignActionForm: React.FC<{
                     const key = `week${image.weekNumber}_${image.dayOfWeek}`;
                     weeklyImagesData[key] = {
                         id: image?.id,
-                        url: image?.illustration?.imageUrl,
+                        url: image?.illustration?.fileUrl,
                         title: image?.illustration?.title,
                     };
                 });
 
                 setWeeklyImages(weeklyImagesData);
-                
             } else {
                 const dailyImagesData: Record<
                     string,
@@ -185,7 +201,7 @@ const CampaignActionForm: React.FC<{
                     const key = `day${image.dayNumber || image.day}`;
                     dailyImagesData[key] = {
                         id: image?.id,
-                        url: image?.illustration?.imageUrl,
+                        url: image?.illustration?.fileUrl,
                         title: image?.illustration?.title,
                     };
                 });
