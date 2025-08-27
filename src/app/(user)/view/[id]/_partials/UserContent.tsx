@@ -56,8 +56,8 @@ const HealthCampaign = ({ id }: { id: string }) => {
             {/* Scrollable Content */}
             <div className="flex-1 p-6 space-y-6">
                 <div className="relative">
-                    <Image
-                        src={data?.data?.illustrationSignedUrl}
+                    <img
+                        src={data?.data?.illustrationSignedUrl || appImages.lungs}
                         width={100}
                         height={100}
                         className="w-full aspect-auto object-fill"
