@@ -27,26 +27,27 @@ const PatientListContent: React.FC = () => {
                             <DebouncedSearch
                                 mutate={mutate}
                                 placeholder="Search Patient"
+                                searchKey="name"
                             />
                             <div className="space-x-5">
                                 <AppAddButton
                                     href={appRoutes.PATIENT_ACTION_PAGE}
                                     title="Add Patient"
                                 />
-                                <FilterDropdown />
+                                <FilterDropdown mutate={mutate}/>
                             </div>
                         </div>
-                        <PatientList patientList={data?.data?.data ?? []} />
+                        <PatientList patientList={data?.data?.data ?? []} isLoading={isLoading} />
                         <div className="flex items-center justify-between mt-12">
                             <Pagination
-                                currentPage={data?.data?.currentPage}
-                                totalPages={data?.data?.lastPage}
-                                onPageChange={() => {}}
+                                currentPage={data?.data?.meta?.currentPage}
+                                totalPages={data?.data?.meta?.lastPage}
+                                mutate={mutate}
                             />
                             <PageSelector
-                                currentCount={data?.data?.perPage}
-                                totalCount={data?.data?.total}
-                                onCountChange={() => {}}
+                                currentCount={data?.data?.meta?.perPage}
+                                totalCount={data?.data?.meta?.total}
+                                mutate={mutate}
                             />
                         </div>
                     </>

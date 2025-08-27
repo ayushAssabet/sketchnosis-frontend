@@ -7,8 +7,10 @@ import { CampaignListTableHeading } from "./CampaignListHeading";
 
 const CampaignList = ({
     CampaignList,
+    isLoading
 }: {
     CampaignList: ClinicInterface[];
+    isLoading : boolean
 }) => {
     const { deleteClinic } = useClinic();
     return (
@@ -16,6 +18,7 @@ const CampaignList = ({
             <DataTable
                 data={CampaignList}
                 columns={CampaignListTableHeading({ onDelete: deleteClinic })}
+                isLoading={isLoading}
             />
         </div>
     );

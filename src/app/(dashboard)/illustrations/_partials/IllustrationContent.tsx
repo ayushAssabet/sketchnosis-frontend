@@ -8,10 +8,13 @@ import IllustrationList from "./IllustrationsList";
 import { useContext } from "react";
 import { IllustrationContext } from "@/contexts/IllustrationContextProvider";
 import { appRoutes } from "@/lib/routes";
+import { mutate } from "swr";
 
 const IllustrationContent: React.FC = () => {
-    const { mutateIllustration, illustration } =
+    const { mutateIllustration, illustration , meta } =
         useContext(IllustrationContext);
+
+        console.log(meta)
     return (
         <>
             <div className="flex justify-between items-center">
@@ -27,14 +30,14 @@ const IllustrationContent: React.FC = () => {
             <IllustrationList illustrationList={illustration ?? []} />
             <div className="flex items-center justify-between mt-12">
                 <Pagination
-                    currentPage={0}
-                    totalPages={0}
-                    onPageChange={() => {}}
+                    currentPage={meta?.currentPage}
+                    totalPages={meta?.lastPage}
+                    mutate={mutateIllustration}
                 />
                 <PageSelector
-                    currentCount={0}
-                    totalCount={0}
-                    onCountChange={() => {}}
+                    currentCount={meta?.currentPage}
+                    totalCount={meta?.currentPage}
+                    mutate={mutateIllustration}
                 />
             </div>
         </>

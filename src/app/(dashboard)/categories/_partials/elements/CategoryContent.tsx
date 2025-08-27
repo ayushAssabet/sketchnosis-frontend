@@ -24,6 +24,8 @@ const CategoryContent: React.FC = () => {
         }
     }, [showActionModal]);
 
+    console.log(data)
+
     return (
         <div>
             <PrivateView
@@ -55,7 +57,7 @@ const CategoryContent: React.FC = () => {
                             setEditItem={setEditItem}
                             mutate={mutate}
                         />
-                        <div className="flex items-center justify-between mt-12">
+                        {/* <div className="flex items-center justify-between mt-12">
                             <Pagination
                                 currentPage={data?.data?.currentPage}
                                 totalPages={data?.data?.lastPage}
@@ -66,7 +68,7 @@ const CategoryContent: React.FC = () => {
                                 totalCount={data?.data?.total}
                                 onCountChange={() => {}}
                             />
-                        </div>
+                        </div> */}
 
                         <CategoryActionModal
                             editItem={editItem}

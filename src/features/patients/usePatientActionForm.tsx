@@ -12,7 +12,6 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
     areaOfConcernIds: [],
     dob: "",
     gender: null,
-    campaign: [],
     description: "",
   });
 

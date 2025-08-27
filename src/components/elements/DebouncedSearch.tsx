@@ -15,6 +15,7 @@ interface DebouncedSearchProps
   debounceMs?: number;
   minCharacters?: number;
   className?: string;
+  searchKey? : string
 }
 
 export const DebouncedSearch: React.FC<DebouncedSearchProps> = ({
@@ -23,6 +24,7 @@ export const DebouncedSearch: React.FC<DebouncedSearchProps> = ({
   debounceMs = 500,
   minCharacters = 1,
   className = "",
+  searchKey , 
   ...props
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -53,7 +55,7 @@ export const DebouncedSearch: React.FC<DebouncedSearchProps> = ({
       setIsLoading(true);
       try {
         const params = new URLSearchParams(searchParams);
-        params.set("q", term);
+        params.set(searchKey ?? "q", term);
 
         router.push(`?${params.toString()}`);
 

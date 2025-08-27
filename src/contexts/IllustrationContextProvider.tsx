@@ -6,6 +6,7 @@ import useSWR from "swr";
 interface IllustrationContextProps {
     mutateIllustration: () => Promise<void>;
     illustration: Array<Record<string, any>>;
+    meta : Record<string, any>
     isLoading: boolean;
 }
 
@@ -13,6 +14,7 @@ export const IllustrationContext = createContext<IllustrationContextProps>({
     mutateIllustration: async() => {},
     illustration: [],
     isLoading: false,
+    meta : {}
 });
 
 interface IllustrationProviderProps {
@@ -33,6 +35,7 @@ const IllustrationProvider: React.FC<IllustrationProviderProps> = ({
                 mutateIllustration: mutate,
                 illustration: data?.data?.data || [],
                 isLoading,
+                meta : data?.data?.meta || {}
             }}
         >
             {children}

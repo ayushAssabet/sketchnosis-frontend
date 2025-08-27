@@ -20,6 +20,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, FileSearch, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { ClinicAvatarWrapper } from "./ClinicAvatarWrapper";
+import DeleteButtonWithConfirmDialog from "@/components/elements/DeleteButton";
 
 export const ClinicListTableHeading = ({
     onDelete,
@@ -291,13 +292,11 @@ export const ClinicListTableHeading = ({
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    className="!px-2 cursor-pointer text-red-500"
-                                    onClick={() => onDelete(row?.original?.id)}
-                                >
-                                    <Trash2 />
-                                </Button>
+                                <DeleteButtonWithConfirmDialog
+                                    title="Delete Clinic?"
+                                    description={`This will permanently delete "${row.original?.name}".`}
+                                    onConfirm={() => onDelete(row.original?.id)}
+                                />
                             </TooltipTrigger>
                             <TooltipContent>Delete Clinic</TooltipContent>
                         </Tooltip>

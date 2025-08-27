@@ -12,6 +12,7 @@ import { useAuth } from "@/features/login/context/AuthContextProvider";
 import { setTokens } from "@/helpers/cookie.helper";
 import { useRouter } from "next/navigation";
 import { appRoutes } from "@/lib/routes";
+import { useLocalStorage } from "@/hooks/use-localStorage";
 
 interface FormErrors {
     email?: string;
@@ -19,15 +20,23 @@ interface FormErrors {
 }
 
 export const useLogin = () => {
-    const [formData, setFormData] = useState<LoginFormData>({
-        email: "",
-        password: "",
-    });
     const routes = useRouter();
 
     const fetcher = createApiRequest();
     const { showToast } = useToast();
     const { fetchUser } = useAuth();
+    const [isRemember, setIsRemember] = useLocalStorage<boolean>(
+        "isRemember",
+        false
+    );
+    const [rememberedEmail, setRememberedEmail] = useLocalStorage<string>(
+        "rememberedEmail",
+        ""
+    );
+    const [formData, setFormData] = useState<LoginFormData>({
+        email: rememberedEmail,
+        password: "",
+    });
 
     const [errors, setErrors] = useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,6 +66,7 @@ export const useLogin = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+
         try {
             // Validate entire form
             const validatedData = loginSchema.parse(formData);
@@ -74,6 +84,11 @@ export const useLogin = () => {
                 variant: "success",
                 description: res?.message,
             });
+            if (isRemember) {
+                setRememberedEmail(validatedData.email);
+            } else {
+                setRememberedEmail("");
+            }
 
             routes.push(appRoutes.DASHBOARD_INDEX_PAGE);
         } catch (error: any) {
@@ -104,6 +119,8 @@ export const useLogin = () => {
         formData,
         setFormData,
         errors,
+        isRemember,
+        setIsRemember,
         isSubmitting,
         handleChange,
         handleSubmit,

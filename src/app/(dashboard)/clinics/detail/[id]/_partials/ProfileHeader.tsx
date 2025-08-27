@@ -25,7 +25,7 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
                                     alt="profile-frame"
                                 />
                                 <p className="text-center text-xl font bold capitalize  absolute bg-transparent w-1/2 top-[50%] left-[50%] translate-[-50%]">
-                                    {entity?.name.split("")?.at(0)}
+                                    {entity?.name?.split("")?.at(0)}
                                 </p>
                             </>
                         )}

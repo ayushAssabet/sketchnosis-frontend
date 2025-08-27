@@ -1,20 +1,33 @@
 "use client";
 import React from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface PaginationProps {
     currentPage: number;
     totalPages: number;
-    onPageChange: (page: number) => void;
+    mutate: () => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
     currentPage,
     totalPages,
-    onPageChange,
+    mutate,
 }) => {
     // Generate page numbers
+
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const onPageChange = (page : any) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("offSet", String(page));
+        router.push(`${pathname}?${params.toString()}`);
+        mutate();
+    }
+
     const generatePageNumbers = () => {
         const pages = [];
         if (totalPages <= 7) {

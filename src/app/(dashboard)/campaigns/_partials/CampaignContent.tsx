@@ -25,7 +25,7 @@ const CampaignContent: React.FC = () => {
                 <CommonContainer title="campaign-list-section">
                     <>
                         <div className="flex justify-between items-center">
-                            <DebouncedSearch mutate={mutate} />
+                            <DebouncedSearch mutate={mutate} searchKey="name" />
                             <div className="space-x-5">
                                 <AppAddButton
                                     href={appRoutes.CAMPAIGN_ACTION_PAGE}
@@ -34,17 +34,17 @@ const CampaignContent: React.FC = () => {
                                 <FilterDropdown mutate={mutate}/>
                             </div>
                         </div>
-                        <CampaignList CampaignList={data?.data?.data ?? []} />
+                        <CampaignList CampaignList={data?.data?.data ?? []} isLoading={isLoading} />
                         <div className="flex items-center justify-between mt-12">
                             <Pagination
                                 currentPage={data?.data?.meta.currentPage}
                                 totalPages={data?.data?.meta.lastPage}
-                                onPageChange={() => {}}
+                                mutate={mutate}
                             />
                             <PageSelector
                                 currentCount={data?.data?.meta.perPage}
                                 totalCount={data?.data?.meta.total}
-                                onCountChange={() => {}}
+                                mutate={mutate}
                             />
                         </div>
                     </>

@@ -3,6 +3,7 @@ import { ChevronDown, Sliders } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useGetCategoriesList } from '@/features/categories/useGetCategories';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { mutate } from 'swr';
 
 interface Category {
   id: string;
@@ -19,7 +20,8 @@ interface FilterDropdownProps {
 
 const FilterDropdown: React.FC<FilterDropdownProps> = ({
   onApplyFilters,
-  onClearAll
+  onClearAll , 
+  mutate
 }) => {
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -49,6 +51,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     });
     router.replace(`${pathname}?${params?.toString()}`)
     onApplyFilters?.(selectedCategories);
+    mutate?.()
     setIsOpen(false);
   };
 

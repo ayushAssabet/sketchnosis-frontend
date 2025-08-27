@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Search, Check, Megaphone } from "lucide-react";
+import { Search, Check, Megaphone, Edit, X } from "lucide-react";
 import {
     Dialog,
     DialogContent,
@@ -22,6 +22,9 @@ interface CampaignSelectorProps {
     disabled?: boolean;
     showStartDate?: boolean;
     onInputChange?: (searchTerm: string) => void;
+    onUnassign?: () => void;
+    open?: boolean; // NEW
+    setOpen?: (val: boolean) => void; // NEW
 }
 
 const CampaignSelector: React.FC<CampaignSelectorProps> = ({
@@ -32,48 +35,70 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     disabled = false,
     showStartDate = true,
     onInputChange,
+    onUnassign,
+    open,
+    setOpen,
 }) => {
     const { data } = useCampaignsList();
 
-    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+    const [internalOpen, setInternalOpen] = useState(false);
+    const actualOpen = open !== undefined ? open : internalOpen;
+    const actualSetOpen = setOpen ?? setInternalOpen;
+
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const [tempSelectedCampaign, setTempSelectedCampaign] =
-        useState<Campaign | null>(null);
+    const [tempSelectedCampaign, setTempSelectedCampaign] = useState<Campaign | null>(null);
     const [tempStartDate, setTempStartDate] = useState(selectedStartDate);
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
     const filteredCampaigns = campaigns.filter(
         (campaign) =>
             campaign.name?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-            campaign.description
-                ?.toLowerCase()
-                .includes(searchTerm?.toLowerCase())
+            campaign.description?.toLowerCase().includes(searchTerm?.toLowerCase())
     );
+
+    const currentCampaign = campaigns.find((c) => c.id === selectedCampaign);
 
     const handleSearchChange = (value: string) => {
         setSearchTerm(value);
         onInputChange?.(value);
     };
 
-    const handleOpenDialog = () => {
+    const handleOpenDialog = (editMode: boolean = false) => {
         if (!disabled) {
-            setIsDialogOpen(true);
-            setTempSelectedCampaign(null);
+            actualSetOpen(true);
+            setIsEditMode(editMode);
+            if (editMode && currentCampaign) {
+                setTempSelectedCampaign(currentCampaign);
+            } else {
+                setTempSelectedCampaign(null);
+            }
             setTempStartDate(selectedStartDate);
         }
     };
 
     const handleCancel = () => {
-        setIsDialogOpen(false);
+        actualSetOpen(false);
         setSearchTerm("");
         setTempSelectedCampaign(null);
         setTempStartDate(selectedStartDate);
+        setIsEditMode(false);
     };
 
     const handleAssign = () => {
         onCampaignSelect(tempSelectedCampaign, tempStartDate);
-        setIsDialogOpen(false);
+        actualSetOpen(false);
         setSearchTerm("");
+        setIsEditMode(false);
+    };
+
+    const handleUnassign = () => {
+        onUnassign?.();
+        actualSetOpen(false);
+        setSearchTerm("");
+        setTempSelectedCampaign(null);
+        setTempStartDate("");
+        setIsEditMode(false);
     };
 
     const handleCampaignClick = (campaign: Campaign) => {
@@ -98,89 +123,31 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
 
     useEffect(() => {
         if (selectedCampaign) {
-            setTempSelectedCampaign(
-                data?.data?.data?.filter(
-                    (campaign: Campaign) => campaign.id === selectedCampaign
-                )
+            const campaign = data?.data?.data?.find(
+                (campaign: Campaign) => campaign.id === selectedCampaign
             );
+            setTempSelectedCampaign(campaign || null);
         }
     }, [selectedCampaign, data]);
 
-    console.log(campaigns);
-    console.log(selectedCampaign);
+    const getDialogTitle = () => {
+        return isEditMode ? "Edit Campaign Assignment" : "Choose a campaign to assign the patient.";
+    };
+
+    const getActionButtonText = () => {
+        return isEditMode ? "Update" : "Assign";
+    };
 
     return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            {/* Campaign Input Field */}
-            <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Campaign
-                </label>
-                <DialogTrigger asChild>
-                    <div
-                        onClick={handleOpenDialog}
-                        className={`
-                            w-full px-3 py-2 border border-gray-300 rounded-md bg-white cursor-pointer
-                            flex items-center justify-between min-h-[40px]
-                            ${
-                                disabled
-                                    ? "bg-gray-100 cursor-not-allowed"
-                                    : "hover:border-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent"
-                            }
-                            ${
-                                selectedCampaign
-                                    ? "text-gray-900"
-                                    : "text-gray-500"
-                            }
-                            transition-colors duration-200
-                            `}
-                    >
-                        <div className="flex-1">
-                            {selectedCampaign ? (
-                                <div>
-                                    <div className="font-medium text-sm">
-                                        <Badge variant="outline">
-                                            {
-                                                data?.data?.data
-                                                    ?.filter(
-                                                        (campaign) =>
-                                                            campaign.id ==
-                                                            selectedCampaign
-                                                    )
-                                                    ?.at(0)?.name
-                                            }
-                                        </Badge>
-                                    </div>
-                                </div>
-                            ) : (
-                                <span className="text-sm">{placeholder}</span>
-                            )}
-                        </div>
-                        <div className="ml-2 flex items-center space-x-1">
-                            <Megaphone className="h-4 w-4 text-gray-400" />
-                            <svg
-                                className="h-4 w-4 text-gray-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M19 9l-7 7-7-7"
-                                />
-                            </svg>
-                        </div>
-                    </div>
-                </DialogTrigger>
-            </div>
+        <Dialog open={actualOpen} onOpenChange={actualSetOpen}>
+            <DialogTrigger asChild>
+                {/* Hidden trigger - parent controls open */}
+                <span></span>
+            </DialogTrigger>
 
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden">
                 <DialogHeader>
-                    <DialogTitle>
-                        Choose a campaign to assign the patient.
-                    </DialogTitle>
+                    <DialogTitle>{getDialogTitle()}</DialogTitle>
                 </DialogHeader>
 
                 {/* Dialog Content */}
@@ -193,7 +160,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                             placeholder="Search campaigns..."
                             value={searchTerm}
                             onChange={(e) => handleSearchChange(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md   focus:border-transparent text-sm"
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
                         />
                     </div>
 
@@ -203,83 +170,41 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                             <div
                                 key={campaign.id}
                                 onClick={() => handleCampaignClick(campaign)}
-                                className={`
-                                    p-4 border rounded-lg cursor-pointer transition-all duration-200
-                                    ${
-                                        tempSelectedCampaign?.id === campaign.id
-                                            ? "border-primary bg-blue-50/50 shadow-md"
-                                            : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
-                                    }
-                                    `}
+                                className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
+                                    tempSelectedCampaign?.id === campaign.id
+                                        ? "border-primary bg-blue-50/50 shadow-md"
+                                        : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                                }`}
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <h3 className="font-medium text-gray-900 text-sm mb-2 flex space-x-2">
                                             <span>{campaign.name}</span>
                                             <span
-                                                className={`
-                                                    px-2 py-1 text-xs rounded-md font-medium mr-2
-                                                    ${
-                                                        campaign.status ===
-                                                        "active"
-                                                            ? "bg-green-100 text-green-800"
-                                                            : "bg-gray-100 text-gray-800"
-                                                    }
-                                                `}
+                                                className={`px-2 py-1 text-xs rounded-md font-medium mr-2 ${
+                                                    campaign.status === "active"
+                                                        ? "bg-green-100 text-green-800"
+                                                        : "bg-gray-100 text-gray-800"
+                                                }`}
                                             >
                                                 {campaign.status ?? "active"}
                                             </span>
                                         </h3>
-                                        <div className="flex items-center space-x-3">
-                                            {campaign.areaOfConcerns.map(
-                                                (concerns, index) => {
-                                                    return (
-                                                        <Badge
-                                                            variant="secondary"
-                                                            key={index}
-                                                        >
-                                                            {concerns?.name}
-                                                        </Badge>
-                                                    );
-                                                }
-                                            )}
-                                            {campaign?.repeatType ==
-                                                "daily" && (
-                                                <Badge
-                                                    className="text-xs lowercase"
-                                                    variant="outline"
-                                                >
+                                        <div className="flex items-center space-x-3 flex-wrap">
+                                            {campaign.areaOfConcerns?.map((concerns, index) => (
+                                                <Badge variant="secondary" key={index}>
+                                                    {concerns?.name}
+                                                </Badge>
+                                            ))}
+                                            {campaign?.repeatType === "daily" && (
+                                                <Badge className="text-xs lowercase" variant="outline">
                                                     <span className="text-xs text-gray-600">
-                                                        {campaign.numberOfDays}{" "}
-                                                        Days
+                                                        {campaign.numberOfDays} Days
                                                     </span>
-                                                    <span className="text-xs text-gray-600 capitalize">
+                                                    <span className="text-xs text-gray-600 capitalize ml-1">
                                                         {campaign.repeatType}
                                                     </span>
                                                 </Badge>
-                                            )}
-                                            {campaign.repeatType ==
-                                                "weekly" && (
-                                                <div className="text-xs flex font-medium items-center gap-2">
-                                                    Weekly
-                                                    {[
-                                                        ...new Set(
-                                                            campaign?.scheduleImages?.map(
-                                                                (image) =>
-                                                                    image.dayOfWeek
-                                                            )
-                                                        ),
-                                                    ].map(
-                                                        (dayOfWeek, index) => (
-                                                            <p
-                                                                key={index}
-                                                                className="w-6 h-6 rounded text-[10px] font-medium transition-colors bg-primary text-white flex items-center justify-center"
-                                                            >
-                                                                {dayOfWeek}
-                                                            </p>
-                                                        )
-                                                    )}
-                                                </div>
                                             )}
                                         </div>
 
@@ -287,8 +212,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                                             {campaign.description}
                                         </p>
                                     </div>
-                                    {tempSelectedCampaign?.id ===
-                                        campaign.id && (
+                                    {tempSelectedCampaign?.id === campaign.id && (
                                         <div className="ml-3 flex-shrink-0">
                                             <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
                                                 <Check className="w-3 h-3 text-white" />
@@ -303,9 +227,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                     {filteredCampaigns.length === 0 && (
                         <div className="text-center py-8 text-gray-500">
                             <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                            <p className="text-sm">
-                                No campaigns found matching your search.
-                            </p>
+                            <p className="text-sm">No campaigns found matching your search.</p>
                         </div>
                     )}
                 </div>
@@ -326,10 +248,19 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                 )}
 
                 <DialogFooter>
-                    <Button variant="outline" onClick={handleCancel}>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleAssign}>Assign</Button>
+                    {isEditMode && onUnassign && (
+                        <Button variant="destructive" onClick={handleUnassign} className="mr-auto">
+                            Unassign Campaign
+                        </Button>
+                    )}
+                    <div className="flex space-x-2 ml-auto">
+                        <Button variant="outline" onClick={handleCancel}>
+                            Cancel
+                        </Button>
+                        <Button onClick={handleAssign} disabled={!tempSelectedCampaign}>
+                            {getActionButtonText()}
+                        </Button>
+                    </div>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

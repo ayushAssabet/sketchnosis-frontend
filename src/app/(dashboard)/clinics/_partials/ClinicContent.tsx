@@ -12,6 +12,7 @@ import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
 
 const ClinicContent: React.FC = () => {
+    
     const { data, isLoading, mutate } = useGetClinicList();
 
     return (
@@ -28,26 +29,27 @@ const ClinicContent: React.FC = () => {
                             <DebouncedSearch
                                 mutate={mutate}
                                 placeholder="Search Clinic"
+                                searchKey="name"
                             />
                             <div className="space-x-5">
                                 <AppAddButton
                                     href={appRoutes.CLINIC_ACTION_PAGE}
                                     title="Add Clinic"
                                 />
-                                <FilterDropdown />
+                                <FilterDropdown mutate={mutate} />
                             </div>
                         </div>
-                        <ClinicList clinicList={data?.data?.data ?? []} />
+                        <ClinicList clinicList={data?.data?.data ?? []} isLoading={isLoading} />
                         <div className="flex items-center justify-between mt-12">
                             <Pagination
-                                currentPage={data?.data?.currentPage}
-                                totalPages={data?.data?.lastPage}
-                                onPageChange={() => {}}
+                                currentPage={data?.data?.meta?.currentPage}
+                                totalPages={data?.data?.meta?.lastPage}
+                                mutate={mutate}
                             />
                             <PageSelector
                                 currentCount={data?.data?.perPage}
                                 totalCount={data?.data?.total}
-                                onCountChange={() => {}}
+                                mutate={mutate}
                             />
                         </div>
                     </>

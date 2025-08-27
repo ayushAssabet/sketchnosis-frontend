@@ -15,6 +15,8 @@ const LoginForm: React.FC = () => {
         errors,
         isSubmitting,
         disableSubmit,
+        isRemember,
+        setIsRemember,
     } = useLogin();
     return (
         <form onSubmit={handleSubmit} className="min-w-[536px] space-y-14">
@@ -50,7 +52,13 @@ const LoginForm: React.FC = () => {
                     />
                     <div className="flex items-center text-sm justify-between">
                         <div className="flex items-center gap-1">
-                            <Checkbox className="border-" />
+                            <Checkbox
+                                className="border-"
+                                checked={isRemember}
+                                onCheckedChange={() =>
+                                    setIsRemember((prev) => !prev)
+                                }
+                            />
                             Remember Me
                         </div>
                         <Link

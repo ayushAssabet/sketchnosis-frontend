@@ -1,3 +1,4 @@
+import DeleteButtonWithConfirmDialog from "@/components/elements/DeleteButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -294,13 +295,11 @@ export const CampaignListTableHeading = ({
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    className="!px-2 cursor-pointer text-red-500"
-                                    onClick={() => onDelete(row?.original?.id)}
-                                >
-                                    <Trash2 />
-                                </Button>
+                                <DeleteButtonWithConfirmDialog
+                                    title="Delete Campaign?"
+                                    description={`This will permanently delete "${row.original?.name}".`}
+                                    onConfirm={() => onDelete(row.original?.id)}
+                                />
                             </TooltipTrigger>
                             <TooltipContent>Delete Clinic</TooltipContent>
                         </Tooltip>
