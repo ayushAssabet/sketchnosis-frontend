@@ -31,42 +31,9 @@ import LineGraph from "./LineGraph";
 import HealthConditionBarChart from "./BarChartHelper";
 
 const DashboardStats = () => {
+    
     const { data } = useDashboard();
-    console.log(data);
-    // Data for charts
-    const healthConditionData = [
-        { condition: "Diabetes", campaigns: 2800 },
-        { condition: "Hypertension", campaigns: 2500 },
-        { condition: "Heart Disease", campaigns: 1600 },
-        { condition: "Cancer", campaigns: 800 },
-        { condition: "Obesity", campaigns: 700 },
-        { condition: "Pregnancy", campaigns: 700 },
-        { condition: "Brain Tumor", campaigns: 650 },
-        { condition: "Gynecology", campaigns: 600 },
-        { condition: "Pregnancy", campaigns: 550 },
-    ];
-
-    const patientGrowthData = [
-        { month: "Jan 15", patients: 3500 },
-        { month: "Feb 15", patients: 4200 },
-        { month: "Mar 15", patients: 5100 },
-        { month: "Apr 15", patients: 5800 },
-        { month: "May 15", patients: 6500 },
-        { month: "Jun 15", patients: 7200 },
-        { month: "Jul 15", patients: 7800 },
-        { month: "Aug 15", patients: 8400 },
-    ];
-
-    const clinicGrowthData = [
-        { month: "Jan 15", clinics: 3500 },
-        { month: "Feb 15", clinics: 4000 },
-        { month: "Mar 15", clinics: 4800 },
-        { month: "Apr 15", clinics: 5500 },
-        { month: "May 15", clinics: 6200 },
-        { month: "Jun 15", clinics: 6800 },
-        { month: "Jul 15", clinics: 7400 },
-        { month: "Aug 15", clinics: 8000 },
-    ];
+    
 
     return (
         <div className="">

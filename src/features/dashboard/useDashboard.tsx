@@ -13,3 +13,15 @@ export const useDashboard = () => {
         mutate
     }
 }
+
+export const useClinicDashboard = () => {
+    const { data , isLoading , mutate } = useSWR(`${BACKEND_HOST}/v1/dashboard/clinic-stats` , 
+        defaultFetcher
+    )
+     
+    return  {
+        data : data?.data , 
+        isLoading ,
+        mutate
+    }
+}
