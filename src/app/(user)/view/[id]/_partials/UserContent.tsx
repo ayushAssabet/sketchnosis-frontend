@@ -8,17 +8,16 @@ import { appImages } from "@/helpers/image.helper";
 import { useScreenModal } from "@/features/restrictDevice/useRestrictDevice";
 import { useViewCampaign } from "@/features/viewCampaign/useViewCampaign";
 import { useGetInvitation } from "@/features/invitation/useGetInvitation";
+import Link from "next/link";
+import { appRoutes } from "@/lib/routes";
 
-const HealthCampaign = ({id} : {id : string}) => {
-    
+const HealthCampaign = ({ id }: { id: string }) => {
     const [showModal, setShowModal] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
-    const { data } = useViewCampaign(id)
-    const { data : invite } = useViewCampaign(id)
+    const { data } = useViewCampaign(id);
     const { ScreenModal } = useScreenModal(576);
 
-     console.log(data)
-     console.log(invite)
+    console.log(data);
 
     useEffect(() => {
         // Detect if device supports touch
@@ -46,15 +45,12 @@ const HealthCampaign = ({id} : {id : string}) => {
         };
     }, []);
 
-   
-
-
     return (
         <div className="h-screen flex flex-col bg-white max-w-md mx-auto">
             {/* Header */}
             <div className="sticky top-0 z-1">
                 <PageHeader hasBackLink={false}>
-                    {data?.data?.campaign?.name}
+                    {data?.data?.patientCampaign?.campaign?.name}
                 </PageHeader>
             </div>
 
@@ -62,11 +58,12 @@ const HealthCampaign = ({id} : {id : string}) => {
             <div className="flex-1 p-6 space-y-6">
                 <div className="relative">
                     <Image
-                        src={appImages.lungs}
+                        src={data?.data?.illustrationSignedUrl}
                         width={100}
                         height={100}
                         className="w-full aspect-auto object-fill"
                         alt="illustration alternate"
+                        loading="lazy"
                     />
                     <div
                         className="absolute inset-0"
@@ -78,13 +75,19 @@ const HealthCampaign = ({id} : {id : string}) => {
                 <div className="mt-20">
                     <p className="text-xs text-gray-600 leading-relaxed">
                         I have read and understood the above{" "}
-                        <span className="text-primary underline cursor-pointer">
+                        <Link
+                            href={appRoutes.POLICY}
+                            className="text-primary underline cursor-pointer"
+                        >
                             Privacy Policy
-                        </span>
+                        </Link>
                         , and{" "}
-                        <span className="text-primary underline cursor-pointer">
+                        <Link
+                            href={appRoutes.TERMS}
+                            className="text-primary underline cursor-pointer"
+                        >
                             Terms & Conditions
-                        </span>{" "}
+                        </Link>{" "}
                         and I agree to participate in the campaign under these
                         conditions.
                     </p>

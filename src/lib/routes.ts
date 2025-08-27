@@ -27,5 +27,8 @@ export const appRoutes = {
     USER_PROFILE_INDEX: "/account/profile",
     USER_CHANGE_PASSWORD_INDEX: "/account/change-password",
 
-    INVITATION_SUCCESS_INDEX_PAGE : '/invite/success'
+    INVITATION_SUCCESS_INDEX_PAGE : '/invite/success',
+
+    POLICY : '/view/policy',
+    TERMS : '/view/terms'
 };
