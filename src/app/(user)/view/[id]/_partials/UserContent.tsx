@@ -1,14 +1,13 @@
 "use client";
+import Image from "next/image";
+import Link from "next/link";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { TriangleAlert } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import PageHeader from "../../_partials/PageHeader";
-import Image from "next/image";
 import { appImages } from "@/helpers/image.helper";
 import { useScreenModal } from "@/features/restrictDevice/useRestrictDevice";
 import { useViewCampaign } from "@/features/viewCampaign/useViewCampaign";
-import { useGetInvitation } from "@/features/invitation/useGetInvitation";
-import Link from "next/link";
 import { appRoutes } from "@/lib/routes";
 
 const HealthCampaign = ({ id }: { id: string }) => {
