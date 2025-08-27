@@ -10,16 +10,21 @@ import { BACKEND_HOST } from "@/utils/constants";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { appRoutes } from "@/lib/routes";
+import { createApiRequest } from "@/helpers/fetch.helper";
 
 interface FormErrors {
     newPassword?: string;
     confirmPassword?: string;
+    oldPassword?: string;
 }
 
 export const useChangePassword = (token: string) => {
-    const { showToast } = useToast();
     const router = useRouter();
+    const { showToast } = useToast();
+    const fetcher = createApiRequest();
+
     const [formData, setFormData] = useState<ChangePasswordFormData>({
+        oldPassword: "",
         newPassword: "",
         confirmPassword: "",
     });
@@ -67,20 +72,16 @@ export const useChangePassword = (token: string) => {
             changePasswordSchema.parse(formData);
             setErrors({});
 
-            const res = await fetch(
-                `${BACKEND_HOST}/v1/password/set/${token}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        newPassword: formData.newPassword,
-                        confirmPassword: formData.confirmPassword,
-                    }),
-                }
-            );
-            const data = await res.json();
+            const response = await fetcher.makeRequest({
+                url: `${BACKEND_HOST}/v1/password/change`,
+                method: "POST",
+                body: {
+                    newPassword: formData.newPassword,
+                    confirmPassword: formData.confirmPassword,
+                },
+            });
+
+            const data = await response.json();
             showToast({
                 variant: "success",
                 description: data?.message,
@@ -97,6 +98,10 @@ export const useChangePassword = (token: string) => {
                 });
                 setErrors(fieldErrors);
             } else {
+                showToast({
+                    variant: "destructive",
+                    description: error?.message,
+                });
                 console.log(error);
             }
         } finally {

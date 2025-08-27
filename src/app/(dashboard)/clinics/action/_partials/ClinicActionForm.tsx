@@ -63,7 +63,6 @@ const ClinicActionForm: React.FC<{
 
     useEffect(() => {
         if (data?.data) {
-            console.log(data?.data?.areaOfConcerns);
             setFormData({
                 name: data?.data?.name,
                 areaOfConcernIds: data?.data?.areaOfConcerns?.map(
@@ -74,7 +73,6 @@ const ClinicActionForm: React.FC<{
                 address: data?.data?.address,
                 contactPersonName: data?.data?.contactPersonName,
                 phone: data?.data?.phone,
-                // Don't set logo here since it's handled by the dropzone
             });
         }
     }, [data]);
@@ -187,7 +185,7 @@ const ClinicActionForm: React.FC<{
                         label="Clinic Logo"
                         handleFileChange={handleFileChange}
                         currentFile={formData?.logo}
-                        currentUrl={data?.data?.logo} // Pass the existing logo URL
+                        currentUrl={data?.data?.logo}
                         isUpdateMode={isUpdate}
                         variant="dashboard"
                     />

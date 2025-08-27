@@ -33,6 +33,7 @@ export const useCategory = (mutate?: () => Promise<void>, data?: any, isLoading?
       });
       setIsAddingCategory(false)
       mutate?.()
+      return response
     } catch (error: any) {
       console.error('Error adding category:', error);
       showToast({

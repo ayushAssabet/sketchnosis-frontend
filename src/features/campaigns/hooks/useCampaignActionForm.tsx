@@ -20,7 +20,7 @@ export const useCampaignActionForm = (data?: Record<string, any> | null) => {
         repeatType: "daily",
         numberOfWeeks: "2",
         numberOfDays: "5",
-        selectedDays: ["Sun", "Mon"],
+        selectedDays: [],
         images: {},
     });
 
@@ -37,13 +37,22 @@ export const useCampaignActionForm = (data?: Record<string, any> | null) => {
                 repeatType: data?.repeatType,
                 numberOfWeeks: data?.numberOfWeeks?.toString(),
                 numberOfDays: data?.numberOfDays?.toString(),
-                selectedDays: data?.scheduleImages ? data?.scheduleImages?.map(
-                    (image, index) => image?.dayOfWeek
-                ) : ["Sun", "Mon"],
+                selectedDays: data?.scheduleImages
+                    ? data.scheduleImages
+                          .map((image) => {
+                              const match =
+                                  image?.dayOfWeek?.match(/^w\d+(d\d+)$/);
+                              console.log(match);
+                              return match ? match[1] : null; // returns "d2", "d5", etc.
+                          })
+                          .filter(Boolean)
+                    : (console.log("No scheduleImages"), []),
                 images: data?.scheduleImages?.map((image, index) => image?.id),
             });
         }
     }, [data]);
+
+    console.log(formData);
 
     const handleChange = (
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

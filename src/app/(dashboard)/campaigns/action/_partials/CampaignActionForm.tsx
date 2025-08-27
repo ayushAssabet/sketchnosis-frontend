@@ -33,7 +33,7 @@ const CampaignActionForm: React.FC<{
         isUpdatingCampaign,
     } = useCampaign();
 
-    const [selectedDays, setSelectedDays] = useState<string[]>(["Sun", "Mon"]);
+    const [selectedDays, setSelectedDays] = useState<string[]>([]);
 
     // Changed from File to illustration object
     const [weeklyImages, setWeeklyImages] = useState<
@@ -59,8 +59,8 @@ const CampaignActionForm: React.FC<{
             weeklyImages,
             dailyImages
         );
+        console.log(campaignPayload);
         const result = validateForm(campaignPayload);
-        console.log(result);
         if (!result.success) return;
 
         isUpdate
@@ -97,6 +97,7 @@ const CampaignActionForm: React.FC<{
         title: string;
     }) => {
         if (formData.repeatType === "weekly") {
+            console.log(currentUploadKey);
             setWeeklyImages((prev) => ({
                 ...prev,
                 [currentUploadKey!]: illustration,
@@ -111,31 +112,29 @@ const CampaignActionForm: React.FC<{
 
     // Fixed: Made key and label the same
     const days = [
-        { key: "Sun", label: "Sun" },
-        { key: "Mon", label: "Mon" },
-        { key: "Tue", label: "Tue" },
-        { key: "Wed", label: "Wed" },
-        { key: "Thu", label: "Thu" },
-        { key: "Fri", label: "Fri" },
-        { key: "Sat", label: "Sat" },
+        { key: "d1", label: "d1" },
+        { key: "d2", label: "d2" },
+        { key: "d3", label: "d3" },
+        { key: "d4", label: "d4" },
+        { key: "d5", label: "d5" },
+        { key: "d6", label: "d6" },
+        { key: "d7", label: "d7" },
     ];
 
     // Fixed: Proper toggle function with complete state updates
     const handleRepeatToggle = (type: "daily" | "weekly") => {
         setFormData((prev) => ({
             ...prev,
-            numberOfWeeks : '2' ,
+            numberOfWeeks: "2",
             repeatType: type,
         }));
-
-        
 
         // Clear images when switching types
         if (type === "weekly") {
             setDailyImages({});
             setSelectedDays((prev) => {
                 if (!prev || prev.length < 2) {
-                    return ["Sun", "Mon"];
+                    return ["d1", "d2"];
                 }
                 return prev;
             });
@@ -149,16 +148,17 @@ const CampaignActionForm: React.FC<{
     useEffect(() => {
         if (
             !hasInitializedDays &&
-            (formData?.selectedDays || formData?.repeatType)
+            formData?.selectedDays &&
+            formData.selectedDays.length > 0 // Only run when we actually have selectedDays
         ) {
-            if (formData?.selectedDays && formData.selectedDays.length > 0) {
-                setSelectedDays([...new Set(formData.selectedDays)]);
-            } else if (formData?.repeatType === "weekly") {
-                setSelectedDays(["Sun", "Mon"]);
-            }
+            console.log(
+                "Setting selectedDays from formData:",
+                formData.selectedDays
+            );
+            setSelectedDays([...new Set(formData.selectedDays)]);
             setHasInitializedDays(true);
         }
-    }, [formData?.selectedDays, formData?.repeatType, hasInitializedDays]);
+    }, [formData?.selectedDays, hasInitializedDays]);
 
     useEffect(() => {
         if (campaignDetail?.data) {
@@ -171,7 +171,6 @@ const CampaignActionForm: React.FC<{
                 )
             );
 
-            // Fixed: Properly structure the images data
             if (campaignDetail?.data?.repeatType === "weekly") {
                 const weeklyImagesData: Record<
                     string,
@@ -179,9 +178,7 @@ const CampaignActionForm: React.FC<{
                 > = {};
 
                 campaignDetail?.data?.scheduleImages?.forEach((image: any) => {
-                    // Assuming the API returns week and day information
-                    // Adjust the key format based on your actual API response structure
-                    const key = `week${image.weekNumber}_${image.dayOfWeek}`;
+                    const key = `${image.dayOfWeek}`;
                     weeklyImagesData[key] = {
                         id: image?.id,
                         url: image?.illustration?.fileUrl,
@@ -197,7 +194,6 @@ const CampaignActionForm: React.FC<{
                 > = {};
 
                 campaignDetail?.data?.scheduleImages?.forEach((image: any) => {
-                    // Adjust the key format based on your actual API response structure
                     const key = `day${image.dayNumber || image.day}`;
                     dailyImagesData[key] = {
                         id: image?.id,
@@ -328,16 +324,17 @@ const CampaignActionForm: React.FC<{
                                         <button
                                             key={day.key}
                                             type="button"
+                                            data-attr={day?.key}
                                             onClick={() =>
                                                 handleDayToggle(day.key)
                                             }
-                                            className={`w-10 h-10 rounded text-sm font-medium transition-colors ${
+                                            className={`w-10 h-10 rounded text-sm font-medium transition-colors capitalize ${
                                                 selectedDays.includes(day.key)
                                                     ? "bg-primary text-white"
                                                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                                             }`}
                                         >
-                                            {day.label.charAt(0)}
+                                            {day.label}
                                         </button>
                                     ))}
                                 </div>

@@ -1,27 +1,44 @@
 "use client";
 
-import AppAddButton from "@/components/elements/AddButton";
-import { DebouncedSearch } from "@/components/elements/DebouncedSearch";
-import FilterDropdown from "@/components/elements/FilterDropDown";
 import { appRoutes } from "@/lib/routes";
 import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
-import { useCampaignsList } from "@/features/campaigns/hooks/useGetCampaigns";
-import ProfileTabs from "./ProfileTabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ProfileContentHeader from "./ProfileHeader";
+import ProfileInfo from "./ProfileInfo";
+import Link from "next/link";
+import { Lock, User } from "lucide-react";
 
 const ProfileContent: React.FC = () => {
-    const { data, isLoading, mutate } = useCampaignsList();
-
     return (
         <div>
             <PrivateView
-                title="Campaigns"
+                title="User Profile"
                 breadCrumbItems={[
-                    { title: "Campaigns", href: appRoutes.CAMPAIGN_INDEX_PAGE },
+                    { title: "Profile", href: appRoutes.USER_PROFILE_INDEX },
                 ]}
             >
                 <CommonContainer title="campaign-list-section">
-                    <ProfileTabs />
+                    <Tabs defaultValue="profile" className="w-full">
+                        <TabsList className="flex gap-6 bg-white mb-4">
+                            <Link href={appRoutes.USER_PROFILE_INDEX}>
+                                <TabsTrigger value="profile">
+                                    <User />
+                                    Profile
+                                </TabsTrigger>
+                            </Link>
+                            <Link href={appRoutes.USER_CHANGE_PASSWORD_INDEX}>
+                                <TabsTrigger value="security">
+                                    <Lock />
+                                    Password & Security
+                                </TabsTrigger>
+                            </Link>
+                        </TabsList>
+                        <TabsContent value="profile" className="space-y-6">
+                            <ProfileContentHeader />
+                            <ProfileInfo />
+                        </TabsContent>
+                    </Tabs>
                 </CommonContainer>
             </PrivateView>
         </div>

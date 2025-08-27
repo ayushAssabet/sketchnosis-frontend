@@ -1,18 +1,28 @@
-
-interface AuthIntroPropsInterface { 
-    title : string , 
-    supportText : string
+interface AuthIntroPropsInterface {
+    title: string;
+    supportText: string;
+    supportClassName?: string;
+    titleClassName?: string;
 }
-const AuthIntro : React.FC<AuthIntroPropsInterface> = ({
-    title , 
-    supportText
+const AuthIntro: React.FC<AuthIntroPropsInterface> = ({
+    title,
+    supportText,
+    supportClassName,
+    titleClassName,
 }) => {
-    return(
+    return (
         <div className="auth-intro text-center">
-            <h2 className="font-popins text-4xl font-medium mb-1" style={{ fontFamily: 'var(--font-poppins)' }}>{title}</h2>
-            <p className="text-muted text-lg">{supportText}</p>
+            <h2
+                className={`font-popins text-4xl font-medium mb-1 ${titleClassName}`}
+                style={{ fontFamily: "var(--font-poppins)" }}
+            >
+                {title}
+            </h2>
+            <p className={`text-muted text-lg ${supportClassName}`}>
+                {supportText}
+            </p>
         </div>
-    )
-}
+    );
+};
 
-export default AuthIntro
+export default AuthIntro;

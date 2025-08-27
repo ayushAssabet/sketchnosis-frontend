@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useContext } from "react";
 import { useAuth } from "@/features/login/context/AuthContextProvider";
+import { appRoutes } from "@/lib/routes";
 
 export function UserNav() {
     const { user, logout } = useAuth();
@@ -62,32 +63,26 @@ export function UserNav() {
                         <p className="text-sm font-medium leading-none">
                             {user?.name}
                         </p>
-                        <p className="text-xs leading-none text-muted-foreground">
+                        <p className="text-xs leading-none text-foreground">
                             {user?.email}
                         </p>
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem className="hover:cursor-pointer" asChild>
-                        <Link href="/dashboard" className="flex items-center">
-                            <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
-                            Dashboard
-                        </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="hover:cursor-pointer" asChild>
-                        <Link href="/account" className="flex items-center">
-                            <User className="w-4 h-4 mr-3 text-muted-foreground" />
-                            Account
+                    <DropdownMenuItem className="hover:cursor-pointer text-foreground" asChild>
+                        <Link href={appRoutes.USER_PROFILE_INDEX} className="flex items-center">
+                            <User className="w-4 h-4 mr-3 text-foreground" />
+                            Profile
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator />
+                {/* <DropdownMenuSeparator /> */}
                 <DropdownMenuItem
-                    className="hover:cursor-pointer"
+                    className="hover:cursor-pointer hover:!text-red-500 text-red-500"
                     onClick={() => logout()}
                 >
-                    <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
+                    <LogOut className="w-4 h-4 mr-3 text-red-500" />
                     Sign out
                 </DropdownMenuItem>
             </DropdownMenuContent>

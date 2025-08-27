@@ -12,18 +12,24 @@ export const changePasswordBase = z.object({
             /[!@#$%^&*()\-_+=\[\]{};:'",<.>\/?\\|`~]/,
             "Password must contain at least one special character"
         ),
+    oldPassword: z
+        .string()
+        .min(1, "Old Password is required")
+        .min(8, "Password must be at least 8 characters long"),
     confirmPassword: z
         .string()
         .min(1, "Confirm Password is required")
         .min(8, "Password must be at least 8 characters long"),
 });
 
-export const changePasswordSchema = changePasswordBase.refine(
-    (data) => data.newPassword === data.confirmPassword,
-    {
+export const changePasswordSchema = changePasswordBase
+    .refine((data) => data.newPassword === data.confirmPassword, {
         message: "Passwords must match",
         path: ["confirmPassword"],
-    }
-);
+    })
+    .refine((data) => data.oldPassword != data.confirmPassword, {
+        message: "New and Old Password must not match",
+        path: ["confirmPassword", "oldPassword"],
+    });
 
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;

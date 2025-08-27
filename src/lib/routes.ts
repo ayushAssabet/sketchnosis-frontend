@@ -23,4 +23,9 @@ export const appRoutes = {
     CAMPAIGN_ACTION_PAGE: "/campaigns/action",
     ILLUSTRATIONS_ACTION_PAGE: "/illustrations/action",
     PATIENT_ACTION_PAGE: "/patients/action",
+
+    USER_PROFILE_INDEX: "/account/profile",
+    USER_CHANGE_PASSWORD_INDEX: "/account/change-password",
+
+    INVITATION_SUCCESS_INDEX_PAGE : '/invite/success'
 };

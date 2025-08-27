@@ -97,6 +97,10 @@ export const useChangePassword = (token: string) => {
                 });
                 setErrors(fieldErrors);
             } else {
+                showToast({
+                    variant: "destructive",
+                    description: error?.message,
+                });
                 console.log(error);
             }
         } finally {

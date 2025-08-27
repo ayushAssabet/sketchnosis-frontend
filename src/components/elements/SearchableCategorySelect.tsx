@@ -4,7 +4,6 @@ import { Button } from "../ui/button";
 import { CategoryContext } from "@/contexts/CategoryContextProvider";
 import { useCategory } from "@/features/categories/useCategory";
 import { cn } from "@/lib/utils";
-import { spawn } from "child_process";
 
 interface Option {
     label: string;
@@ -106,10 +105,16 @@ const AsyncSearchableDropdown: React.FC<{
             };
 
             // Add to context/provider
-            await addCategory({ name: newCategory.label });
+            const res = await addCategory({ name: newCategory.label });
+            console.log(res)
+
+             const createdOption: Option = {
+                label: res?.data?.name || newCategory.label,
+                value: res?.data?.id || newCategory.value, // use API id if available
+            };
 
             // Add to selected items
-            setSelectedItems((prev) => [...prev, newCategory]);
+            setSelectedItems((prev) => [...prev, createdOption]);
 
             // Reset search
             setSearchTerm("");

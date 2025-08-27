@@ -74,8 +74,11 @@ export const useResetPassword = () => {
                 });
                 setErrors(fieldErrors);
             } else {
-                console.error("Login error:", error);
-                alert("Login failed. Please try again.");
+                console.error(error)
+                showToast({
+                    variant: "destructive",
+                    description: error?.message,
+                });
             }
         } finally {
             setIsSubmitting(false);

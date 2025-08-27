@@ -1,4 +1,6 @@
+import { useUserDeviceId } from "@/hooks/use-deviceId";
 import { clearTokens, getAccessToken } from "./cookie.helper";
+import { getDeviceId } from "./device.helper";
 
 interface ApiRequestConfig {
     url: string;
@@ -94,6 +96,23 @@ export async function defaultFetcher(url: string) {
         headers: {
             Authorization: `Bearer ${getAccessToken().accessToken}`,
             Accept: "application/json",
+        },
+    });
+
+    if(response.status === 401){
+      clearTokens()
+      window.location.href = '/';
+    }
+    return response.json();
+}
+
+
+export async function userFetcher(url: string) {
+    const {deviceId} = useUserDeviceId()
+    const response = await fetch(url, {
+        headers: {
+            Accept: "application/json",
+            "visitor-key": deviceId,
         },
     });
 

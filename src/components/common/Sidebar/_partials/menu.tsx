@@ -17,6 +17,8 @@ import {
     TooltipProvider,
 } from "@/components/ui/tooltip";
 import { useAuth } from "@/features/login/context/AuthContextProvider";
+import { hasPermission } from "@/helpers/permission.helper";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
 
 interface MenuProps {
     isOpen: boolean | undefined;
@@ -26,12 +28,44 @@ export function Menu({ isOpen }: MenuProps) {
     const pathname = usePathname();
     const menuList = getMenuList();
     const { logout } = useAuth();
+    const { data } = useGetAllPermissionsByUserId()
+
+    console.log(data)
+
+    const filterMenusByPermissions = (menus: any[]) => {
+        return menus.filter(menu => {
+        // Check if user has permission for main menu item
+        if (!hasPermission( menu.hasPermission ,data?.data)) {
+            return false;
+        }
+
+        // If menu has submenus, filter them too
+        if (menu.submenus) {
+            menu.submenus = menu.submenus.filter((submenu: any) => 
+            hasPermission( submenu.hasPermission , data?.data)
+            );
+            
+            // If no submenus remain after filtering, hide the main menu
+            if (menu.submenus.length === 0) {
+            return false;
+            }
+        }
+
+        return true;
+        });
+    };
+
+    // Filter menuList based on permissions
+    const filteredMenuList = menuList.map(group => ({
+        ...group,
+        menus: filterMenusByPermissions(group.menus)
+    })).filter(group => group.menus.length > 0);
 
     return (
         <ScrollArea className="[&>div>div[style]]:!block">
             <nav className="mt-8 h-full w-full">
                 <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-60px-32px)] items-start space-y-1 px-2">
-                    {menuList.map(({ groupLabel, menus }, index) => (
+                    {filteredMenuList.map(({ groupLabel, menus }, index) => (
                         <li
                             className={cn("w-full", groupLabel ? "pt-3" : "")}
                             key={index}

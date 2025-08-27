@@ -20,3 +20,18 @@ export const useGetAllPermissions = () => {
         mutate,
     };
 };
+
+export const useGetAllPermissionsByUserId = () => {
+    const { data, isLoading, mutate } = useSWR(
+        `${BACKEND_HOST}/v1/admin/management/permissions-by-user-id`,
+        defaultFetcher
+    );
+
+    console.log(data)
+
+    return {
+        data,
+        isLoading,
+        mutate,
+    };
+};

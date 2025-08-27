@@ -12,6 +12,8 @@ export const ImageUploadPreview = ({
     const [imageUrl, setImageUrl] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
+    console.log(selectedImage)
+
     useEffect(() => {
         const loadImage = async () => {
             // Handle both fileUrl (from dialog selection) and url (from edit data)
@@ -104,10 +106,10 @@ const renderImageUploadSection = ({
     handleOpenIllustrationDialog,
     days
 }) => {
+    console.log(weeklyImages)
+    console.log(dailyImages)
     if (formData.repeatType === "weekly") {
         const numberOfWeeks = parseInt(formData.numberOfWeeks || "2");
-        console.log(numberOfWeeks)
-        console.log(selectedDays)
         return (
             <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -126,7 +128,7 @@ const renderImageUploadSection = ({
                                         const day = days.find(
                                             (d) => d.key === dayKey
                                         );
-                                        const uploadKey = `week${weekIndex + 1}_${dayKey}`;
+                                        const uploadKey = `w${weekIndex + 1}${dayKey}`;
                                         const selectedImage = weeklyImages[uploadKey];
 
                                         return (
