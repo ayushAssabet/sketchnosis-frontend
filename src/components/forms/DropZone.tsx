@@ -43,11 +43,15 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
     const onDrop = useCallback(
         (acceptedFiles: File[], rejectedFiles: any[]) => {
             setDragError("");
-            
+
             if (rejectedFiles.length > 0) {
                 const rejection = rejectedFiles[0];
                 if (rejection.errors[0]?.code === "file-too-large") {
-                    setDragError(`File too large. Maximum size is ${formatFileSize(maxSize)}`);
+                    setDragError(
+                        `File too large. Maximum size is ${formatFileSize(
+                            maxSize
+                        )}`
+                    );
                 } else if (rejection.errors[0]?.code === "file-invalid-type") {
                     setDragError("Only JPEG and PNG images are allowed");
                 } else {
@@ -55,16 +59,16 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
                 }
                 return;
             }
-            
+
             if (acceptedFiles.length > 0) {
                 const file = acceptedFiles[0];
                 handleFileChange(name, file);
-                
+
                 // Clean up previous preview URL
                 if (previewUrl) {
                     URL.revokeObjectURL(previewUrl);
                 }
-                
+
                 // Create new preview URL
                 const newPreviewUrl = URL.createObjectURL(file);
                 setPreviewUrl(newPreviewUrl);
@@ -97,7 +101,7 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
         e.stopPropagation();
         handleFileChange(name, null);
         setDragError("");
-        
+
         // Clean up preview URL
         if (previewUrl) {
             URL.revokeObjectURL(previewUrl);
@@ -118,35 +122,37 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
     const displayError = error || dragError;
     const hasContent = currentFile || (isUpdateMode && currentUrl);
 
-    console.log(currentFile , currentUrl)
+    console.log(currentFile, currentUrl);
 
     // Load currentUrl blob if in update mode
     useEffect(() => {
         const loadImage = async () => {
-            console.log('load called')
-            console.log(isUpdateMode , currentUrl)
+            console.log("load called");
+            console.log(isUpdateMode, currentUrl);
             // Only load if we have currentUrl, we're in update mode, no current file, and no existing preview
             if (isUpdateMode && currentUrl) {
                 setIsLoading(true);
-                console.log('condition matched')
-                            
+                console.log("condition matched");
+
                 try {
                     // Check if NEXT_PUBLIC_BACKEND_HOST is defined
-                    
-                    const url = `${BACKEND_HOST}/v1/illustration/view-illustration?url=${encodeURIComponent(currentUrl)}`;
+
+                    const url = `${BACKEND_HOST}/v1/illustration/view-illustration?url=${currentUrl}`;
                     const blobUrl = await viewImage(url);
 
-                    console.log(blobUrl , "blob")
-                    
+                    console.log(blobUrl, "blob");
+
                     if (blobUrl) {
                         setPreviewUrl(blobUrl);
                     }
                 } catch (error: any) {
                     if (!abortControllerRef.current.signal.aborted) {
-                        console.error('Failed to load image:', error);
-                        setDragError('Failed to load existing image');
+                        console.error("Failed to load image:", error);
+                        setDragError("Failed to load existing image");
                     }
-                } 
+                } finally {
+                    setIsLoading(false);
+                }
             }
         };
 
@@ -163,7 +169,7 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
     // Cleanup preview URL on unmount
     useEffect(() => {
         return () => {
-            if (previewUrl && previewUrl.startsWith('blob:')) {
+            if (previewUrl && previewUrl.startsWith("blob:")) {
                 URL.revokeObjectURL(previewUrl);
             }
         };
@@ -172,7 +178,10 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
     return (
         <div className="flex flex-col gap-2">
             {label && (
-                <label htmlFor={name} className="block text-medium font-medium text-gray-700">
+                <label
+                    htmlFor={name}
+                    className="block text-medium font-medium text-gray-700"
+                >
                     {label}
                     {required && <span className="text-red-500 ml-1">*</span>}
                 </label>
@@ -183,11 +192,16 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
                 className={clsx(
                     "relative border-2 border-dashed rounded-lg transition-colors cursor-pointer text-sm",
                     "hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary",
-                    isDragActive && !isDragReject && "border-primary bg-primary/5",
+                    isDragActive &&
+                        !isDragReject &&
+                        "border-primary bg-primary/5",
                     isDragReject && "border-red-500 bg-red-50",
                     displayError && "border-red-500 bg-red-50",
                     disabled && "opacity-50 cursor-not-allowed bg-gray-50",
-                    !isDragActive && !isDragReject && !displayError && "border-gray-300 bg-gray-50",
+                    !isDragActive &&
+                        !isDragReject &&
+                        !displayError &&
+                        "border-gray-300 bg-gray-50",
                     variant === "dashboard" ? "p-4 !bg-white" : "p-6"
                 )}
             >
@@ -201,10 +215,14 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
                                 <FileImage className="w-8 h-8 text-primary" />
                                 <div>
                                     <p className="text-sm font-medium text-gray-900">
-                                        {currentFile ? currentFile.name : getFileName(currentUrl || "")}
+                                        {currentFile
+                                            ? currentFile.name
+                                            : getFileName(currentUrl || "")}
                                     </p>
                                     <p className="text-xs text-gray-500">
-                                        {currentFile ? formatFileSize(currentFile.size) : "Existing file"}
+                                        {currentFile
+                                            ? formatFileSize(currentFile.size)
+                                            : "Existing file"}
                                     </p>
                                 </div>
                             </div>
@@ -226,7 +244,7 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
                                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                             </div>
                         )}
-                        
+
                         {previewUrl && !isLoading && (
                             <div className="flex justify-center">
                                 <div className="relative max-w-xs">
@@ -235,8 +253,12 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
                                         alt="Preview"
                                         className="max-h-32 max-w-full rounded-lg border border-gray-200 object-contain"
                                         onError={() => {
-                                            console.error('Failed to display image preview');
-                                            setDragError('Failed to display image preview');
+                                            console.error(
+                                                "Failed to display image preview"
+                                            );
+                                            setDragError(
+                                                "Failed to display image preview"
+                                            );
                                             setPreviewUrl("");
                                         }}
                                     />
@@ -246,7 +268,9 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
 
                         {!disabled && (
                             <div className="text-center">
-                                <p className="text-xs text-gray-500">Drop a new file here or click to replace</p>
+                                <p className="text-xs text-gray-500">
+                                    Drop a new file here or click to replace
+                                </p>
                             </div>
                         )}
                     </div>
@@ -256,7 +280,9 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
                             <Upload
                                 className={clsx(
                                     "text-gray-400",
-                                    variant === "dashboard" ? "w-8 h-8" : "w-12 h-12"
+                                    variant === "dashboard"
+                                        ? "w-8 h-8"
+                                        : "w-12 h-12"
                                 )}
                             />
                         </div>
@@ -264,16 +290,24 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
                             <p
                                 className={clsx(
                                     "font-medium",
-                                    variant === "dashboard" ? "text-sm" : "text-base",
-                                    isDragActive ? "text-primary" : "text-gray-700"
+                                    variant === "dashboard"
+                                        ? "text-sm"
+                                        : "text-base",
+                                    isDragActive
+                                        ? "text-primary"
+                                        : "text-gray-700"
                                 )}
                             >
-                                {isDragActive ? "Drop files here" : "Browse or drag files to upload"}
+                                {isDragActive
+                                    ? "Drop files here"
+                                    : "Browse or drag files to upload"}
                             </p>
                             <p
                                 className={clsx(
                                     "text-gray-500",
-                                    variant === "dashboard" ? "text-xs" : "text-sm"
+                                    variant === "dashboard"
+                                        ? "text-xs"
+                                        : "text-sm"
                                 )}
                             >
                                 JPEG, PNG up to {formatFileSize(maxSize)}

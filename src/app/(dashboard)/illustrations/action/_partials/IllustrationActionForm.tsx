@@ -103,6 +103,8 @@ const IllustrationActionForm: React.FC<{
         return <Loader className="animate-spin duration-300 repeat-infinite" />;
     }
 
+    console.log(data)
+
     return (
         <>
             <form
@@ -136,7 +138,7 @@ const IllustrationActionForm: React.FC<{
                         label="Illustration"
                         handleFileChange={handleFileChange}
                         currentFile={formData?.illustration}
-                        currentUrl={blobURL} // Pass the existing logo URL
+                        currentUrl={data?.data?.fileUrl} // Pass the existing logo URL
                         isUpdateMode={isUpdate}
                         variant="dashboard"
                         required
