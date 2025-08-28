@@ -194,7 +194,7 @@ export function Menu({ isOpen }: MenuProps) {
                             <Tooltip delayDuration={100}>
                                 <TooltipTrigger asChild>
                                     <Button
-                                        onClick={() => {}}
+                                        onClick={() => {logout()}}
                                         variant="outline"
                                         className="w-full justify-center h-10 mt-5"
                                     >
