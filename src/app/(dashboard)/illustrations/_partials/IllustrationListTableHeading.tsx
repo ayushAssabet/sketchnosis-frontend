@@ -74,7 +74,7 @@ export const IllustrationListTableHeading = ({
         ),
         cell: ({ row }) => (
             <div className="lowercase flex items-center gap-1">
-                <IllustrationPreviewDialog row={row} />
+                <IllustrationAvatarWrapper row={row} />
                 {row.original?.title}
             </div>
         ),
@@ -214,19 +214,7 @@ export const IllustrationListTableHeading = ({
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                {/* <Link
-                                    href={appRoutes.CLINIC_INDIVIDUAL_PAGE.replace(
-                                        ":id",
-                                        row.original?.id
-                                    )}
-                                > */}
-                                <Button
-                                    variant="ghost"
-                                    //   className="!px-2 cursor-pointer text-yellow-500"
-                                    className="!px-2 cursor-not-allowed text-grey-50"
-                                >
-                                    <FileSearch />
-                                </Button>
+                                <IllustrationPreviewDialog row={row}/>
                                 {/* </Link> */}
                             </TooltipTrigger>
                             <TooltipContent>View Detail</TooltipContent>

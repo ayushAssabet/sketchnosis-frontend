@@ -5,7 +5,7 @@ import { usePatient } from "@/features/patients/usePatientAction";
 import { usePatientActionForm } from "@/features/patients/usePatientActionForm";
 import { appImages } from "@/helpers/image.helper";
 import { appRoutes } from "@/lib/routes";
-import { PenSquareIcon } from "lucide-react";
+import { Edit, PenSquareIcon } from "lucide-react";
 import Image from "next/image";
 
 const PatientDetailProfileHeader: React.FC<{ entity: any }> = ({ entity }) => {
@@ -82,7 +82,7 @@ const PatientDetailProfileHeader: React.FC<{ entity: any }> = ({ entity }) => {
                 </div>
                 <div className="actions">
                     <Button variant="ghost">
-                        <PenSquareIcon  className="text-green-500"/>
+                        <Edit className="text-green-500" />
                     </Button>
 
                     <DeleteButtonWithConfirmDialog
