@@ -8,16 +8,16 @@ import PatientList from "./PatientList";
 
 const ProfileContent = ({ id }: { id: string }) => {
     const { data, isLoading } = useGetClinicDetailWithPatients(id);
-
+    console.log(data)
     return (
         <>
             <PrivateView
-                title="Patients"
+                title="Clinic"
                 breadCrumbItems={[
-                    { title: "Patients", href: appRoutes.PATIENT_INDEX_PAGE },
+                    { title: "Clinic", href: appRoutes.CLINIC_INDEX_PAGE },
                     {
-                        title: "Patient Detail",
-                        href: appRoutes.CAMPAIGN_INDEX_PAGE,
+                        title: "Clinic Detail",
+                        href: appRoutes.CLINIC_INDIVIDUAL_PAGE,
                     },
                 ]}
             >

@@ -100,27 +100,12 @@ export const useCampaign = (
     // Delete clinic
 
     const deleteCampaign = useCallback(
-        async (clinicId: string | number, clinicName?: string) => {
-            const message = clinicName
-                ? `Are you sure you want to delete "${clinicName}"? This action cannot be undone.`
-                : "Are you sure you want to delete this clinic? This action cannot be undone.";
-
-            const confirmed = await confirm({
-                title: "Delete Campaigns",
-                message,
-                confirmText: "Delete",
-                cancelText: "Cancel",
-                variant: "destructive",
-            });
-
-            if (!confirmed) {
-                return { success: false, cancelled: true };
-            }
+        async (campaignId: string | number) => {
 
             setIsDeletingCampaign(true);
             try {
                 const response = await fetcher.makeRequest({
-                    url: `${BACKEND_HOST}/v1/campaign/${clinicId}`,
+                    url: `${BACKEND_HOST}/v1/campaign/${campaignId}`,
                     method: "DELETE",
                 });
 
@@ -131,7 +116,7 @@ export const useCampaign = (
                     title: response.message || "Clinic deleted successfully",
                 });
 
-                return { success: true, deletedId: clinicId };
+                return { success: true, deletedId: campaignId };
             } catch (error: any) {
                 console.error("Error deleting clinic:", error);
                 showToast({

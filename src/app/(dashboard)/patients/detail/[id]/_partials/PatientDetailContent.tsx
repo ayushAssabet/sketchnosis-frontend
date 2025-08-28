@@ -24,14 +24,11 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
     const handleCampaignSelect = async (campaign: Campaign | null, startDate: string) => {
         if (campaign) {
             try {
-                // Example API call
-                // await assignCampaignToPatient({ patientId: id, campaignId: campaign.id, startDate });
                 await addPatientCampaign([{
                     id : campaign?.id , 
                     startDate
                 }] , id)
 
-                console.log("Assigning campaign:", campaign.id, "to patient:", id, "with start date:", startDate);
 
                 await mutate();
                 setCampaignDialogOpen(false);
@@ -44,11 +41,6 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
 
     const handleDeleteCampaign = async (campaignId: string) => {
         try {
-            // Example API call
-            // await unassignCampaignFromPatient({ patientId: id, campaignId });
-
-            console.log("Unassigning campaign:", campaignId, "from patient:", id);
-
             await mutate();
             setCampaignDialogOpen(false);
             setEditingCampaign(null);
@@ -90,7 +82,6 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
                                 </Button>
                             </div>
 
-                            {/* Assigned Campaigns List */}
                             <div className="space-y-4">
                                 {data?.data?.patientCampaigns?.length > 0 ? (
                                     data.data.patientCampaigns.map((patientCampaign, index) => (

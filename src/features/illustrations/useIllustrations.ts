@@ -99,23 +99,7 @@ export const useIllustration = (
 
     // Delete Illustration
     const deleteIllustration = useCallback(
-        async (IllustrationId: string | number, IllustrationName?: string) => {
-            const message = IllustrationName
-                ? `Are you sure you want to delete "${IllustrationName}"? This action cannot be undone.`
-                : "Are you sure you want to delete this Illustration? This action cannot be undone.";
-
-            const confirmed = await confirm({
-                title: "Delete Illustration",
-                message,
-                confirmText: "Delete",
-                cancelText: "Cancel",
-                variant: "destructive",
-            });
-
-            if (!confirmed) {
-                return { success: false, cancelled: true };
-            }
-
+        async (IllustrationId: string | number) => {
             setIsDeletingIllustration(true);
             try {
                 const response = await fetcher.makeRequest({

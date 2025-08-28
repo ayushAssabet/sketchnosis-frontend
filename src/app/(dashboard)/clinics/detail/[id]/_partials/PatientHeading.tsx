@@ -108,13 +108,15 @@ export const ClinicDetailPatientListTableHeading = (): ColumnDef<any>[] => [
         ),
         cell: ({ row }) => (
             <div className="capitalize">
-                {row.original?.patientCampaigns.map(
-                    (campaign: Record<string, any>, index: number) => (
-                        <Badge key={index} variant="default">
-                            {campaign?.campaign?.name ?? "-"}
-                        </Badge>
-                    )
-                )}
+                {row.original?.campaigns?.length > 0
+                    ? row.original?.campaigns?.map(
+                          (campaign: Record<string, any>, index: number) => (
+                              <Badge key={index} variant="default">
+                                  {campaign?.campaign?.name ?? "-"}
+                              </Badge>
+                          )
+                      )
+                    : "-"}
             </div>
         ),
     },
@@ -134,13 +136,15 @@ export const ClinicDetailPatientListTableHeading = (): ColumnDef<any>[] => [
         ),
         cell: ({ row }) => (
             <div className="capitalize">
-                {row.original?.patientCampaigns.map(
-                    (campaign: Record<string, any>, index: number) => (
-                        <Badge key={index} variant="secondary">
-                            {campaign?.startDate ?? "-"}
-                        </Badge>
-                    )
-                )}
+                {row.original?.campaigns?.length > 0
+                    ? row.original?.campaigns?.map(
+                          (campaign: Record<string, any>, index: number) => (
+                              <Badge key={index} variant="secondary">
+                                  {campaign?.startDate ?? "-"}
+                              </Badge>
+                          )
+                      )
+                    : ""}
             </div>
         ),
     },
@@ -208,7 +212,7 @@ export const ClinicDetailPatientListTableHeading = (): ColumnDef<any>[] => [
                                 <DialogTitle>All Categories</DialogTitle>
                             </DialogHeader>
                             <div className="flex flex-wrap gap-2 mt-4">
-                                {categories.map(
+                                {categories?.map(
                                     (
                                         category: Record<string, any>,
                                         index: number

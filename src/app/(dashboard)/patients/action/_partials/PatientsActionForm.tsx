@@ -24,7 +24,6 @@ const PatientActionForm: React.FC<{
     const {
         formData,
         handleChange,
-        handleCampaignDateSelect,
         errors,
         setFormData,
         validateForm,
@@ -39,7 +38,9 @@ const PatientActionForm: React.FC<{
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log("submitting");
         const result = validateForm();
+        console.log(result);
         if (!result.success) return;
         isUpdate ? updatePatient(patientId!, formData!) : addPatient(formData!);
     };
@@ -153,7 +154,6 @@ const PatientActionForm: React.FC<{
                     error={errors?.email}
                     disabled={isAddingPatient || isUpdatingPatient}
                     variant="dashboard"
-                    required
                     readonly={isUpdate}
                 />
 

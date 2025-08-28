@@ -8,11 +8,13 @@ import { useClinic } from "@/features/context/useClinicActions";
 const ClinicList = ({
     clinicList,
     isLoading,
+    mutate
 }: {
     clinicList: ClinicInterface[];
     isLoading: boolean;
+    mutate : () => Promise<void>
 }) => {
-    const { deleteClinic } = useClinic();
+    const { deleteClinic } = useClinic(mutate);
     return (
         <div className="min-h-[60vh]">
             <DataTable

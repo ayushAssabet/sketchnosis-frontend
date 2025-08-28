@@ -34,7 +34,7 @@ const CampaignContent: React.FC = () => {
                                 <FilterDropdown mutate={mutate}/>
                             </div>
                         </div>
-                        <CampaignList CampaignList={data?.data?.data ?? []} isLoading={isLoading} />
+                        <CampaignList CampaignList={data?.data?.data ?? []} isLoading={isLoading} mutate={mutate} />
                         <div className="flex items-center justify-between mt-12">
                             <Pagination
                                 currentPage={data?.data?.meta.currentPage}

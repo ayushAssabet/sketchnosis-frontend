@@ -72,7 +72,7 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
                         </p>
                     </div>
                 </div>
-                <ul className="category__list mb-3">
+                <ul className="category__list mb-3 space-x-2">
                     {entity?.areaOfConcerns?.map((concern, index) => {
                         return <Badge key={index} className="py-1 px-2.5 rounded-full capitalize">{concern?.name}</Badge>;
                     })}

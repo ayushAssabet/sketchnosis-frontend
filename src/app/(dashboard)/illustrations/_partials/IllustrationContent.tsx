@@ -11,10 +11,9 @@ import { appRoutes } from "@/lib/routes";
 import { mutate } from "swr";
 
 const IllustrationContent: React.FC = () => {
-    const { mutateIllustration, illustration , meta } =
+    const { mutateIllustration, illustration , meta ,isLoading } =
         useContext(IllustrationContext);
 
-        console.log(meta)
     return (
         <>
             <div className="flex justify-between items-center">
@@ -27,7 +26,7 @@ const IllustrationContent: React.FC = () => {
                     <FilterDropdown />
                 </div>
             </div>
-            <IllustrationList illustrationList={illustration ?? []} />
+            <IllustrationList illustrationList={illustration ?? []} isLoading={isLoading} mutate={mutateIllustration} />
             <div className="flex items-center justify-between mt-12">
                 <Pagination
                     currentPage={meta?.currentPage}

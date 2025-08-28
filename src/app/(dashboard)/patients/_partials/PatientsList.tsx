@@ -4,15 +4,24 @@ import DataTable from "@/components/common/DataTable/DataTable";
 import { ClinicInterface } from "@/interface/clinic.interface";
 import { useClinic } from "@/features/context/useClinicActions";
 import { PatientListTableHeading } from "./PatientsListTableHeading";
+import { usePatient } from "@/features/patients/usePatientAction";
 
-const PatientList = ({ patientList , isLoading }: { patientList: ClinicInterface[] ,isLoading : boolean }) => {
-    const { deleteClinic } = useClinic();
+const PatientList = ({
+    patientList,
+    isLoading,
+    mutate,
+}: {
+    patientList: ClinicInterface[];
+    isLoading: boolean;
+    mutate: () => Promise<void>;
+}) => {
+    const { deletePatient } = usePatient(mutate);
     return (
         <div className="min-h-[60vh]">
             <DataTable
                 data={patientList}
                 isLoading={isLoading}
-                columns={PatientListTableHeading({ onDelete: deleteClinic })}
+                columns={PatientListTableHeading({ onDelete: deletePatient })}
             />
         </div>
     );

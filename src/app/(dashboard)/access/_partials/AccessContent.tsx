@@ -11,9 +11,6 @@ const CampaignContent: React.FC = () => {
     
     const { data, isLoading, mutate } = useGetAllRoles();
     const { data : permissionData , isLoading : isPermissionLoading , mutate : permissionMutate } = useGetAllPermissions();
-    
-    console.log(data)
-    console.log(permissionData)
 
     return (
         <div>

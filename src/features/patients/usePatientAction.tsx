@@ -96,22 +96,7 @@ export const usePatient = (
   // Delete Patient
 
   const deletePatient = useCallback(
-    async (PatientId: string | number, PatientName?: string) => {
-      const message = PatientName
-        ? `Are you sure you want to delete "${PatientName}"? This action cannot be undone.`
-        : "Are you sure you want to delete this Patient? This action cannot be undone.";
-
-      const confirmed = await confirm({
-        title: "Delete Patient",
-        message,
-        confirmText: "Delete",
-        cancelText: "Cancel",
-        variant: "destructive",
-      });
-
-      if (!confirmed) {
-        return { success: false, cancelled: true };
-      }
+    async (PatientId: string | number) => {
 
       setIsDeletingPatient(true);
       try {

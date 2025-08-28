@@ -31,22 +31,22 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
     }));
   };
 
-  const handleCampaignDateSelect = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { value, id } = e.currentTarget;
-    if (id == "startDate") {
-      setFormData((prev) => ({
-        ...prev,
-        campaign: [
-          {
-            id: prev.campaign[0]?.id || null,
-            startDate: value || null,
-          },
-        ],
-      }));
-    }
-  };
+  // const handleCampaignDateSelect = (
+  //   e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   const { value, id } = e.currentTarget;
+  //   if (id == "startDate") {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       campaign: [
+  //         {
+  //           id: prev.campaign[0]?.id || null,
+  //           startDate: value || null,
+  //         },
+  //       ],
+  //     }));
+  //   }
+  // };
 
   const validateForm = () => {
     try {
@@ -62,6 +62,7 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
         });
         setErrors(formatted);
       }
+      console.log(err)
       return { success: false };
     }
   };
@@ -70,7 +71,7 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
     formData,
     setFormData,
     handleChange,
-    handleCampaignDateSelect,
+    // handleCampaignDateSelect,
     errors,
     setErrors,
     validateForm,

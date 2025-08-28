@@ -39,7 +39,7 @@ export function AppSideBar() {
                 ></Button>
                 <Link href={appRoutes.DASHBOARD_INDEX_PAGE} className="block py-1">
                     <Image
-                        src={appImages.brandLogo}
+                        src={appImages.brandLogoBlack}
                         width={150}
                         height={300}
                         alt="brand-logo"

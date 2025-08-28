@@ -30,8 +30,6 @@ export function Menu({ isOpen }: MenuProps) {
     const { logout } = useAuth();
     const { data } = useGetAllPermissionsByUserId()
 
-    console.log(data)
-
     const filterMenusByPermissions = (menus: any[]) => {
         return menus.filter(menu => {
         // Check if user has permission for main menu item

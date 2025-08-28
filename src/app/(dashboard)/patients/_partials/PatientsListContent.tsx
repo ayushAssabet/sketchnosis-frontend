@@ -10,9 +10,16 @@ import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
 import PatientList from "./PatientsList";
 import { useGetPatientList } from "@/features/patients/useGetPatient";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
+import { permissions } from "@/utils/permissions";
+import { hasPermission } from "@/helpers/permission.helper";
 
 const PatientListContent: React.FC = () => {
     const { data, isLoading, mutate } = useGetPatientList();
+    const { data : permissionData } = useGetAllPermissionsByUserId()
+
+    
+    console.log(data)
     return (
         <div>
             <PrivateView
@@ -30,14 +37,17 @@ const PatientListContent: React.FC = () => {
                                 searchKey="name"
                             />
                             <div className="space-x-5">
-                                <AppAddButton
-                                    href={appRoutes.PATIENT_ACTION_PAGE}
-                                    title="Add Patient"
-                                />
+                                {
+                                    hasPermission([permissions.ADD_PATIENT] , permissionData?.data) &&
+                                    <AppAddButton
+                                        href={appRoutes.PATIENT_ACTION_PAGE}
+                                        title="Add Patient"
+                                    />
+                                }
                                 <FilterDropdown mutate={mutate}/>
                             </div>
                         </div>
-                        <PatientList patientList={data?.data?.data ?? []} isLoading={isLoading} />
+                        <PatientList patientList={data?.data?.data ?? []} isLoading={isLoading} mutate={mutate} />
                         <div className="flex items-center justify-between mt-12">
                             <Pagination
                                 currentPage={data?.data?.meta?.currentPage}
