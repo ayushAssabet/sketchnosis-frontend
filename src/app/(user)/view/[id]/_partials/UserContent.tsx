@@ -57,7 +57,7 @@ const HealthCampaign = ({ id }: { id: string }) => {
             <div className="flex-1 p-6 space-y-6">
                 <div className="relative">
                     <img
-                        src={data?.data?.illustrationSignedUrl || appImages.lungs}
+                        src={data?.data?.illustrationSignedUrl}
                         width={100}
                         height={100}
                         className="w-full aspect-auto object-fill"
