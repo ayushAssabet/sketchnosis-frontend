@@ -98,7 +98,7 @@ export const IllustrationPreviewDialog = ({ row }: { row: any }) => {
                 !isLoading && 
                 <Button
                     variant="ghost"
-                    className="!px-2 cursor-not-allowed text-grey-50"
+                    className="!px-2 text-grey-50"
                     onClick={handleOpen}
                 >
                     <FileSearch className="text-yellow-500"/>
