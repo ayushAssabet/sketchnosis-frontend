@@ -27,7 +27,7 @@ export const createApiRequest = () => {
 
             if (
                 body &&
-                ["POST", "PUT", "PATCH"].includes(method.toUpperCase())
+                ["POST", "PUT", "PATCH" , "DELETE"].includes(method.toUpperCase())
             ) {
                 // Check if body is FormData or contains File objects
                 if (body instanceof FormData) {

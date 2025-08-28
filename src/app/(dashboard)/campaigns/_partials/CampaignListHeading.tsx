@@ -1,3 +1,4 @@
+import StatusDropdown from "@/components/elements/ChangeStatus";
 import DeleteButtonWithConfirmDialog from "@/components/elements/DeleteButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/tooltip";
 import { dateHelper } from "@/helpers/date.helper";
 import { appRoutes } from "@/lib/routes";
+import { BACKEND_HOST } from "@/utils/constants";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, FileSearch, Trash2 } from "lucide-react";
@@ -24,9 +26,12 @@ import Link from "next/link";
 
 export const CampaignListTableHeading = ({
     onDelete,
+    changeStatus
 }: {
     onDelete: (id: string) => void;
+    changeStatus : (url : string) => void
 }): ColumnDef<any>[] => [
+
     {
         id: "select",
         header: ({ table }: { table: any }) => (
@@ -86,7 +91,7 @@ export const CampaignListTableHeading = ({
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }
             >
-                Email
+                Description
                 <ArrowUpDown className="ml-1 h-4 w-4" />
             </Button>
         ),
@@ -104,36 +109,19 @@ export const CampaignListTableHeading = ({
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }
             >
-                Category
+                Area of Concern
                 <ArrowUpDown className="ml-1 h-4 w-4" />
             </Button>
         ),
         cell: ({ row }) => {
             const categories = row.original?.areaOfConcerns || [];
 
-            type badge = "default" | "secondary" | "destructive" | "outline";
-
-            // Badge variants array
-            const badgeVariants: badge[] = [
-                "default",
-                "secondary",
-                "destructive",
-                "outline",
-            ];
-
-            // Function to get random variant
-            const getRandomVariant = () => {
-                return badgeVariants[
-                    Math.floor(Math.random() * badgeVariants.length)
-                ];
-            };
-
             if (categories.length === 0) return <div>-</div>;
 
             if (categories.length === 1) {
                 return (
                     <div className="lowercase">
-                        <Badge variant={getRandomVariant()}>
+                        <Badge>
                             {categories[0]?.name}
                         </Badge>
                     </div>
@@ -145,7 +133,7 @@ export const CampaignListTableHeading = ({
                     <Dialog>
                         <DialogTrigger asChild>
                             <div className="flex items-center gap-1 cursor-pointer hover:opacity-80">
-                                <Badge variant={getRandomVariant()}>
+                                <Badge>
                                     {categories[0]?.name}
                                 </Badge>
                                 <Badge variant="secondary" className="text-xs">
@@ -165,7 +153,6 @@ export const CampaignListTableHeading = ({
                                     ) => (
                                         <Badge
                                             key={index}
-                                            variant={getRandomVariant()}
                                         >
                                             {category?.name}
                                         </Badge>
@@ -177,6 +164,30 @@ export const CampaignListTableHeading = ({
                 </div>
             );
         },
+    },
+    {
+        accessorKey: "isPublished",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                className="text-xs uppercase !hover:bg-transparent !px-0"
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                }
+            >
+                Status
+                <ArrowUpDown className="ml-1 h-4 w-4" />
+            </Button>
+        ),
+        cell: ({ row }) => (
+            <div className="capitalize">
+                {
+                    row.original?.isPublished 
+                    ? <Badge variant="success">Published</Badge> 
+                    : <Badge variant="destructive">Drafted</Badge>
+                }
+            </div>
+        ),
     },
     {
         accessorKey: "repeatType",
@@ -249,7 +260,7 @@ export const CampaignListTableHeading = ({
             };
 
             return (
-                <div className="space-x-1">
+                <div className="space-x-1 flex">
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -292,7 +303,7 @@ export const CampaignListTableHeading = ({
                         </Tooltip>
                     </TooltipProvider>
 
-                    <TooltipProvider>
+                    {/* <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <DeleteButtonWithConfirmDialog
@@ -303,7 +314,11 @@ export const CampaignListTableHeading = ({
                             </TooltipTrigger>
                             <TooltipContent>Delete Clinic</TooltipContent>
                         </Tooltip>
-                    </TooltipProvider>
+                    </TooltipProvider> */}
+                    <StatusDropdown 
+                        currentStatus={row?.original?.isPublished}
+                        onChange={() => changeStatus(`${BACKEND_HOST}/v1/campaign/${row?.original?.id}`)}
+                    />
                 </div>
             );
         },

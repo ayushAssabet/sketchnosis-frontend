@@ -13,6 +13,7 @@ import { useGetPatientList } from "@/features/patients/useGetPatient";
 import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
 import { permissions } from "@/utils/permissions";
 import { hasPermission } from "@/helpers/permission.helper";
+import ExcelUploader from "./BulkUpload";
 
 const PatientListContent: React.FC = () => {
     const { data, isLoading, mutate } = useGetPatientList();
@@ -43,6 +44,10 @@ const PatientListContent: React.FC = () => {
                                         href={appRoutes.PATIENT_ACTION_PAGE}
                                         title="Add Patient"
                                     />
+                                }
+                                {
+                                    hasPermission([permissions.ADD_PATIENT] , permissionData?.data) &&
+                                    <ExcelUploader />
                                 }
                                 <FilterDropdown mutate={mutate}/>
                             </div>

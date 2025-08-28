@@ -56,13 +56,13 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
                         {campaign.areaOfConcerns?.map((concern, index) => (
                             <Badge
                                 key={index}
-                                variant="secondary"
-                                className="bg-blue-100 text-blue-800"
                             >
                                 {concern.name}
                             </Badge>
                         ))}
                     </div>
+
+                    
 
                     {/* Campaign Duration and Type */}
                     <div className="flex items-center space-x-4 mb-4">
@@ -81,8 +81,8 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
 
                     {/* Start Date */}
                     {startDate && (
-                        <div className="text-sm text-gray-600 mb-4">
-                            <span className="font-medium">Start Date:</span>{" "}
+                        <div className="text-xs text-gray-600 mb-4">
+                            <span className="font-medium">Start from : </span>{" "}
                             {formatDate(startDate)}
                         </div>
                     )}
@@ -95,7 +95,7 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
 
                 {/* Action Buttons */}
                 <div className="flex items-center space-x-2 ml-4">
-                    {onEdit && (
+                    {/* {onEdit && (
                         <Button
                             variant="outline"
                             size="sm"
@@ -104,7 +104,7 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
                         >
                             <Edit className="h-4 w-4 text-gray-600" />
                         </Button>
-                    )}
+                    )} */}
 
                     {onDelete && (
                         <Button
@@ -113,7 +113,7 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
                             onClick={onDelete}
                             className="h-8 w-8 p-0 hover:bg-red-50 hover:border-red-200"
                         >
-                            <Trash2 className="h-4 w-4 text-gray-600 hover:text-red-600" />
+                            <Trash2 className="h-4 w-4  hover:text-red-600 text-red-500" />
                         </Button>
                     )}
                 </div>

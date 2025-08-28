@@ -35,6 +35,7 @@ export const usePatientCampaign = (
             }[],
             patientId: string
         ) => {
+            console.log('adding patient')
             setIsAddingPatientCampaign(true);
             try {
                 const response = await fetcher.makeRequest({
@@ -68,7 +69,7 @@ export const usePatientCampaign = (
     );
 
     // Update existing Patient
-    const updatePatient = useCallback(
+    const updatePatientCampaign = useCallback(
         async (
             campaign: Partial<{
                 campaign: string;
@@ -114,29 +115,17 @@ export const usePatientCampaign = (
 
     // Delete Patient
 
-    const deletePatient = useCallback(
-        async (PatientId: string | number, PatientName?: string) => {
-            const message = PatientName
-                ? `Are you sure you want to delete "${PatientName}"? This action cannot be undone.`
-                : "Are you sure you want to delete this Patient? This action cannot be undone.";
-
-            const confirmed = await confirm({
-                title: "Delete Patient",
-                message,
-                confirmText: "Delete",
-                cancelText: "Cancel",
-                variant: "destructive",
-            });
-
-            if (!confirmed) {
-                return { success: false, cancelled: true };
-            }
+    const deletePatientCampaign = useCallback(
+        async ( campaignId : string | number , PatientId: string | number) => {
 
             setIsDeletingPatientCampaign(true);
             try {
                 const response = await fetcher.makeRequest({
-                    url: `${BACKEND_HOST}/v1/patients/${PatientId}`,
+                    url: `${BACKEND_HOST}/v1/patients/${PatientId}/campaigns`,
                     method: "DELETE",
+                    body : {
+                        campaignId
+                    }
                 });
 
                 await mutate?.();
@@ -172,7 +161,7 @@ export const usePatientCampaign = (
 
         // Actions
         addPatientCampaign,
-        updatePatient,
-        deletePatient,
+        updatePatientCampaign,
+        deletePatientCampaign,
     };
 };

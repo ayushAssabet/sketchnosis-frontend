@@ -14,7 +14,7 @@ import { usePatientCampaign } from "@/features/patientCampaign/usePatientCampaig
 
 const PatientDetailProfileContent = ({ id }: { id: string }) => {
     const { data, isLoading, mutate } = useGetPatientDetail(id);
-    const { addPatientCampaign } = usePatientCampaign(mutate)
+    const { addPatientCampaign , deletePatientCampaign } = usePatientCampaign(mutate)
 
     // Campaign dialog state
     const [campaignDialogOpen, setCampaignDialogOpen] = useState(false);
@@ -41,6 +41,7 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
 
     const handleDeleteCampaign = async (campaignId: string) => {
         try {
+            await deletePatientCampaign(campaignId , id)
             await mutate();
             setCampaignDialogOpen(false);
             setEditingCampaign(null);
@@ -49,9 +50,9 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
         }
     };
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    // if (isLoading) {
+    //     return <div>Loading...</div>;
+    // }
 
     return (
         <>

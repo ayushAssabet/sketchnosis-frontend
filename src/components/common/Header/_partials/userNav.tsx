@@ -71,9 +71,9 @@ export function UserNav() {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem className="hover:cursor-pointer text-foreground" asChild>
-                        <Link href={appRoutes.USER_PROFILE_INDEX} className="flex items-center">
+                        <Link href={appRoutes.USER_CHANGE_PASSWORD_INDEX} className="flex items-center">
                             <User className="w-4 h-4 mr-3 text-foreground" />
-                            Profile
+                            Change Password
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>

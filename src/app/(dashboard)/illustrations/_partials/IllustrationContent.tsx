@@ -17,7 +17,7 @@ const IllustrationContent: React.FC = () => {
     return (
         <>
             <div className="flex justify-between items-center">
-                <DebouncedSearch mutate={mutateIllustration} />
+                <DebouncedSearch mutate={mutateIllustration} key={'name'} />
                 <div className="space-x-5">
                     <AppAddButton
                         href={appRoutes.ILLUSTRATIONS_ACTION_PAGE}

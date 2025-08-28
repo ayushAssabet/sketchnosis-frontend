@@ -43,6 +43,7 @@ const CategoryContent: React.FC = () => {
                             <DebouncedSearch
                                 mutate={mutate}
                                 placeholder={"Search Category"}
+                                searchKey="name"
                             />
                             <div className="space-x-5">
                                 <AppAddButton

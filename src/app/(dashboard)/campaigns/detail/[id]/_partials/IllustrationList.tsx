@@ -9,7 +9,7 @@ const IllustrationList = ({
     return(
         <div className="mt-12">   
             <h3 className="text-primary mb-6 font-semibold">Assigned Illustrations</h3>
-            <div className="grid grid-cols-5">
+            <div className="grid grid-cols-5 gap-4">
                 {
                     illustrationList?.map((illustration) => {
                         return(

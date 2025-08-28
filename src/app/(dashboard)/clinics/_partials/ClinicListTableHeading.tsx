@@ -216,6 +216,26 @@ export const ClinicListTableHeading = ({
         ),
     },
     {
+        accessorKey: "status",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                className="text-xs uppercase !hover:bg-transparent !px-0"
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                }
+            >
+                Status
+                <ArrowUpDown className="ml-1 h-4 w-4" />
+            </Button>
+        ),
+        cell: ({ row }) => (
+            <div className="lowercase flex items-center gap-1">
+                {row.original?.status}
+            </div>
+        ),
+    },
+    {
         accessorKey: "address",
         header: ({ column }) => (
             <Button

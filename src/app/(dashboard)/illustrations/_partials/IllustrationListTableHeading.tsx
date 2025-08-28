@@ -23,11 +23,15 @@ import { IllustrationAvatarWrapper } from "./IllustrationAvatarWrapper";
 import { dateHelper } from "@/helpers/date.helper";
 import DeleteButtonWithConfirmDialog from "@/components/elements/DeleteButton";
 import { IllustrationPreviewDialog } from "./IllustrationPreviewDialog";
+import StatusDropdown from "@/components/elements/ChangeStatus";
+import { BACKEND_HOST } from "@/utils/constants";
 
 export const IllustrationListTableHeading = ({
     onDelete,
+    changeStatus,
 }: {
     onDelete: (id: string) => void;
+    changeStatus: (url: string) => void;
 }): ColumnDef<any>[] => [
     {
         id: "select",
@@ -89,36 +93,19 @@ export const IllustrationListTableHeading = ({
                     column.toggleSorting(column.getIsSorted() === "asc")
                 }
             >
-                Category
+                Area of Concern
                 <ArrowUpDown className="ml-1 h-4 w-4" />
             </Button>
         ),
         cell: ({ row }) => {
             const categories = row.original?.areaOfConcerns || [];
 
-            type badge = "default" | "secondary" | "destructive" | "outline";
-
-            // Badge variants array
-            const badgeVariants: badge[] = [
-                "default",
-                "secondary",
-                "destructive",
-                "outline",
-            ];
-
-            // Function to get random variant
-            const getRandomVariant = () => {
-                return badgeVariants[
-                    Math.floor(Math.random() * badgeVariants.length)
-                ];
-            };
-
             if (categories.length === 0) return <div>-</div>;
 
             if (categories.length === 1) {
                 return (
                     <div className="lowercase">
-                        <Badge variant={getRandomVariant()}>
+                        <Badge>
                             {categories[0]?.name}
                         </Badge>
                     </div>
@@ -130,7 +117,7 @@ export const IllustrationListTableHeading = ({
                     <Dialog>
                         <DialogTrigger asChild>
                             <div className="flex items-center gap-1 cursor-pointer hover:opacity-80">
-                                <Badge variant={getRandomVariant()}>
+                                <Badge>
                                     {categories[0]?.name}
                                 </Badge>
                                 <Badge variant="secondary" className="text-xs">
@@ -150,7 +137,6 @@ export const IllustrationListTableHeading = ({
                                     ) => (
                                         <Badge
                                             key={index}
-                                            variant={getRandomVariant()}
                                         >
                                             {category?.name}
                                         </Badge>
@@ -182,6 +168,30 @@ export const IllustrationListTableHeading = ({
         ),
     },
     {
+        accessorKey: "isPublished",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                className="text-xs uppercase !hover:bg-transparent !px-0"
+                onClick={() =>
+                    column.toggleSorting(column.getIsSorted() === "asc")
+                }
+            >
+                Status
+                <ArrowUpDown className="ml-1 h-4 w-4" />
+            </Button>
+        ),
+        cell: ({ row }) => (
+            <div className="capitalize">
+                {
+                    row.original?.isPublished 
+                    ? <Badge variant="success">Published</Badge> 
+                    : <Badge variant="destructive">Drafted</Badge>
+                }
+            </div>
+        ),
+    },
+    {
         accessorKey: "createdAt",
         header: ({ column }) => (
             <Button
@@ -208,13 +218,13 @@ export const IllustrationListTableHeading = ({
         enableHiding: false,
         header: "Actions",
         cell: ({ row }) => {
-          console.log(row)
+            console.log(row);
             return (
-                <div className="space-x-1">
+                <div className="space-x-1 flex">
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <IllustrationPreviewDialog row={row}/>
+                                <IllustrationPreviewDialog row={row} />
                                 {/* </Link> */}
                             </TooltipTrigger>
                             <TooltipContent>View Detail</TooltipContent>
@@ -242,7 +252,7 @@ export const IllustrationListTableHeading = ({
                         </Tooltip>
                     </TooltipProvider>
 
-                    <TooltipProvider>
+                    {/* <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <DeleteButtonWithConfirmDialog
@@ -253,7 +263,11 @@ export const IllustrationListTableHeading = ({
                             </TooltipTrigger>
                             <TooltipContent>Delete Clinic</TooltipContent>
                         </Tooltip>
-                    </TooltipProvider>
+                    </TooltipProvider> */}
+                    <StatusDropdown 
+                        currentStatus={row?.original?.isPublished}
+                        onChange={() => changeStatus(`${BACKEND_HOST}/v1/illustration/${row?.original?.id}`)}
+                    />
                 </div>
             );
         },

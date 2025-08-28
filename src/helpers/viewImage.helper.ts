@@ -9,6 +9,8 @@ export const viewImage = async (url: string) => {
       },
     });
 
+    console.log('view image')
+
     if (!res.ok) throw new Error("Failed to fetch image");
 
     const blob = await res.blob();

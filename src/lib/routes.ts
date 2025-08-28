@@ -30,5 +30,7 @@ export const appRoutes = {
     INVITATION_SUCCESS_INDEX_PAGE : '/invite/success',
 
     POLICY : '/view/policy',
-    TERMS : '/view/terms'
+    TERMS : '/view/terms',
+
+    FORBIDDEN_PAGE : '/forbidden'
 };

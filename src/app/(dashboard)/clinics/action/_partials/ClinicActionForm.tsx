@@ -16,6 +16,7 @@ import { FormEvent, useEffect, useMemo } from "react";
 const ClinicActionForm: React.FC<{
     isUpdate: boolean;
 }> = ({ isUpdate }) => {
+
     const searchParams = useSearchParams();
     const clinicId = searchParams.get("update");
 
@@ -74,6 +75,7 @@ const ClinicActionForm: React.FC<{
                 contactPersonName: data?.data?.contactPersonName,
                 phone: data?.data?.phone,
             });
+            console.log(data)
         }
     }, [data]);
 
@@ -179,17 +181,17 @@ const ClinicActionForm: React.FC<{
                         variant="dashboard"
                     />
                 </div>
-                <div className="col-span-2">
+                {/* <div className="col-span-2">
                     <AppDropZone
                         name="logo"
                         label="Clinic Logo"
                         handleFileChange={handleFileChange}
                         currentFile={formData?.logo}
-                        currentUrl={data?.data?.logo}
+                        currentUrl={data?.data?.logoUrl}
                         isUpdateMode={isUpdate}
                         variant="dashboard"
                     />
-                </div>
+                </div> */}
                 <div></div>
 
                 <div className="">

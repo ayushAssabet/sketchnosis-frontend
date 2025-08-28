@@ -1,3 +1,4 @@
+import { IllustrationAvatarWrapper } from "@/app/(dashboard)/patients/detail/[id]/_partials/IllustrationWrapper";
 import DeleteButtonWithConfirmDialog from "@/components/elements/DeleteButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,17 +14,20 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
     entity,
 }) => {
     const { deleteClinic } = useClinic();
+
+    console.log(entity);
     return (
         <>
             <div className="entity__header flex items-center justify-between">
                 <div>
                     <div className="entity__intro flex mb-3">
                         <div className="entity__profile-wrapper w-16 h-16 rounded-full relative">
-                            {entity?.logoUrl ? (
-                                <Image
-                                    src={entity?.logoUrl}
-                                    fill
-                                    alt={entity?.name + "Profile Image"}
+                            {/* {entity?.logoUrl ? (
+                                <IllustrationAvatarWrapper
+                                    row={{
+                                        title: entity?.name,
+                                        fileUrl: entity?.logoUrl,
+                                    }}
                                 />
                             ) : (
                                 <>
@@ -36,7 +40,13 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
                                         {entity?.name?.split("")?.at(0)}
                                     </p>
                                 </>
-                            )}
+                            )} */}
+                            <IllustrationAvatarWrapper
+                                row={{
+                                    title: entity?.name,
+                                    fileUrl: entity?.logoUrl,
+                                }}
+                            />
                         </div>
                         <div className="entity__intro pr-9  ml-2">
                             <h3 className="text-[#000] capitalize text-lg font-semibold">
@@ -98,7 +108,7 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
                     <Link
                         href={
                             appRoutes.CLINIC_ACTION_PAGE +
-                            `?update=${entity.id}`
+                            `?update=${entity?.id}`
                         }
                     >
                         <Button

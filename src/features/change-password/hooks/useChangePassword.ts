@@ -77,16 +77,15 @@ export const useChangePassword = (token: string) => {
                 method: "POST",
                 body: {
                     newPassword: formData.newPassword,
-                    confirmPassword: formData.confirmPassword,
+                    oldPassword: formData.oldPassword,
                 },
             });
 
-            const data = await response.json();
             showToast({
                 variant: "success",
-                description: data?.message,
+                description: response?.message,
             });
-            router.replace(appRoutes.LOGIN_INDEX_PAGE);
+            router.replace(appRoutes.DASHBOARD_INDEX_PAGE);
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const fieldErrors: FormErrors = {};

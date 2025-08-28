@@ -1,3 +1,4 @@
+import { IllustrationAvatarWrapper } from "@/app/(dashboard)/illustrations/_partials/IllustrationAvatarWrapper";
 import DeleteButtonWithConfirmDialog from "@/components/elements/DeleteButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { appImages } from "@/helpers/image.helper";
 import { appRoutes } from "@/lib/routes";
 import { Edit, PenSquareIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const PatientDetailProfileHeader: React.FC<{ entity: any }> = ({ entity }) => {
     const { deletePatient } = usePatient();
@@ -17,10 +19,13 @@ const PatientDetailProfileHeader: React.FC<{ entity: any }> = ({ entity }) => {
                     <div className="entity__intro flex mb-3">
                         <div className="entity__profile-wrapper w-16 h-16 rounded-full relative">
                             {entity?.logoUrl ? (
-                                <Image
-                                    src={entity?.logoUrl}
-                                    fill
-                                    alt={entity?.name + "Profile Image"}
+                                <IllustrationAvatarWrapper 
+                                    row={
+                                        {
+                                            title : entity?.name , 
+                                            fileUrl : entity?.fileUrl , 
+                                        }
+                                    }
                                 />
                             ) : (
                                 <>
@@ -81,9 +86,19 @@ const PatientDetailProfileHeader: React.FC<{ entity: any }> = ({ entity }) => {
                     <p className="text-sm">{entity?.description}</p>
                 </div>
                 <div className="actions">
-                    <Button variant="ghost">
-                        <Edit className="text-green-500" />
-                    </Button>
+                    <Link
+                        href={
+                            appRoutes.PATIENT_ACTION_PAGE +
+                            `?update=${entity?.id}`
+                        }
+                    >
+                        <Button
+                            variant="ghost"
+                            className="!px-2 cursor-pointer text-green-500"
+                        >
+                            <Edit />
+                        </Button>
+                    </Link>
 
                     <DeleteButtonWithConfirmDialog
                         title="Delete Clinic?"

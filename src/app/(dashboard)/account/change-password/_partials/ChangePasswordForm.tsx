@@ -43,6 +43,7 @@ const ChangePasswordForm: React.FC = () => {
                         placeholder="Enter your Old password"
                         error={errors?.oldPassword}
                         disabled={isSubmitting}
+                        showPasswordToggle={true}
                     />
                     <AppInputField
                         id="newPassword"
@@ -57,14 +58,14 @@ const ChangePasswordForm: React.FC = () => {
                         showPasswordToggle={true}
                     />
                     <AppInputField
-                        id="password"
-                        name="password"
-                        label="Password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        label="Confirm Password"
                         type="password"
-                        value={formData?.newPassword}
+                        value={formData?.confirmPassword}
                         onChange={handleChange}
                         placeholder="Enter your password"
-                        error={errors?.newPassword}
+                        error={errors?.confirmPassword}
                         disabled={isSubmitting}
                         showPasswordToggle={true}
                     />
@@ -72,6 +73,7 @@ const ChangePasswordForm: React.FC = () => {
 
                 <AppButton
                     type="submit"
+                    onClick={handleSubmit}
                     disabled={disableSubmit}
                     isLoading={isSubmitting}
                     loadingText="Changing Password"

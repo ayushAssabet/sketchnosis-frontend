@@ -3,13 +3,18 @@ import AppInputField from "@/components/forms/InputField";
 import AppTextArea from "@/components/forms/TextArea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/features/login/context/AuthContextProvider";
 import { useProfile } from "@/features/user/hooks/useProfile";
 import { useProfileActionForm } from "@/features/user/hooks/useProfileAction";
 import { Edit } from "lucide-react";
 
 const ProfileInfo = () => {
+
+    const { user }  = useAuth()
     const { formData, handleChange, errors } = useProfileActionForm();
-    const { isProfileUpdating } = useProfile();
+    const { isProfileUpdating , updateProfile } = useProfile();
+
+    console.log(user)
 
     return (
         <>

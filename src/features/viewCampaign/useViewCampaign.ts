@@ -15,7 +15,15 @@ export const useViewCampaign = (id: string) => {
 
         if (response.status === 401) {
             //   clearTokens()
-            window.location.href = "/";
+            window.location.href = "/forbidden?user=true";
+        }
+        if (response.status === 404) {
+            //   clearTokens()
+            window.location.href = "/404?user=true";
+        }
+        if (response.status === 400) {
+            //   clearTokens()
+            window.location.href = "/404?user=true";
         }
         return response.json();
     };

@@ -4,7 +4,7 @@ import AppHeader from "@/components/common/Header/AppHeader";
 import { AppSideBar } from "@/components/common/Sidebar/AppSidebar";
 import { useSidebar } from "@/hooks/use-sidebar";
 import { cn } from "@/lib/utils";
-import isAuthenticated from "@/utils/isAuthenticated";
+import RoutePermissionGuard from "@/utils/routePermissionGuard";
 
 const AdminPrivateView: React.FC<{ 
   children: React.ReactNode ,
@@ -41,4 +41,4 @@ const AdminPrivateView: React.FC<{
   );
 };
 
-export default isAuthenticated(AdminPrivateView);
+export default RoutePermissionGuard(AdminPrivateView);

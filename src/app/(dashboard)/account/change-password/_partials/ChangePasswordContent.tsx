@@ -20,12 +20,12 @@ const ChangePasswordContent: React.FC = () => {
                 <CommonContainer title="campaign-list-section">
                     <Tabs defaultValue="security" className="w-full">
                         <TabsList className="flex gap-6 bg-white mb-4">
-                            <Link href={appRoutes.USER_PROFILE_INDEX}>
+                            {/* <Link href={appRoutes.USER_PROFILE_INDEX}>
                                 <TabsTrigger value="profile">
                                     <User />
                                     Profile
                                 </TabsTrigger>
-                            </Link>
+                            </Link> */}
                             <Link href={appRoutes.USER_CHANGE_PASSWORD_INDEX}>
                                 <TabsTrigger value="security">
                                     <Lock />

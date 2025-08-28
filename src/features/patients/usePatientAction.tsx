@@ -22,6 +22,7 @@ export const usePatient = (
   const [isAddingPatient, setIsAddingPatient] = useState<boolean>(false);
   const [isUpdatingPatient, setIsUpdatingPatient] = useState<boolean>(false);
   const [isDeletingPatient, setIsDeletingPatient] = useState<boolean>(false);
+  const [isCreatingBulkPatient , setIsCreatingBulkPatient] = useState<boolean>(false)
 
   // Add new Patient
   const addPatient = useCallback(
@@ -53,6 +54,42 @@ export const usePatient = (
       }
     },
     [mutate, fetcher, showToast]
+  );
+
+  const bulkCreatePatients = useCallback(
+    async (file: File) => {
+      setIsCreatingBulkPatient(true);
+      try {
+        const formData = new FormData();
+        formData.append("patientList", file);
+
+        const response = await fetcher.makeRequest({
+          url: `${BACKEND_HOST}/v1/patients/bulk-upload`,
+          method: "POST",
+          body: formData,
+        });
+
+        await mutate?.();
+
+        showToast({
+          variant: "success",
+          title: response.message || "Patients imported successfully",
+        });
+
+        router.replace(appRoutes.PATIENT_INDEX_PAGE);
+        return response;
+      } catch (error: any) {
+        console.error("Error bulk creating Patients:", error);
+        showToast({
+          variant: "destructive",
+          title: error.message || "Failed to import Patients",
+        });
+        throw error;
+      } finally {
+        setIsCreatingBulkPatient(false);
+      }
+    },
+    [mutate, fetcher, showToast, router]
   );
 
   // Update existing Patient
@@ -135,10 +172,12 @@ export const usePatient = (
     isAddingPatient,
     isUpdatingPatient,
     isDeletingPatient,
+    isCreatingBulkPatient,
 
     // Actions
     addPatient,
     updatePatient,
     deletePatient,
+    bulkCreatePatients
   };
 };

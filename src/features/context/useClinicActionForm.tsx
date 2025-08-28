@@ -29,6 +29,7 @@ export const useClinicActionForm = (data? : ClinicFormData | null) => {
     const validateForm = () => {
         try {
         const validated = clinicSchema.parse(formData);
+        console.log(validated)
         setErrors({});
         return { success: true, data: validated };
         } catch (err) {

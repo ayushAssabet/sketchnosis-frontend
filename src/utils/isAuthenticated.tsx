@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { useAuth } from "@/features/login/context/AuthContextProvider";
 import { Loader } from "lucide-react";
 import { appRoutes } from "@/lib/routes";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
 
 const isAuthenticated = <P extends object>(
     WrappedComponent: React.ComponentType<P>
@@ -12,6 +13,8 @@ const isAuthenticated = <P extends object>(
     const Wrapper: React.FC<P> = (props) => {
         const router = useRouter();
         const { loading, user } = useAuth();
+        const { data  } = useGetAllPermissionsByUserId();
+
         useEffect(() => {
             console.log(loading, user);
             if (!loading && !user) {

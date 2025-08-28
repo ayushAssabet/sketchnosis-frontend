@@ -21,7 +21,7 @@ const PatientList = ({
             <DataTable
                 data={patientList}
                 isLoading={isLoading}
-                columns={PatientListTableHeading({ onDelete: deletePatient })}
+                columns={PatientListTableHeading({ onDelete: deletePatient , mutate })}
             />
         </div>
     );

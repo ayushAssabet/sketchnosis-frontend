@@ -62,7 +62,7 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
                     <Link
                         href={
                             appRoutes.CAMPAIGN_ACTION_PAGE +
-                            `?update=${entity.id}`
+                            `?update=${entity?.id}`
                         }
                     >
                         <Button
