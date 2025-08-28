@@ -105,9 +105,7 @@ export const IllustrationListTableHeading = ({
             if (categories.length === 1) {
                 return (
                     <div className="lowercase">
-                        <Badge>
-                            {categories[0]?.name}
-                        </Badge>
+                        <Badge>{categories[0]?.name}</Badge>
                     </div>
                 );
             }
@@ -117,9 +115,7 @@ export const IllustrationListTableHeading = ({
                     <Dialog>
                         <DialogTrigger asChild>
                             <div className="flex items-center gap-1 cursor-pointer hover:opacity-80">
-                                <Badge>
-                                    {categories[0]?.name}
-                                </Badge>
+                                <Badge>{categories[0]?.name}</Badge>
                                 <Badge variant="secondary" className="text-xs">
                                     +{categories.length - 1} more
                                 </Badge>
@@ -135,9 +131,7 @@ export const IllustrationListTableHeading = ({
                                         category: Record<string, any>,
                                         index: number
                                     ) => (
-                                        <Badge
-                                            key={index}
-                                        >
+                                        <Badge key={index}>
                                             {category?.name}
                                         </Badge>
                                     )
@@ -183,11 +177,11 @@ export const IllustrationListTableHeading = ({
         ),
         cell: ({ row }) => (
             <div className="capitalize">
-                {
-                    row.original?.isPublished 
-                    ? <Badge variant="success">Published</Badge> 
-                    : <Badge variant="destructive">Drafted</Badge>
-                }
+                {row.original?.isPublished ? (
+                    <Badge variant="success">Published</Badge>
+                ) : (
+                    <Badge variant="destructive">Drafted</Badge>
+                )}
             </div>
         ),
     },
@@ -248,7 +242,7 @@ export const IllustrationListTableHeading = ({
                                     </Button>
                                 </Link>
                             </TooltipTrigger>
-                            <TooltipContent>Edit clinic</TooltipContent>
+                            <TooltipContent>Edit</TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
 
@@ -264,9 +258,13 @@ export const IllustrationListTableHeading = ({
                             <TooltipContent>Delete Clinic</TooltipContent>
                         </Tooltip>
                     </TooltipProvider> */}
-                    <StatusDropdown 
+                    <StatusDropdown
                         currentStatus={row?.original?.isPublished}
-                        onChange={() => changeStatus(`${BACKEND_HOST}/v1/illustration/${row?.original?.id}`)}
+                        onChange={() =>
+                            changeStatus(
+                                `${BACKEND_HOST}/v1/illustration/${row?.original?.id}`
+                            )
+                        }
                     />
                 </div>
             );
