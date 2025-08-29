@@ -199,8 +199,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                                                             : "bg-gray-100 text-gray-800"
                                                     }`}
                                                 >
-                                                    {campaign.isPublished ??
-                                                        "active"}
+                                                    {campaign.isPublished ? 'published' : 'draft'}
                                                 </span>
                                             </h3>
                                             <div className="flex items-center space-x-3 flex-wrap">

@@ -255,7 +255,7 @@ const CampaignActionForm: React.FC<{
                 campaignDetail?.data?.scheduleImages?.forEach((image: any) => {
                     const key = `${image.dayOfWeek}`;
                     weeklyImagesData[key] = {
-                        id: image?.id,
+                        id: image?.illustration?.id,
                         url: image?.illustration?.fileUrl,
                         title: image?.illustration?.title,
                         scheduleId: image?.id,
@@ -277,7 +277,7 @@ const CampaignActionForm: React.FC<{
                 campaignDetail?.data?.scheduleImages?.forEach((image: any) => {
                     const key = `day${image.dayNumber || image.day}`;
                     dailyImagesData[key] = {
-                        id: image?.id,
+                        id: image?.illustration?.id,
                         url: image?.illustration?.fileUrl,
                         title: image?.illustration?.title,
                         scheduleId: image?.id,
