@@ -137,7 +137,7 @@ export const PatientListTableHeading = ({
                         {campaigns.length === 0 ? (
                             <Button
                                 size="sm"
-                                variant="ghost"
+                                variant="secondary"
                                 onClick={() => {
                                     setEditingCampaign(null);
                                     setOpen(true);
@@ -147,7 +147,7 @@ export const PatientListTableHeading = ({
                             </Button>
                         ) : (
                             <div className="flex items-center gap-2">
-                                <Badge className="secondary">
+                                <Badge variant="outline">
                                     {campaigns[0]?.campaign?.name ?? "-"}
                                 </Badge>
                                 {campaigns.length > 1 && (
@@ -175,7 +175,7 @@ export const PatientListTableHeading = ({
                                                         >,
                                                         index: number
                                                     ) => (
-                                                        <Badge key={index}>
+                                                        <Badge key={index} variant="secondary">
                                                             {campaign?.campaign
                                                                 ?.name ?? "-"}
                                                         </Badge>

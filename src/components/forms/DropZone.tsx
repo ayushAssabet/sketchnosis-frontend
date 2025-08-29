@@ -24,7 +24,7 @@ const AppDropZone: React.FC<AppDropZonePropsInterface> = ({
     label,
     handleFileChange,
     name,
-    maxSize = 5 * 1024 * 1024, // 5MB default
+    maxSize = 10 * 1024 * 1024, // 5MB default
     multiple = false,
     disabled = false,
     error,
