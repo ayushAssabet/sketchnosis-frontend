@@ -76,7 +76,7 @@ const IllustrationDialog = ({
                 {/* Illustrations Grid */}
                 <div className="flex-1 overflow-y-auto p-6">
                     <div className="grid grid-cols-5 gap-4">
-                        {filteredIllustrations?.map((illustration) => (
+                        {filteredIllustrations?.filter((illustration) => illustration?.isPublished != false)?.map((illustration) => (
                             <div 
                                 key={illustration.id}  
                                 onClick={() => handleSelect(illustration)}

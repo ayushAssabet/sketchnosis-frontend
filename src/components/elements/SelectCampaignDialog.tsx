@@ -172,10 +172,10 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                     {/* Campaign List */}
                     <div className="space-y-3">
                         {filteredCampaigns
-                            .filter(
+                            ?.filter(
                                 (campaign) => campaign?.isPublished != false
                             )
-                            .map((campaign) => (
+                            ?.map((campaign) => (
                                 <div
                                     key={campaign.id}
                                     onClick={() =>
