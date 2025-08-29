@@ -18,5 +18,5 @@ export interface Campaign {
         }
         dayOfWeek? : string
     }[];
-    status?: "active" | "draft";
+    isPublished?: boolean;
 }

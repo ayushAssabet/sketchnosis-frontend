@@ -46,7 +46,8 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     const actualSetOpen = setOpen ?? setInternalOpen;
 
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const [tempSelectedCampaign, setTempSelectedCampaign] = useState<Campaign | null>(null);
+    const [tempSelectedCampaign, setTempSelectedCampaign] =
+        useState<Campaign | null>(null);
     const [tempStartDate, setTempStartDate] = useState(selectedStartDate);
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
@@ -54,7 +55,9 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     const filteredCampaigns = campaigns.filter(
         (campaign) =>
             campaign.name?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-            campaign.description?.toLowerCase().includes(searchTerm?.toLowerCase())
+            campaign.description
+                ?.toLowerCase()
+                .includes(searchTerm?.toLowerCase())
     );
 
     const currentCampaign = campaigns.find((c) => c.id === selectedCampaign);
@@ -131,7 +134,9 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     }, [selectedCampaign, data]);
 
     const getDialogTitle = () => {
-        return isEditMode ? "Edit Campaign Assignment" : "Choose a campaign to assign the patient.";
+        return isEditMode
+            ? "Edit Campaign Assignment"
+            : "Choose a campaign to assign the patient.";
     };
 
     const getActionButtonText = () => {
@@ -166,68 +171,93 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
 
                     {/* Campaign List */}
                     <div className="space-y-3">
-                        {filteredCampaigns.map((campaign) => (
-                            <div
-                                key={campaign.id}
-                                onClick={() => handleCampaignClick(campaign)}
-                                className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
-                                    tempSelectedCampaign?.id === campaign.id
-                                        ? "border-primary bg-blue-50/50 shadow-md"
-                                        : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
-                                }`}
-                            >
-                                <div className="flex items-start justify-between">
-                                    <div className="flex-1">
-                                        <h3 className="font-medium text-gray-900 text-sm mb-2 flex space-x-2">
-                                            <span>{campaign.name}</span>
-                                            <span
-                                                className={`px-2 py-1 text-xs rounded-md font-medium mr-2 ${
-                                                    campaign.status === "active"
-                                                        ? "bg-green-100 text-green-800"
-                                                        : "bg-gray-100 text-gray-800"
-                                                }`}
-                                            >
-                                                {campaign.status ?? "active"}
-                                            </span>
-                                        </h3>
-                                        <div className="flex items-center space-x-3 flex-wrap">
-                                            {campaign.areaOfConcerns?.map((concerns, index) => (
-                                                <Badge variant="secondary" key={index}>
-                                                    {concerns?.name}
-                                                </Badge>
-                                            ))}
-                                            {campaign?.repeatType === "daily" && (
-                                                <Badge className="text-xs lowercase" variant="outline">
-                                                    <span className="text-xs text-gray-600">
-                                                        {campaign.numberOfDays} Days
-                                                    </span>
-                                                    <span className="text-xs text-gray-600 capitalize ml-1">
-                                                        {campaign.repeatType}
-                                                    </span>
-                                                </Badge>
-                                            )}
-                                        </div>
-
-                                        <p className="text-sm text-gray-600 leading-relaxed mt-4 line-clamp-3">
-                                            {campaign.description}
-                                        </p>
-                                    </div>
-                                    {tempSelectedCampaign?.id === campaign.id && (
-                                        <div className="ml-3 flex-shrink-0">
-                                            <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                                                <Check className="w-3 h-3 text-white" />
+                        {filteredCampaigns
+                            .filter(
+                                (campaign) => campaign?.isPublished != false
+                            )
+                            .map((campaign) => (
+                                <div
+                                    key={campaign.id}
+                                    onClick={() =>
+                                        handleCampaignClick(campaign)
+                                    }
+                                    className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
+                                        tempSelectedCampaign?.id === campaign.id
+                                            ? "border-primary bg-blue-50/50 shadow-md"
+                                            : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                                    }`}
+                                >
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex-1">
+                                            <h3 className="font-medium text-gray-900 text-sm mb-2 flex space-x-2">
+                                                <span>{campaign.name}</span>
+                                                <span
+                                                    className={`px-2 py-1 text-xs rounded-md font-medium mr-2 ${
+                                                        campaign.isPublished ===
+                                                        true
+                                                            ? "bg-green-100 text-green-800"
+                                                            : "bg-gray-100 text-gray-800"
+                                                    }`}
+                                                >
+                                                    {campaign.isPublished ??
+                                                        "active"}
+                                                </span>
+                                            </h3>
+                                            <div className="flex items-center space-x-3 flex-wrap">
+                                                {campaign.areaOfConcerns?.map(
+                                                    (concerns, index) => (
+                                                        <Badge
+                                                            variant="secondary"
+                                                            key={index}
+                                                        >
+                                                            {concerns?.name}
+                                                        </Badge>
+                                                    )
+                                                )}
+                                                {campaign?.repeatType ===
+                                                    "daily" && (
+                                                    <Badge
+                                                        className="text-xs lowercase"
+                                                        variant="outline"
+                                                    >
+                                                        <span className="text-xs text-gray-600">
+                                                            {
+                                                                campaign.numberOfDays
+                                                            }{" "}
+                                                            Days
+                                                        </span>
+                                                        <span className="text-xs text-gray-600 capitalize ml-1">
+                                                            {
+                                                                campaign.repeatType
+                                                            }
+                                                        </span>
+                                                    </Badge>
+                                                )}
                                             </div>
+
+                                            <p className="text-sm text-gray-600 leading-relaxed mt-4 line-clamp-3">
+                                                {campaign.description}
+                                            </p>
                                         </div>
-                                    )}
+                                        {tempSelectedCampaign?.id ===
+                                            campaign.id && (
+                                            <div className="ml-3 flex-shrink-0">
+                                                <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                                                    <Check className="w-3 h-3 text-white" />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
 
                     {filteredCampaigns.length === 0 && (
                         <div className="text-center py-8 text-gray-500">
                             <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                            <p className="text-sm">No campaigns found matching your search.</p>
+                            <p className="text-sm">
+                                No campaigns found matching your search.
+                            </p>
                         </div>
                     )}
                 </div>
@@ -249,7 +279,11 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
 
                 <DialogFooter>
                     {isEditMode && onUnassign && (
-                        <Button variant="destructive" onClick={handleUnassign} className="mr-auto">
+                        <Button
+                            variant="destructive"
+                            onClick={handleUnassign}
+                            className="mr-auto"
+                        >
                             Unassign Campaign
                         </Button>
                     )}
@@ -257,7 +291,10 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                         <Button variant="outline" onClick={handleCancel}>
                             Cancel
                         </Button>
-                        <Button onClick={handleAssign} disabled={!tempSelectedCampaign}>
+                        <Button
+                            onClick={handleAssign}
+                            disabled={!tempSelectedCampaign}
+                        >
                             {getActionButtonText()}
                         </Button>
                     </div>

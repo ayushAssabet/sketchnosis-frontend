@@ -42,6 +42,7 @@ export const transformCampaignData = (
                 return {
                     dayNumber: dayNumber,
                     illustrationId: `${image?.id}`,
+                    scheduleId: image?.scheduleId,
                 };
             })
             .sort((a, b) => a.dayNumber - b.dayNumber);
@@ -59,6 +60,7 @@ export const transformCampaignData = (
                 scheduleImages.push({
                     dayOfWeek: key,
                     illustrationId: `${image?.id}`,
+                    scheduleId: image?.scheduleId,
                 });
             });
 

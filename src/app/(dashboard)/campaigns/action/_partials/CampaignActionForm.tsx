@@ -37,7 +37,15 @@ const CampaignActionForm: React.FC<{
 
     // Changed from File to illustration object
     const [weeklyImages, setWeeklyImages] = useState<
-        Record<string, { id: string; url: string; title: string } | null>
+        Record<
+            string,
+            {
+                id: string;
+                url: string;
+                title: string;
+                scheduleId?: string;
+            } | null
+        >
     >({});
     const [dailyImages, setDailyImages] = useState<
         Record<string, { id: string; url: string; title: string } | null>
@@ -77,13 +85,75 @@ const CampaignActionForm: React.FC<{
         }));
     };
 
-    const handleDayToggle = (day: string) => {
-        setSelectedDays((prev) =>
-            prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
-        );
-    };
+    // const handleDayToggle = (day: string) => {
+    //     setSelectedDays((prev) =>
+    //         prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+    //     );
+    // };
 
-    console.log(selectedDays);
+    // const handleDayToggle = (day: string) => {
+    //     setSelectedDays((prev) => {
+    //         const isCurrentlySelected = prev.includes(day);
+
+    //         if (isCurrentlySelected) {
+    //             // Day is being removed - also remove its image
+    //             if (formData.repeatType === "weekly") {
+    //                 setWeeklyImages((prevImages) => {
+    //                     const updatedImages = { ...prevImages };
+    //                     delete updatedImages[day]; // Remove the image for this day
+    //                     return updatedImages;
+    //                 });
+    //             } else {
+    //                 setDailyImages((prevImages) => {
+    //                     const updatedImages = { ...prevImages };
+    //                     delete updatedImages[`day${day}`]; // Remove the image for this day
+    //                     return updatedImages;
+    //                 });
+    //             }
+    //             // Remove day from selected days
+    //             return prev.filter((d) => d !== day);
+    //         } else {
+    //             // Day is being added
+    //             return [...prev, day];
+    //         }
+    //     });
+    // };
+
+    const handleDayToggle = (day: string) => {
+        console.log(weeklyImages);
+        setSelectedDays((prev) => {
+            const isCurrentlySelected = prev.includes(day);
+
+            if (isCurrentlySelected) {
+                // Day is being removed - also remove its images for all weeks
+                if (formData.repeatType === "weekly") {
+                    setWeeklyImages((prevImages) => {
+                        const updatedImages = { ...prevImages };
+
+                        // Remove images for this day across all weeks
+                        const numberOfWeeks =
+                            parseInt(formData.numberOfWeeks) || 2;
+                        for (let week = 1; week <= numberOfWeeks; week++) {
+                            const weekDayKey = `w${week}${day}`; // e.g., w1d2, w2d2
+                            delete updatedImages[weekDayKey];
+                        }
+                        return updatedImages;
+                    });
+                } else {
+                    setDailyImages((prevImages) => {
+                        const updatedImages = { ...prevImages };
+                        delete updatedImages[`day${day}`];
+                        return updatedImages;
+                    });
+                }
+                // Remove day from selected days
+                return prev.filter((d) => d !== day);
+            } else {
+                // Day is being added
+                return [...prev, day];
+            }
+        });
+    };
 
     // Modified to handle illustration selection instead of file upload
     const handleOpenIllustrationDialog = (key: string) => {
@@ -174,7 +244,12 @@ const CampaignActionForm: React.FC<{
             if (campaignDetail?.data?.repeatType === "weekly") {
                 const weeklyImagesData: Record<
                     string,
-                    { id: string; url: string; title: string } | null
+                    {
+                        id: string;
+                        url: string;
+                        title: string;
+                        scheduleId: string;
+                    } | null
                 > = {};
 
                 campaignDetail?.data?.scheduleImages?.forEach((image: any) => {
@@ -183,6 +258,7 @@ const CampaignActionForm: React.FC<{
                         id: image?.id,
                         url: image?.illustration?.fileUrl,
                         title: image?.illustration?.title,
+                        scheduleId: image?.id,
                     };
                 });
 
@@ -190,7 +266,12 @@ const CampaignActionForm: React.FC<{
             } else {
                 const dailyImagesData: Record<
                     string,
-                    { id: string; url: string; title: string } | null
+                    {
+                        id: string;
+                        url: string;
+                        title: string;
+                        scheduleId: string;
+                    } | null
                 > = {};
 
                 campaignDetail?.data?.scheduleImages?.forEach((image: any) => {
@@ -199,6 +280,7 @@ const CampaignActionForm: React.FC<{
                         id: image?.id,
                         url: image?.illustration?.fileUrl,
                         title: image?.illustration?.title,
+                        scheduleId: image?.id,
                     };
                 });
 

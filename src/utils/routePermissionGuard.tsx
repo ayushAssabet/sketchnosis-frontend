@@ -17,7 +17,7 @@ const RoutePermissionGuard = <P extends object>(
     const router = useRouter();
     const pathname = usePathname();
     const { loading, user } = useAuth();
-    const { data } = useGetAllPermissionsByUserId()
+    const { data , isLoading  } = useGetAllPermissionsByUserId()
 
     // Helper: match route with wildcard support (:id)
     const getRequiredPermissions = (path: string): string[] => {
@@ -43,11 +43,11 @@ const RoutePermissionGuard = <P extends object>(
           requiredPermissions.length === 0 ||
           hasPermission(requiredPermissions, data?.data);
 
-        if (!isAllowed) {
+        if (!isAllowed && !isLoading) {
           router.push(appRoutes.FORBIDDEN_PAGE || "/forbidden");
         }
       }
-    }, [loading, user, pathname, router]);
+    }, [loading, user, pathname, router , isLoading]);
 
     if (loading) {
       return (

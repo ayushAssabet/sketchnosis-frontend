@@ -39,12 +39,9 @@ export const IllustrationAvatarWrapper = ({ fileUrl }: { fileUrl: any }) => {
                     src={imageUrl}
                     alt={`Illustration`}
                     fill
-                    className="!w-full !rounded-none object-cover"
+                    className="!w-full !rounded-none object-contain"
                 />
             )}
-            <AvatarFallback className="bg-gray-300">
-                {'I'}
-            </AvatarFallback>
         </Avatar>
     );
 };
