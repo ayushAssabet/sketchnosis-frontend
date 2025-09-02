@@ -11,10 +11,13 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import CampaignSelector from "@/components/elements/SelectCampaignDialog";
 import { usePatientCampaign } from "@/features/patientCampaign/usePatientCampaign";
+import { BACKEND_HOST } from "@/utils/constants";
+import { useAuth } from "@/features/login/context/AuthContextProvider";
 
 const PatientDetailProfileContent = ({ id }: { id: string }) => {
     const { data, isLoading, mutate } = useGetPatientDetail(id);
     const { addPatientCampaign , deletePatientCampaign } = usePatientCampaign(mutate)
+    const { user } = useAuth();
 
     // Campaign dialog state
     const [campaignDialogOpen, setCampaignDialogOpen] = useState(false);
@@ -150,6 +153,7 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
                 onUnassign={
                     editingCampaign ? () => handleDeleteCampaign(editingCampaign.id) : undefined
                 }
+                url={user?.clinicId ? `${BACKEND_HOST}/v1/clinics/campaign/${user?.clinicId}` : undefined}
             />
         </>
     );

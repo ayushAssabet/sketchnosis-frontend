@@ -13,21 +13,18 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo } from "react";
 import { Label } from "@/components/ui/label";
-import CampaignSelector from "@/components/elements/SelectCampaignDialog";
+import { useAuth } from "@/features/login/context/AuthContextProvider";
+import { BACKEND_HOST } from "@/utils/constants";
 
 const PatientActionForm: React.FC<{
     isUpdate: boolean;
 }> = ({ isUpdate }) => {
     const searchParams = useSearchParams();
     const patientId = searchParams.get("update");
+    const { user } = useAuth();
 
-    const {
-        formData,
-        handleChange,
-        errors,
-        setFormData,
-        validateForm,
-    } = usePatientActionForm();
+    const { formData, handleChange, errors, setFormData, validateForm } =
+        usePatientActionForm();
 
     const { addPatient, updatePatient, isAddingPatient, isUpdatingPatient } =
         usePatient();
@@ -103,8 +100,6 @@ const PatientActionForm: React.FC<{
             });
         }
     }, [data, setFormData]);
-
-    console.log(formData);
 
     return (
         <>
@@ -232,6 +227,11 @@ const PatientActionForm: React.FC<{
                     onSelectionChange={handleAreaOfConcernsChange}
                     error={errors?.areaOfConcernIds}
                     required
+                    url={
+                        user?.clinicId
+                            ? `${BACKEND_HOST}/v1/clinics/areaOfConcerns/${user?.clinicId}`
+                            : undefined
+                    }
                 />
 
                 {/* <CampaignSelector

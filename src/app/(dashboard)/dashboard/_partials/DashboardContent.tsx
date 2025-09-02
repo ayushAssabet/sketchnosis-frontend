@@ -22,9 +22,9 @@ const DashboardContent: React.FC = () => {
                 <section id={'dashboard'} className="p-5 pb-24">
                     <div className=" w-full rounded-2xl min-h-[80vh] p-5 max-w-[95%] mx-auto">
                         {
-                            user?.role == 'admin' ? 
-                            <DashboardStats />   : 
-                            <ClinicDashboardStats />
+                            user?.role == 'clinic' ? 
+                            <ClinicDashboardStats /> :
+                            <DashboardStats /> 
                         }
                     </div>
                 </section>

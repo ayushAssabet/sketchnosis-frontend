@@ -13,6 +13,7 @@ import { Badge } from "../ui/badge";
 import { useCampaignsList } from "@/features/campaigns/hooks/useGetCampaigns";
 import { Button } from "../ui/button";
 import { Campaign } from "@/features/campaigns/interface/campaign.interface";
+import { BACKEND_HOST } from "@/utils/constants";
 
 interface CampaignSelectorProps {
     selectedCampaign?: string | null;
@@ -25,6 +26,7 @@ interface CampaignSelectorProps {
     onUnassign?: () => void;
     open?: boolean; // NEW
     setOpen?: (val: boolean) => void; // NEW
+    url? : string
 }
 
 const CampaignSelector: React.FC<CampaignSelectorProps> = ({
@@ -38,8 +40,9 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     onUnassign,
     open,
     setOpen,
+    url
 }) => {
-    const { data } = useCampaignsList();
+    const { data } = useCampaignsList(url);
 
     const [internalOpen, setInternalOpen] = useState(false);
     const actualOpen = open !== undefined ? open : internalOpen;
@@ -52,7 +55,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
-    const filteredCampaigns = campaigns.filter(
+    const filteredCampaigns = campaigns && campaigns?.filter(
         (campaign) =>
             campaign.name?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
             campaign.description
@@ -60,7 +63,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                 .includes(searchTerm?.toLowerCase())
     );
 
-    const currentCampaign = campaigns.find((c) => c.id === selectedCampaign);
+    const currentCampaign = campaigns?.find((c) => c.id === selectedCampaign);
 
     const handleSearchChange = (value: string) => {
         setSearchTerm(value);
@@ -119,10 +122,15 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     };
 
     useEffect(() => {
-        if (data?.data?.data) {
-            setCampaigns(data?.data?.data);
+        if(data){
+            if(url){
+            setCampaigns(data?.data)
+        }else{
+            setCampaigns(data?.data?.data ?? []);
+        }
         }
     }, [data]);
+
 
     useEffect(() => {
         if (selectedCampaign) {
@@ -131,7 +139,15 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
             );
             setTempSelectedCampaign(campaign || null);
         }
+
     }, [selectedCampaign, data]);
+
+    useEffect(() => {
+        if(!open){
+            setTempSelectedCampaign(null)
+            setTempStartDate(null)
+        }
+    },[open])
 
     const getDialogTitle = () => {
         return isEditMode
@@ -170,7 +186,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                     </div>
 
                     {/* Campaign List */}
-                    <div className="space-y-3">
+                    <div className="space-y-3 pb-3">
                         {filteredCampaigns
                             ?.filter(
                                 (campaign) => campaign?.isPublished != false
@@ -251,7 +267,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                             ))}
                     </div>
 
-                    {filteredCampaigns.length === 0 && (
+                    {filteredCampaigns?.length === 0 && (
                         <div className="text-center py-8 text-gray-500">
                             <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
                             <p className="text-sm">
@@ -292,7 +308,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                         </Button>
                         <Button
                             onClick={handleAssign}
-                            disabled={!tempSelectedCampaign}
+                            disabled={!tempSelectedCampaign || (!tempStartDate && showStartDate)}
                         >
                             {getActionButtonText()}
                         </Button>

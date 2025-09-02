@@ -90,7 +90,7 @@ const DashboardStats = () => {
                         stats={{
                             active: data?.clinicStats?.active,
                             total: data?.clinicStats?.total,
-                            draft: data?.clinicStats?.draft,
+                            pending: data?.clinicStats?.draft,
                         }}
                     />
                 </div>

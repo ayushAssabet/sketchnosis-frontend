@@ -40,7 +40,7 @@ const MultipleKPICard: React.FC<{
   };
 
   const colors = colorMap[color] || colorMap.blue;
-  const isDraftOrPending = stats?.draft ? 'Draft' : 'Pending'
+  const isDraftOrPending = stats?.draft !== undefined && stats?.draft !== null ? 'Draft' : 'Pending'
   const draftOrPending = stats.draft ?? stats.pending ?? 0;
   const activePercentage = stats.total > 0 ? (stats.active / stats.total) * 100 : 0;
   const draftPercentage = stats.total > 0 ? (draftOrPending / stats.total) * 100 : 0;
@@ -78,7 +78,7 @@ const MultipleKPICard: React.FC<{
         </div>
         <div className="text-center p-3 bg-white rounded-lg border border-gray-100 shadow-xs">
           <p className="text-xl font-semibold text-amber-600">{draftOrPending}</p>
-          <p className="text-xs text-gray-500 mt-1">{stats?.draft ? 'Draft' : 'Pending'}</p>
+          <p className="text-xs text-gray-500 mt-1">{stats?.draft !== undefined && stats?.draft !== null ? 'Draft' : 'Pending'}</p>
         </div>
       </div>
     </article>

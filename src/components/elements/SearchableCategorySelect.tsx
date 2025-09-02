@@ -4,6 +4,9 @@ import { Button } from "../ui/button";
 import { CategoryContext } from "@/contexts/CategoryContextProvider";
 import { useCategory } from "@/features/categories/useCategory";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/features/login/context/AuthContextProvider";
+import useSWR from "swr";
+import { defaultFetcher } from "@/helpers/fetch.helper";
 
 interface Option {
     label: string;
@@ -15,27 +18,36 @@ const AsyncSearchableDropdown: React.FC<{
     onSelectionChange: (selected: Option[]) => void;
     error?: string;
     required?: boolean;
-}> = ({ defaultOption = [], onSelectionChange, error, required }) => {
-    const { categories } = useContext(CategoryContext);
+    url?: string;
+}> = ({ defaultOption = [], onSelectionChange, error, required, url }) => {
+    const { categories: contextCategories } = useContext(CategoryContext);
     const { addCategory } = useCategory();
+    const { user } = useAuth();
 
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [searchTerm, setSearchTerm] = useState<string>("");
+    const [isOpen, setIsOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
     const [selectedItems, setSelectedItems] = useState<Option[]>(defaultOption);
     const [filteredOptions, setFilteredOptions] = useState<Option[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [showAddOption, setShowAddOption] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showAddOption, setShowAddOption] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-    // Convert categories from context to Option format
-    const allOptions: Option[] = categories.map((category) => ({
+    const { data: externalData, isLoading: externalLoading } = useSWR(
+        url ? url : null,
+        defaultFetcher
+    );
+
+    const sourceCategories = url
+        ? externalData?.data || []
+        : contextCategories;
+
+    const allOptions: Option[] = sourceCategories.map((category: any) => ({
         label: category.name,
         value: category.id,
     }));
 
     const performAsyncSearch = async (query: string) => {
         setIsLoading(true);
-
         await new Promise((resolve) => setTimeout(resolve, 300));
 
         const filtered = allOptions.filter((option) =>
@@ -43,7 +55,7 @@ const AsyncSearchableDropdown: React.FC<{
         );
 
         setFilteredOptions(filtered);
-        setShowAddOption(filtered.length === 0 && query.trim() !== "");
+        setShowAddOption(filtered?.length === 0 && query.trim() !== "");
         setIsLoading(false);
     };
 
@@ -54,7 +66,7 @@ const AsyncSearchableDropdown: React.FC<{
             setFilteredOptions(allOptions);
             setShowAddOption(false);
         }
-    }, [searchTerm, categories]);
+    }, [searchTerm, sourceCategories]);
 
     useEffect(() => {
         setSelectedItems(defaultOption);
@@ -73,10 +85,8 @@ const AsyncSearchableDropdown: React.FC<{
                 setIsOpen(false);
             }
         };
-
         document.addEventListener("mousedown", handleClickOutside);
-        return () =>
-            document.removeEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     const handleToggleItem = (item: Option) => {
@@ -99,32 +109,22 @@ const AsyncSearchableDropdown: React.FC<{
 
     const handleAddNewCategory = async () => {
         if (searchTerm.trim()) {
-            const newCategory = {
-                label: searchTerm,
-                value: searchTerm.toLowerCase().replace(/\s+/g, "-"),
+            const res = await addCategory({ name: searchTerm });
+            const createdOption: Option = {
+                label: res?.data?.name || searchTerm,
+                value: res?.data?.id || searchTerm.toLowerCase().replace(/\s+/g, "-"),
             };
-
-            // Add to context/provider
-            const res = await addCategory({ name: newCategory.label });
-            console.log(res)
-
-             const createdOption: Option = {
-                label: res?.data?.name || newCategory.label,
-                value: res?.data?.id || newCategory.value, // use API id if available
-            };
-
-            // Add to selected items
             setSelectedItems((prev) => [...prev, createdOption]);
-
-            // Reset search
             setSearchTerm("");
             setShowAddOption(false);
         }
     };
 
+    const loadingState = isLoading || externalLoading;
+
     return (
         <div className="w-full">
-            <div className="">
+            <div>
                 <h3 className="text-sm font-medium text-gray-900 mb-2">
                     Area of Concern
                     {required && <span className="text-red-500"> *</span>}
@@ -158,9 +158,7 @@ const AsyncSearchableDropdown: React.FC<{
                                     </span>
                                 ))}
                                 {selectedItems.length === 0 && (
-                                    <span
-                                        className={cn("text-[#b2b6bd] text-sm")}
-                                    >
+                                    <span className="text-[#b2b6bd] text-sm">
                                         Select categories...
                                     </span>
                                 )}
@@ -194,7 +192,7 @@ const AsyncSearchableDropdown: React.FC<{
                                 </div>
 
                                 <div className="max-h-60 overflow-y-auto">
-                                    {isLoading ? (
+                                    {loadingState ? (
                                         <div className="p-4 text-center text-gray-500">
                                             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto"></div>
                                             <span className="mt-2 block">
@@ -243,7 +241,7 @@ const AsyncSearchableDropdown: React.FC<{
                                                 </div>
                                             )}
 
-                                            {!isLoading &&
+                                            {!loadingState &&
                                                 filteredOptions.length === 0 &&
                                                 !showAddOption && (
                                                     <div className="p-4 text-center text-gray-500">
@@ -258,17 +256,14 @@ const AsyncSearchableDropdown: React.FC<{
                         {selectedItems?.length > 0 && (
                             <Button
                                 onClick={handleClearAll}
-                                variant={"ghost"}
+                                variant="ghost"
                                 className="absolute top-1/2 -translate-y-1/2 right-8 text-[10px]"
                             >
                                 Clear All
                             </Button>
                         )}
                         {error && (
-                            <p
-                                className="mt-1 text-sm text-red-600"
-                                role="alert"
-                            >
+                            <p className="mt-1 text-sm text-red-600" role="alert">
                                 {error}
                             </p>
                         )}

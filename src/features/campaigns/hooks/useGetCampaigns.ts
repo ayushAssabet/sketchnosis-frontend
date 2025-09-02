@@ -4,10 +4,10 @@ import { BACKEND_HOST } from "@/utils/constants";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 
-export const useCampaignsList = () => {
+export const useCampaignsList = (url = `${BACKEND_HOST}/v1/campaign`) => {
     const searchParams = useSearchParams();
     const { data, isLoading, mutate } = useSWR(
-        `${BACKEND_HOST}/v1/campaign${
+        `${url}${
             searchParams?.toString() == "" ? "" : `?${searchParams?.toString()}`
         }`,
         defaultFetcher

@@ -21,7 +21,8 @@ interface User {
     email: string;
     name: string;
     image: string;
-    role : 'admin' | 'clinic'
+    role : 'admin' | 'clinic' | 'super-admin'
+    clinicId? : string
 }
 
 interface AuthContextType {

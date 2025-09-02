@@ -22,7 +22,7 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
                 <div>
                     <div className="entity__intro flex mb-3">
                         <div className="entity__profile-wrapper w-16 h-16 rounded-full relative">
-                            {/* {entity?.logoUrl ? (
+                            {entity?.logoUrl ? (
                                 <IllustrationAvatarWrapper
                                     row={{
                                         title: entity?.name,
@@ -40,13 +40,13 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
                                         {entity?.name?.split("")?.at(0)}
                                     </p>
                                 </>
-                            )} */}
-                            <IllustrationAvatarWrapper
+                            )}
+                            {/* <IllustrationAvatarWrapper
                                 row={{
                                     title: entity?.name,
                                     fileUrl: entity?.logoUrl,
                                 }}
-                            />
+                            /> */}
                         </div>
                         <div className="entity__intro pr-9  ml-2">
                             <h3 className="text-[#000] capitalize text-lg font-semibold">
@@ -67,7 +67,7 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
                             <h3 className="text-[#212121] text-sm font-medium">
                                 Contact Person
                             </h3>
-                            <p>
+                            <p className="flex flex-col gap-2">
                                 <span className="text-sm text-[#7F7F7F]">
                                     {entity?.email}
                                 </span>
@@ -78,15 +78,15 @@ const ProfileHeader: React.FC<{ entity: ClinicIndividualInterface }> = ({
                         </div>
                         <div className="entity__intro px-9 border-l border-[#F0F0F0]">
                             <h3 className="text-[#212121] text-sm font-medium">
-                                Total No. Of Patients
+                                Total Patients
                             </h3>
+
                             <p>
-                                <span className="text-sm text-[#7F7F7F]">
-                                    {entity?.email} Adults
-                                </span>
-                                <span className="text-sm text-[#7F7F7F]">
-                                    {entity?.contactPersonName} Children
-                                </span>
+                                <Badge className="min-w-[50px]">
+                                    <span className="text-xs">
+                                        {entity?.patientCount} 
+                                    </span>
+                                </Badge>
                             </p>
                         </div>
                     </div>

@@ -8,10 +8,19 @@ import {
 } from "@/features/context/useGetClinic";
 import ProfileHeader from "./ProfileHeader";
 import PatientList from "./PatientList";
+import ClinicCampaignList from "./ClinicCampaignList";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
+import { hasPermission } from "@/helpers/permission.helper";
+import { permissions } from "@/utils/permissions";
 
 const ProfileContent = ({ id }: { id: string }) => {
-    const { data, isLoading } = useGetClinicDetailWithPatients(id);
-    console.log(data);
+    const { data, isLoading , mutate } = useGetClinicDetailWithPatients(id);
+    const { data : permissionData } = useGetAllPermissionsByUserId()
+
+
+    const canViewPatient = hasPermission([permissions.VIEW_PATIENT] , permissionData?.data)
+    // const canViewPatient = true
+    
     return (
         <>
             <PrivateView
@@ -28,9 +37,19 @@ const ProfileContent = ({ id }: { id: string }) => {
                     <>
                         <div className="py-10 px-12">
                             <ProfileHeader entity={data?.data} />
-                            <PatientList
-                                patientList={data?.data?.patients ?? []}
-                            />
+                            
+                                <ClinicCampaignList 
+                                    mutate={mutate}
+                                    clinicId={id}
+                                    clinicCampaign={data?.data?.clinicCampaigns}
+                                    hasViewPatient={canViewPatient}
+                                />
+                                {
+                                    canViewPatient && 
+                                    <PatientList
+                                        patientList={data?.data?.patients ?? []}
+                                    />
+                                }
                         </div>
                     </>
                 </CommonContainer>

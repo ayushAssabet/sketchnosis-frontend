@@ -26,12 +26,11 @@ import Link from "next/link";
 
 export const CampaignListTableHeading = ({
     onDelete,
-    changeStatus
+    changeStatus,
 }: {
     onDelete: (id: string) => void;
-    changeStatus : (url : string) => void
+    changeStatus: (url: string) => void;
 }): ColumnDef<any>[] => [
-
     {
         id: "select",
         header: ({ table }: { table: any }) => (
@@ -121,9 +120,7 @@ export const CampaignListTableHeading = ({
             if (categories.length === 1) {
                 return (
                     <div className="lowercase">
-                        <Badge>
-                            {categories[0]?.name}
-                        </Badge>
+                        <Badge>{categories[0]?.name}</Badge>
                     </div>
                 );
             }
@@ -133,9 +130,7 @@ export const CampaignListTableHeading = ({
                     <Dialog>
                         <DialogTrigger asChild>
                             <div className="flex items-center gap-1 cursor-pointer hover:opacity-80">
-                                <Badge>
-                                    {categories[0]?.name}
-                                </Badge>
+                                <Badge>{categories[0]?.name}</Badge>
                                 <Badge variant="secondary" className="text-xs">
                                     +{categories.length - 1} more
                                 </Badge>
@@ -151,9 +146,7 @@ export const CampaignListTableHeading = ({
                                         category: Record<string, any>,
                                         index: number
                                     ) => (
-                                        <Badge
-                                            key={index}
-                                        >
+                                        <Badge key={index}>
                                             {category?.name}
                                         </Badge>
                                     )
@@ -181,11 +174,11 @@ export const CampaignListTableHeading = ({
         ),
         cell: ({ row }) => (
             <div className="capitalize">
-                {
-                    row.original?.isPublished 
-                    ? <Badge variant="success">Published</Badge> 
-                    : <Badge variant="destructive">Drafted</Badge>
-                }
+                {row.original?.isPublished ? (
+                    <Badge variant="success">Published</Badge>
+                ) : (
+                    <Badge variant="destructive">Drafted</Badge>
+                )}
             </div>
         ),
     },
@@ -252,15 +245,16 @@ export const CampaignListTableHeading = ({
         enableHiding: false,
         header: "Actions",
         cell: ({ row }) => {
-            const handleDelete = () => {
-                if (confirm("Are you sure you want to delete this clinic?")) {
-                    // 🔥 Call your deleteClinic function here
-                    console.log("Delete clinic with ID:", row.original?.id);
-                }
-            };
-
             return (
                 <div className="space-x-1 flex">
+                    <StatusDropdown
+                        currentStatus={row?.original?.isPublished}
+                        onChange={() =>
+                            changeStatus(
+                                `${BACKEND_HOST}/v1/campaign/${row?.original?.id}`
+                            )
+                        }
+                    />
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -303,7 +297,7 @@ export const CampaignListTableHeading = ({
                         </Tooltip>
                     </TooltipProvider>
 
-                    {/* <TooltipProvider>
+                    <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <DeleteButtonWithConfirmDialog
@@ -314,11 +308,15 @@ export const CampaignListTableHeading = ({
                             </TooltipTrigger>
                             <TooltipContent>Delete Clinic</TooltipContent>
                         </Tooltip>
-                    </TooltipProvider> */}
-                    <StatusDropdown 
+                    </TooltipProvider>
+                    {/* <StatusDropdown
                         currentStatus={row?.original?.isPublished}
-                        onChange={() => changeStatus(`${BACKEND_HOST}/v1/campaign/${row?.original?.id}`)}
-                    />
+                        onChange={() =>
+                            changeStatus(
+                                `${BACKEND_HOST}/v1/campaign/${row?.original?.id}`
+                            )
+                        }
+                    /> */}
                 </div>
             );
         },

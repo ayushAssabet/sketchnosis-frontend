@@ -71,7 +71,7 @@ const PatientDetailProfileHeader: React.FC<{ entity: any }> = ({ entity }) => {
                             </p>
                         </div>
                     </div>
-                    <ul className="category__list mb-3">
+                    <ul className="category__list mb-3 space-x-2">
                         {entity?.areaOfConcerns?.map((concern, index) => {
                             return (
                                 <Badge

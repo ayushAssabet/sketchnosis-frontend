@@ -18,4 +18,6 @@ export interface ClinicIndividualInterface {
     status?: string;
     createdAt?: string;
     updatedAt?: string;
+
+    patientCount? : string
 }

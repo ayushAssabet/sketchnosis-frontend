@@ -9,6 +9,7 @@ import { useIllusrationActionForm } from "@/features/illustrations/useIllustrati
 import { useIllustration } from "@/features/illustrations/useIllustrations";
 import { viewImage } from "@/helpers/viewImage.helper";
 import { appRoutes } from "@/lib/routes";
+import { error } from "console";
 import { Loader } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -43,6 +44,7 @@ const IllustrationActionForm: React.FC<{
         const result = validateForm();
 
         console.log(result)
+
         if (!result.success) return;
         isUpdate
             ? updateIllustration(clinicId!, formData!)
@@ -142,6 +144,7 @@ const IllustrationActionForm: React.FC<{
                         isUpdateMode={isUpdate}
                         variant="dashboard"
                         required
+                        error={errors?.illustration}
                     />
                 </div>
                 <div className="col-span-2">

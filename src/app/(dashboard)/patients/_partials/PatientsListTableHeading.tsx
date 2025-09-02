@@ -1,3 +1,6 @@
+import { useState } from "react";
+import Link from "next/link";
+import { ArrowUpDown, Edit, FileSearch } from "lucide-react";
 import DeleteButtonWithConfirmDialog from "@/components/elements/DeleteButton";
 import CampaignSelector from "@/components/elements/SelectCampaignDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,19 +26,23 @@ import { appRoutes } from "@/lib/routes";
 import { permissions } from "@/utils/permissions";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Edit, FileSearch, Trash2 } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import { useAuth } from "@/features/login/context/AuthContextProvider";
+import { BACKEND_HOST } from "@/utils/constants";
 
 export const PatientListTableHeading = ({
     onDelete,
-    mutate
+    mutate,
 }: {
     onDelete: (id: string) => void;
-    mutate : () => void
+    mutate: () => void;
 }): ColumnDef<any>[] => {
     const { data: permissionData } = useGetAllPermissionsByUserId();
-    const { addPatientCampaign } = usePatientCampaign()
+    const { addPatientCampaign } = usePatientCampaign();
+
+    const { user } = useAuth()
+
+    const isViewClinc = hasPermission([permissions.VIEW_CLINIC] , permissionData?.data)
+
     return [
         {
             id: "select",
@@ -133,7 +140,6 @@ export const PatientListTableHeading = ({
 
                 return (
                     <div className="flex items-center gap-2">
-                        {/* Existing badges display */}
                         {campaigns.length === 0 ? (
                             <Button
                                 size="sm"
@@ -175,7 +181,10 @@ export const PatientListTableHeading = ({
                                                         >,
                                                         index: number
                                                     ) => (
-                                                        <Badge key={index} variant="secondary">
+                                                        <Badge
+                                                            key={index}
+                                                            variant="secondary"
+                                                        >
                                                             {campaign?.campaign
                                                                 ?.name ?? "-"}
                                                         </Badge>
@@ -188,74 +197,73 @@ export const PatientListTableHeading = ({
                             </div>
                         )}
 
-                        {/* Trigger button to open CampaignSelector */}
-
-                        {/* Campaign selector dialog */}
                         <CampaignSelector
                             open={open}
                             setOpen={setOpen}
                             selectedCampaign={editingCampaign?.id || null}
-                            selectedStartDate={editingCampaign?.startDate || ""}
-                            onCampaignSelect={async(campaign, startDate) => {
-                                // ⚡ hook into your addPatientCampaign mutation here
-                                console.log(
-                                    "Assigning campaign to",
-                                    patientId,
-                                    campaign,
-                                    startDate
+                            selectedStartDate={
+                                editingCampaign?.startDate || ""
+                            }
+                            onCampaignSelect={async (campaign, startDate) => {
+                                await addPatientCampaign(
+                                    [
+                                        {
+                                            id: campaign?.id,
+                                            startDate: startDate,
+                                        },
+                                    ],
+                                    patientId
                                 );
-                                await addPatientCampaign([
-                                    {
-                                        id : campaign?.id , 
-                                        startDate : startDate
-                                    }
-                                ] , patientId)
-                                mutate()
+                                mutate();
                                 setOpen(false);
                             }}
                             showStartDate={true}
                             onUnassign={
                                 editingCampaign
                                     ? () => {
-                                          console.log(
-                                              "Unassigning",
-                                              editingCampaign?.id
-                                          );
                                           setOpen(false);
                                       }
                                     : undefined
                             }
+                            url={user?.clinicId ? `${BACKEND_HOST}/v1/clinics/campaign/${user?.clinicId}` : undefined}
                         />
                     </div>
                 );
             },
         },
-        {
-            accessorKey: "clinic",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    className="text-xs uppercase !hover:bg-transparent !px-0"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Clinic
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-            ),
-            cell: ({ row }) => (
-                <div className="capitalize">
-                    {row?.original?.clinic?.name ? (
-                        <Badge variant="secondary">
-                            {row?.original?.clinic?.name ?? "-"}
-                        </Badge>
-                    ) : (
-                        "-"
-                    )}
-                </div>
-            ),
-        },
+
+        ...(isViewClinc
+            ? [
+                  {
+                      accessorKey: "clinic",
+                      header: ({ column }: { column: any }) => (
+                          <Button
+                              variant="ghost"
+                              className="text-xs uppercase !hover:bg-transparent !px-0"
+                              onClick={() =>
+                                  column.toggleSorting(
+                                      column.getIsSorted() === "asc"
+                                  )
+                              }
+                          >
+                              Clinic
+                              <ArrowUpDown className="ml-1 h-4 w-4" />
+                          </Button>
+                      ),
+                      cell: ({ row }: { row: any }) => (
+                          <div className="capitalize">
+                              {row?.original?.clinic?.name ? (
+                                  <Badge variant="secondary">
+                                      {row?.original?.clinic?.name ?? "-"}
+                                  </Badge>
+                              ) : (
+                                  "-"
+                              )}
+                          </div>
+                      ),
+                  },
+              ]
+            : []),
 
         {
             accessorKey: "areaOfConcerns",
@@ -356,7 +364,6 @@ export const PatientListTableHeading = ({
                 <div className="lowercase">{row.original?.phone ?? "-"}</div>
             ),
         },
-
         {
             accessorKey: "gender",
             header: ({ column }) => (
@@ -375,7 +382,6 @@ export const PatientListTableHeading = ({
                 <div className="lowercase">{row.original?.gender ?? "-"}</div>
             ),
         },
-
         {
             id: "actions",
             enableHiding: false,
@@ -394,7 +400,7 @@ export const PatientListTableHeading = ({
                                     >
                                         <Button
                                             variant="ghost"
-                                            className="!px-2 text-grey-50"
+                                            className="!px-2 text-grey-50 text-yellow-500"
                                         >
                                             <FileSearch />
                                         </Button>
