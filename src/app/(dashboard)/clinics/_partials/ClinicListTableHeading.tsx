@@ -31,14 +31,22 @@ export const ClinicListTableHeading = ({
     onDelete: (id: string) => void;
     mutate: () => Promise<void>;
 }): ColumnDef<any>[] => {
-    const { addClinicCampaign } = useClinicCampaign(mutate)
+    const { addClinicCampaign } = useClinicCampaign(mutate);
     return [
         {
             accessorKey: "id",
             header: "S.N.",
-            cell: ({ row }) => (
-                <div className="capitalize">{row.index + 1}</div>
-            ),
+            cell: ({ row, table }: { row: any; table: any }) => {
+                const currentPageRows = table.getRowModel().rows;
+                const currentIndex = currentPageRows.findIndex(
+                    (r) => r.id === row.id
+                );
+                return (
+                    <div className="capitalize" data-attr={row?.index}>
+                        {currentIndex + 1}
+                    </div>
+                );
+            },
         },
         {
             accessorKey: "name",
@@ -81,18 +89,7 @@ export const ClinicListTableHeading = ({
         },
         {
             accessorKey: "areaOfConcerns",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    className="text-xs uppercase !hover:bg-transparent !px-0"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Category
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-            ),
+            header: "Area of Concerns",
             cell: ({ row }) => {
                 const categories = row.original?.areaOfConcerns || [];
 
@@ -172,18 +169,7 @@ export const ClinicListTableHeading = ({
         },
         {
             accessorKey: "campaign",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    className="text-xs uppercase !hover:bg-transparent !px-0"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Campaign
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-            ),
+            header: "Campaign",
             cell: ({ row }) => {
                 const campaigns = row.original?.clinicCampaigns || [];
 
@@ -321,18 +307,7 @@ export const ClinicListTableHeading = ({
         },
         {
             accessorKey: "phone",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    className="text-xs uppercase !hover:bg-transparent !px-0"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Contact Number
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-            ),
+            header: "Contact Number",
             cell: ({ row }) => (
                 <div className="lowercase">{row.original?.phone ?? "-"}</div>
             ),
@@ -353,11 +328,11 @@ export const ClinicListTableHeading = ({
             ),
             cell: ({ row }) => (
                 <div className="lowercase flex items-center gap-1">
-                    {
-                        row.original?.status === 'active' ? 
-                        <Badge variant="success">{row?.original?.status}</Badge>:
+                    {row.original?.status === "active" ? (
+                        <Badge variant="success">{row?.original?.status}</Badge>
+                    ) : (
                         <Badge variant="pending">{row?.original?.status}</Badge>
-                    }
+                    )}
                 </div>
             ),
         },

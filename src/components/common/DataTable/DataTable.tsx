@@ -81,6 +81,7 @@ export function DataTable<TData>({
     mutate,
     isLoading = false,
 }: DataTableProps<TData>) {
+    console.log(data , "table")
     const searchParams = useSearchParams();
     const router = useRouter();
     const [localFilter, setLocalFilter] = useState("");
@@ -165,7 +166,7 @@ export function DataTable<TData>({
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
+        // getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,

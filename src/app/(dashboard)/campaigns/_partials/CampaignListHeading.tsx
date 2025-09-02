@@ -57,8 +57,18 @@ export const CampaignListTableHeading = ({
     },
     {
         accessorKey: "id",
-        header: "SN",
-        cell: ({ row }) => <div className="capitalize">{row.index + 1}</div>,
+        header: "S.N.",
+        cell: ({ row, table }: { row: any; table: any }) => {
+            const currentPageRows = table.getRowModel().rows;
+            const currentIndex = currentPageRows.findIndex(
+                (r) => r.id === row.id
+            );
+            return (
+                <div className="capitalize" data-attr={row?.index}>
+                    {currentIndex + 1}
+                </div>
+            );
+        },
     },
     {
         accessorKey: "name",
@@ -82,36 +92,14 @@ export const CampaignListTableHeading = ({
     },
     {
         accessorKey: "description",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                Description
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "Description",
         cell: ({ row }) => (
             <div className="lowercase">{row.original?.description ?? "-"}</div>
         ),
     },
     {
         accessorKey: "areaOfConcerns",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                Area of Concern
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "Area of Concerns",
         cell: ({ row }) => {
             const categories = row.original?.areaOfConcerns || [];
 
@@ -160,18 +148,7 @@ export const CampaignListTableHeading = ({
     },
     {
         accessorKey: "isPublished",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                Status
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "Status",
         cell: ({ row }) => (
             <div className="capitalize">
                 {row.original?.isPublished ? (
@@ -184,36 +161,14 @@ export const CampaignListTableHeading = ({
     },
     {
         accessorKey: "repeatType",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                Repeat Type
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "Repeat Type",
         cell: ({ row }) => (
             <div className="capitalize">{row.original?.repeatType ?? "-"}</div>
         ),
     },
     {
         accessorKey: "numberOfDays",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                Days
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "Days / Weeks",
         cell: ({ row }) => (
             <div className="lowercase">
                 {row.original?.numberOfDays ?? row?.original?.numberOfWeeks}
@@ -222,18 +177,7 @@ export const CampaignListTableHeading = ({
     },
     {
         accessorKey: "createdAt",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                created at
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "Created At",
         cell: ({ row }) => (
             <div className="lowercase">
                 {dateHelper(row?.original?.createdAt)}

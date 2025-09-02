@@ -59,7 +59,17 @@ export const IllustrationListTableHeading = ({
     {
         accessorKey: "id",
         header: "S.N.",
-        cell: ({ row }) => <div className="capitalize">{row.index + 1}</div>,
+        cell: ({ row, table }: { row: any; table: any }) => {
+            const currentPageRows = table.getRowModel().rows;
+            const currentIndex = currentPageRows.findIndex(
+                (r) => r.id === row.id
+            );
+            return (
+                <div className="capitalize" data-attr={row?.index}>
+                    {currentIndex + 1}
+                </div>
+            );
+        },
     },
     {
         accessorKey: "name",
@@ -76,7 +86,7 @@ export const IllustrationListTableHeading = ({
             </Button>
         ),
         cell: ({ row }) => (
-            <div className="lowercase flex items-center gap-1">
+            <div className="capitalize flex items-center gap-1">
                 <IllustrationAvatarWrapper row={row} />
                 {row.original?.title}
             </div>
@@ -84,18 +94,8 @@ export const IllustrationListTableHeading = ({
     },
     {
         accessorKey: "areaOfConcerns",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                Area of Concern
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "Area of Concern",
+
         cell: ({ row }) => {
             const categories = row.original?.areaOfConcerns || [];
 
@@ -144,36 +144,16 @@ export const IllustrationListTableHeading = ({
     },
     {
         accessorKey: "description",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                Description
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "description",
+
         cell: ({ row }) => (
-            <div className="lowercase">{row.original?.description ?? "-"}</div>
+            <div className="lowercase">{row.original?.description == '' ?  "-" : row.original?.description ?? '-' }</div>
         ),
     },
     {
         accessorKey: "isPublished",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                Status
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "Status",
+
         cell: ({ row }) => (
             <div className="capitalize">
                 {row.original?.isPublished ? (
@@ -186,20 +166,9 @@ export const IllustrationListTableHeading = ({
     },
     {
         accessorKey: "createdAt",
-        header: ({ column }) => (
-            <Button
-                variant="ghost"
-                className="text-xs uppercase !hover:bg-transparent !px-0"
-                onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === "asc")
-                }
-            >
-                Created At
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
-        ),
+        header: "Created At",
         cell: ({ row }) => (
-            <div className="uppercase">
+            <div className="text-sm">
                 {row.original?.createdAt
                     ? dateHelper(row.original?.createdAt)
                     : "-"}

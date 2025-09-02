@@ -16,7 +16,6 @@ const ClinicList = ({
     mutate : () => Promise<void>
 }) => {
     const { deleteClinic } = useClinic(mutate);
-    const { addClinicCampaign } = useClinicCampaign(mutate)
     return (
         <div className="min-h-[60vh]">
             <DataTable

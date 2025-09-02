@@ -26,9 +26,6 @@ export const useGetAllPermissionsByUserId = () => {
         `${BACKEND_HOST}/v1/admin/management/permissions-by-user-id`,
         defaultFetcher
     );
-
-    console.log(data)
-
     return {
         data,
         isLoading,
