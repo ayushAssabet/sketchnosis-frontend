@@ -6,6 +6,7 @@ import AppInputField from "@/components/forms/InputField";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import AppButton from "@/components/elements/AppButton";
+import { appRoutes } from "@/lib/routes";
 
 const LoginForm: React.FC = () => {
     const {
@@ -62,7 +63,7 @@ const LoginForm: React.FC = () => {
                             Remember Me
                         </div>
                         <Link
-                            href={"#"}
+                            href={appRoutes.FORGOT_PASSWORD_INDEX_PAGE}
                             className="text-primary hover:underline"
                         >
                             Forgot Password ?

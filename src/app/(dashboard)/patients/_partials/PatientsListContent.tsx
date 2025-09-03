@@ -47,7 +47,7 @@ const PatientListContent: React.FC = () => {
                                 }
                                 {
                                     hasPermission([permissions.ADD_PATIENT] , permissionData?.data) &&
-                                    <ExcelUploader />
+                                    <ExcelUploader mutate={mutate}/>
                                 }
                                 <FilterDropdown mutate={mutate}/>
                             </div>

@@ -23,6 +23,8 @@ import DeleteButtonWithConfirmDialog from "@/components/elements/DeleteButton";
 import { useState } from "react";
 import CampaignSelector from "@/components/elements/SelectCampaignDialog";
 import { useClinicCampaign } from "@/features/clinicCampaign/useClinicCampaign";
+import { useSearchParams } from "next/navigation";
+import { BACKEND_HOST } from "@/utils/constants";
 
 export const ClinicListTableHeading = ({
     onDelete,
@@ -32,6 +34,7 @@ export const ClinicListTableHeading = ({
     mutate: () => Promise<void>;
 }): ColumnDef<any>[] => {
     const { addClinicCampaign } = useClinicCampaign(mutate);
+    const searchParams = useSearchParams();
     return [
         {
             accessorKey: "id",
@@ -43,7 +46,12 @@ export const ClinicListTableHeading = ({
                 );
                 return (
                     <div className="capitalize" data-attr={row?.index}>
-                        {currentIndex + 1}
+                        {currentIndex +
+                            1 +
+                            (searchParams.get("offSet")
+                                ? (parseInt(searchParams.get("offSet")) - 1) *
+                                  10
+                                : 0)}
                     </div>
                 );
             },
@@ -250,12 +258,6 @@ export const ClinicListTableHeading = ({
                             selectedCampaign={editingCampaign?.id || null}
                             selectedStartDate={editingCampaign?.startDate || ""}
                             onCampaignSelect={async (campaign, startDate) => {
-                                console.log(
-                                    "Assigning campaign to",
-                                    patientId,
-                                    campaign,
-                                    startDate
-                                );
                                 await addClinicCampaign(
                                     [
                                         {
@@ -280,6 +282,7 @@ export const ClinicListTableHeading = ({
                                       }
                                     : undefined
                             }
+                            url={`${BACKEND_HOST}/v1/campaign?limit=100`}
                         />
                     </div>
                 );

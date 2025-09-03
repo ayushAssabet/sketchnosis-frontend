@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import ClinicCampaignCard from "./ClinicCampaign";
 import CampaignSelector from "@/components/elements/SelectCampaignDialog";
+import { BACKEND_HOST } from "@/utils/constants";
 
 const ClinicCampaignList = ({
     mutate , 
@@ -137,6 +138,7 @@ const ClinicCampaignList = ({
                 onUnassign={
                     editingCampaign ? () => handleDeleteCampaign(editingCampaign.id) : undefined
                 }
+                url={`${BACKEND_HOST}/v1/campaign?limit=100`}
             />
         </div>
     );

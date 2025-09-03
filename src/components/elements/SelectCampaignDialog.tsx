@@ -18,7 +18,7 @@ import { BACKEND_HOST } from "@/utils/constants";
 interface CampaignSelectorProps {
     selectedCampaign?: string | null;
     selectedStartDate?: string;
-    onCampaignSelect: (campaign: Campaign | null, startDate: string) => void;
+    onCampaignSelect: (campaign: Campaign | null, startDate: string) => Promise<void> | any;
     placeholder?: string;
     disabled?: boolean;
     showStartDate?: boolean;
@@ -26,7 +26,7 @@ interface CampaignSelectorProps {
     onUnassign?: () => void;
     open?: boolean; // NEW
     setOpen?: (val: boolean) => void; // NEW
-    url? : string
+    url?: string;
 }
 
 const CampaignSelector: React.FC<CampaignSelectorProps> = ({
@@ -40,7 +40,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     onUnassign,
     open,
     setOpen,
-    url
+    url,
 }) => {
     const { data } = useCampaignsList(url);
 
@@ -55,13 +55,17 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
-    const filteredCampaigns = campaigns && campaigns?.filter(
-        (campaign) =>
-            campaign.name?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-            campaign.description
-                ?.toLowerCase()
-                .includes(searchTerm?.toLowerCase())
-    );
+    const filteredCampaigns =
+        campaigns &&
+        campaigns?.filter(
+            (campaign) =>
+                campaign.name
+                    ?.toLowerCase()
+                    .includes(searchTerm?.toLowerCase()) ||
+                campaign.description
+                    ?.toLowerCase()
+                    .includes(searchTerm?.toLowerCase())
+        );
 
     const currentCampaign = campaigns?.find((c) => c.id === selectedCampaign);
 
@@ -70,18 +74,6 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
         onInputChange?.(value);
     };
 
-    const handleOpenDialog = (editMode: boolean = false) => {
-        if (!disabled) {
-            actualSetOpen(true);
-            setIsEditMode(editMode);
-            if (editMode && currentCampaign) {
-                setTempSelectedCampaign(currentCampaign);
-            } else {
-                setTempSelectedCampaign(null);
-            }
-            setTempStartDate(selectedStartDate);
-        }
-    };
 
     const handleCancel = () => {
         actualSetOpen(false);
@@ -91,8 +83,8 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
         setIsEditMode(false);
     };
 
-    const handleAssign = () => {
-        onCampaignSelect(tempSelectedCampaign, tempStartDate);
+    const handleAssign = async() => {
+        await onCampaignSelect(tempSelectedCampaign, tempStartDate);
         actualSetOpen(false);
         setSearchTerm("");
         setIsEditMode(false);
@@ -111,26 +103,16 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
         setTempSelectedCampaign(campaign);
     };
 
-    const formatDate = (dateString: string) => {
-        if (!dateString) return "";
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-        });
-    };
 
     useEffect(() => {
-        if(data){
-            if(url){
-            setCampaigns(data?.data)
-        }else{
-            setCampaigns(data?.data?.data ?? []);
-        }
+        if (data) {
+            if (url) {
+                setCampaigns(data?.data);
+            } else {
+                setCampaigns(data?.data?.data ?? []);
+            }
         }
     }, [data]);
-
 
     useEffect(() => {
         if (selectedCampaign) {
@@ -139,15 +121,14 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
             );
             setTempSelectedCampaign(campaign || null);
         }
-
     }, [selectedCampaign, data]);
 
     useEffect(() => {
-        if(!open){
-            setTempSelectedCampaign(null)
-            setTempStartDate(null)
+        if (!open) {
+            setTempSelectedCampaign(null);
+            setTempStartDate(null);
         }
-    },[open])
+    }, [open]);
 
     const getDialogTitle = () => {
         return isEditMode
@@ -215,7 +196,9 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                                                             : "bg-gray-100 text-gray-800"
                                                     }`}
                                                 >
-                                                    {campaign.isPublished ? 'published' : 'draft'}
+                                                    {campaign.isPublished
+                                                        ? "published"
+                                                        : "draft"}
                                                 </span>
                                             </h3>
                                             <div className="flex items-center space-x-3 flex-wrap">
@@ -286,6 +269,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                         <input
                             type="date"
                             value={tempStartDate}
+                            min={new Date().toISOString().split("T")[0]}
                             onChange={(e) => setTempStartDate(e.target.value)}
                             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
                         />
@@ -308,7 +292,10 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
                         </Button>
                         <Button
                             onClick={handleAssign}
-                            disabled={!tempSelectedCampaign || (!tempStartDate && showStartDate)}
+                            disabled={
+                                !tempSelectedCampaign ||
+                                (!tempStartDate && showStartDate)
+                            }
                         >
                             {getActionButtonText()}
                         </Button>

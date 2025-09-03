@@ -28,6 +28,7 @@ import { Checkbox } from "@radix-ui/react-checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAuth } from "@/features/login/context/AuthContextProvider";
 import { BACKEND_HOST } from "@/utils/constants";
+import { useSearchParams } from "next/navigation";
 
 export const PatientListTableHeading = ({
     onDelete,
@@ -39,9 +40,13 @@ export const PatientListTableHeading = ({
     const { data: permissionData } = useGetAllPermissionsByUserId();
     const { addPatientCampaign } = usePatientCampaign();
 
-    const { user } = useAuth()
+    const { user } = useAuth();
+    const searchParams = useSearchParams()
 
-    const isViewClinc = hasPermission([permissions.VIEW_CLINIC] , permissionData?.data)
+    const isViewClinc = hasPermission(
+        [permissions.VIEW_CLINIC],
+        permissionData?.data
+    );
 
     return [
         {
@@ -71,12 +76,20 @@ export const PatientListTableHeading = ({
         {
             accessorKey: "id",
             header: "S.N.",
-            cell: ({ row }) => (
-                <div className="capitalize">{row.index + 1}</div>
-            ),
+            cell: ({ row, table }: { row: any; table: any }) => {
+                const currentPageRows = table.getRowModel().rows;
+                const currentIndex = currentPageRows.findIndex(
+                    (r) => r.id === row.id
+                );
+                return (
+                    <div className="capitalize" data-attr={row?.index}>
+                        {currentIndex + 1 + (searchParams.get('offSet') ? (parseInt(searchParams.get('offSet')) - 1) * 10 : 0)}
+                    </div>
+                );
+            },
         },
         {
-            accessorKey: "name",
+            accessorKey: "firstName",
             header: ({ column }) => (
                 <Button
                     variant="ghost"
@@ -201,9 +214,7 @@ export const PatientListTableHeading = ({
                             open={open}
                             setOpen={setOpen}
                             selectedCampaign={editingCampaign?.id || null}
-                            selectedStartDate={
-                                editingCampaign?.startDate || ""
-                            }
+                            selectedStartDate={editingCampaign?.startDate || ""}
                             onCampaignSelect={async (campaign, startDate) => {
                                 await addPatientCampaign(
                                     [
@@ -225,7 +236,11 @@ export const PatientListTableHeading = ({
                                       }
                                     : undefined
                             }
-                            url={user?.clinicId ? `${BACKEND_HOST}/v1/clinics/campaign/${user?.clinicId}` : undefined}
+                            url={
+                                user?.clinicId
+                                    ? `${BACKEND_HOST}/v1/clinics/campaign/${user?.clinicId}?limit=100`
+                                    : undefined
+                            }
                         />
                     </div>
                 );

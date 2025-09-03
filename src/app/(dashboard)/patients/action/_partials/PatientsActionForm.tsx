@@ -21,6 +21,7 @@ const PatientActionForm: React.FC<{
 }> = ({ isUpdate }) => {
     const searchParams = useSearchParams();
     const patientId = searchParams.get("update");
+    
     const { user } = useAuth();
 
     const { formData, handleChange, errors, setFormData, validateForm } =
@@ -191,6 +192,7 @@ const PatientActionForm: React.FC<{
                     value={formData?.dob ?? ""}
                     onChange={handleChange}
                     error={errors?.dob}
+                    max={new Date().toISOString().split("T")[0]}
                     disabled={isAddingPatient || isUpdatingPatient}
                     variant="dashboard"
                     required

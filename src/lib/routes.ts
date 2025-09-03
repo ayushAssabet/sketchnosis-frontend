@@ -12,6 +12,8 @@ export const appRoutes = {
 
     DASHBOARD_INDEX_PAGE: "/dashboard",
 
+    FORGOT_PASSWORD_INDEX_PAGE: '/auth/reset-password',
+
     ILLUSTRATIONS_INDEX_PAGE: "/illustrations",
 
     PATIENT_INDEX_PAGE: "/patients",

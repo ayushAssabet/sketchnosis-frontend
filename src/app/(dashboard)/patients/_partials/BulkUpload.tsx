@@ -12,7 +12,11 @@ import {
 import { Upload, FileDown } from "lucide-react";
 import { usePatient } from "@/features/patients/usePatientAction";
 
-export default function ExcelUploadDialog() {
+export default function ExcelUploadDialog({
+  mutate
+} : {
+  mutate : () => void
+}) {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const { bulkCreatePatients } = usePatient()
@@ -28,6 +32,7 @@ export default function ExcelUploadDialog() {
     try{
 
         await bulkCreatePatients(file)
+        await mutate()
     }catch(error){
 
     }finally{

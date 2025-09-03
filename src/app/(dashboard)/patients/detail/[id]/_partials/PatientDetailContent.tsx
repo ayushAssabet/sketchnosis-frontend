@@ -16,22 +16,33 @@ import { useAuth } from "@/features/login/context/AuthContextProvider";
 
 const PatientDetailProfileContent = ({ id }: { id: string }) => {
     const { data, isLoading, mutate } = useGetPatientDetail(id);
-    const { addPatientCampaign , deletePatientCampaign } = usePatientCampaign(mutate)
+    const { addPatientCampaign, deletePatientCampaign } =
+        usePatientCampaign(mutate);
     const { user } = useAuth();
 
     // Campaign dialog state
     const [campaignDialogOpen, setCampaignDialogOpen] = useState(false);
-    const [editingCampaign, setEditingCampaign] = useState<{ id: string; startDate: string } | null>(null);
+    const [editingCampaign, setEditingCampaign] = useState<{
+        id: string;
+        startDate: string;
+    } | null>(null);
 
     // Handler for campaign assignment
-    const handleCampaignSelect = async (campaign: Campaign | null, startDate: string) => {
+    const handleCampaignSelect = async (
+        campaign: Campaign | null,
+        startDate: string
+    ) => {
         if (campaign) {
             try {
-                await addPatientCampaign([{
-                    id : campaign?.id , 
-                    startDate
-                }] , id)
-
+                await addPatientCampaign(
+                    [
+                        {
+                            id: campaign?.id,
+                            startDate,
+                        },
+                    ],
+                    id
+                );
 
                 await mutate();
                 setCampaignDialogOpen(false);
@@ -44,7 +55,7 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
 
     const handleDeleteCampaign = async (campaignId: string) => {
         try {
-            await deletePatientCampaign(campaignId , id)
+            await deletePatientCampaign(campaignId, id);
             await mutate();
             setCampaignDialogOpen(false);
             setEditingCampaign(null);
@@ -63,7 +74,10 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
                 title="Patients"
                 breadCrumbItems={[
                     { title: "Patients", href: appRoutes.PATIENT_INDEX_PAGE },
-                    { title: "Patient Detail", href: appRoutes.CAMPAIGN_INDEX_PAGE },
+                    {
+                        title: "Patient Detail",
+                        href: appRoutes.CAMPAIGN_INDEX_PAGE,
+                    },
                 ]}
             >
                 <CommonContainer title="campaign-list-section">
@@ -73,7 +87,9 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
                         {/* Campaign Assignment Section */}
                         <div className="my-[50px]">
                             <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-primary text-xl font-semibold">Assigned Campaigns</h3>
+                                <h3 className="text-primary text-xl font-semibold">
+                                    Assigned Campaigns
+                                </h3>
                                 <Button
                                     onClick={() => {
                                         setEditingCampaign(null);
@@ -88,21 +104,34 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
 
                             <div className="space-y-4">
                                 {data?.data?.patientCampaigns?.length > 0 ? (
-                                    data.data.patientCampaigns.map((patientCampaign, index) => (
-                                        <PatientCampaignCard
-                                            key={index}
-                                            campaign={patientCampaign?.campaign}
-                                            startDate={patientCampaign?.startDate}
-                                            onEdit={() => {
-                                                setEditingCampaign({
-                                                    id: patientCampaign?.campaign?.id,
-                                                    startDate: patientCampaign?.startDate,
-                                                });
-                                                setCampaignDialogOpen(true);
-                                            }}
-                                            onDelete={() => handleDeleteCampaign(patientCampaign?.campaign?.id)}
-                                        />
-                                    ))
+                                    data.data.patientCampaigns.map(
+                                        (patientCampaign, index) => (
+                                            <PatientCampaignCard
+                                                key={index}
+                                                campaign={
+                                                    patientCampaign?.campaign
+                                                }
+                                                startDate={
+                                                    patientCampaign?.startDate
+                                                }
+                                                onEdit={() => {
+                                                    setEditingCampaign({
+                                                        id: patientCampaign
+                                                            ?.campaign?.id,
+                                                        startDate:
+                                                            patientCampaign?.startDate,
+                                                    });
+                                                    setCampaignDialogOpen(true);
+                                                }}
+                                                onDelete={() =>
+                                                    handleDeleteCampaign(
+                                                        patientCampaign
+                                                            ?.campaign?.id
+                                                    )
+                                                }
+                                            />
+                                        )
+                                    )
                                 ) : (
                                     <div className="text-center py-12 text-gray-500">
                                         <div className="mb-4">
@@ -120,9 +149,12 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
                                                 />
                                             </svg>
                                         </div>
-                                        <h4 className="text-lg font-medium mb-2">No campaigns assigned</h4>
+                                        <h4 className="text-lg font-medium mb-2">
+                                            No campaigns assigned
+                                        </h4>
                                         <p className="text-sm mb-4">
-                                            This patient doesn't have any campaigns assigned yet.
+                                            This patient doesn't have any
+                                            campaigns assigned yet.
                                         </p>
                                         <Button
                                             onClick={() => {
@@ -151,9 +183,15 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
                 onCampaignSelect={handleCampaignSelect}
                 showStartDate={true}
                 onUnassign={
-                    editingCampaign ? () => handleDeleteCampaign(editingCampaign.id) : undefined
+                    editingCampaign
+                        ? () => handleDeleteCampaign(editingCampaign.id)
+                        : undefined
                 }
-                url={user?.clinicId ? `${BACKEND_HOST}/v1/clinics/campaign/${user?.clinicId}` : undefined}
+                url={
+                    user?.clinicId
+                        ? `${BACKEND_HOST}/v1/clinics/campaign/${user?.clinicId}?limit=100`
+                        : undefined
+                }
             />
         </>
     );
