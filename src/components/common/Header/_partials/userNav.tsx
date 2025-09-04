@@ -27,6 +27,7 @@ import { appRoutes } from "@/lib/routes";
 
 export function UserNav() {
     const { user, logout } = useAuth();
+    console.log(user)
 
     return (
         <DropdownMenu>
@@ -45,8 +46,8 @@ export function UserNav() {
                                             alt={user.name}
                                         />
                                     ) : (
-                                        <AvatarFallback className="bg-transparent">
-                                            uk
+                                        <AvatarFallback className="bg-transparent capitalize">
+                                            {user?.email.split('@').at(0).split('').at(0)}
                                         </AvatarFallback>
                                     )}
                                 </Avatar>
