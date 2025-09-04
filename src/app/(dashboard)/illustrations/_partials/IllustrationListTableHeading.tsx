@@ -80,7 +80,7 @@ export const IllustrationListTableHeading = ({
             },
         },
         {
-            accessorKey: "name",
+            accessorKey: "title",
             header: ({ column }) => (
                 <Button
                     variant="ghost"
