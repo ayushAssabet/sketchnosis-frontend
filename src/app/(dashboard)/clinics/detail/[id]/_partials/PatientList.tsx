@@ -14,11 +14,11 @@ const PatientList = ({ patientList }: { patientList: ClinicInterface[] }) => {
             <h3 className="text-primary text-xl font-semibold flex justify-between items-center">
                 <span>Patients List</span>
                 <Link href={appRoutes.PATIENT_ACTION_PAGE}>
-                        <Button className="flex items-center space-x-2 mx-auto cursor-pointer">
-                            <Plus className="h-4 w-4" />
-                            <span>Enroll Patients</span>
-                        </Button>
-                    </Link>
+                    <Button className="flex items-center space-x-2 mx-auto cursor-pointer">
+                        <Plus className="h-4 w-4" />
+                        <span>Enroll Patients</span>
+                    </Button>
+                </Link>
             </h3>
             {patientList?.length > 0 ? (
                 <DataTable
@@ -51,7 +51,7 @@ const PatientList = ({ patientList }: { patientList: ClinicInterface[] }) => {
                     <Link href={appRoutes.PATIENT_ACTION_PAGE}>
                         <Button className="flex items-center space-x-2 mx-auto">
                             <Plus className="h-4 w-4" />
-                            <span>Assign First Campaign</span>
+                            <span>Enroll First Patient</span>
                         </Button>
                     </Link>
                 </div>
