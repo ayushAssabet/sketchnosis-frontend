@@ -27,7 +27,6 @@ import { appRoutes } from "@/lib/routes";
 
 export function UserNav() {
     const { user, logout } = useAuth();
-    console.log(user)
 
     return (
         <DropdownMenu>
