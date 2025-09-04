@@ -18,7 +18,10 @@ import { BACKEND_HOST } from "@/utils/constants";
 interface CampaignSelectorProps {
     selectedCampaign?: string | null;
     selectedStartDate?: string;
-    onCampaignSelect: (campaign: Campaign | null, startDate: string) => Promise<void> | any;
+    onCampaignSelect: (
+        campaign: Campaign | null,
+        startDate: string
+    ) => Promise<void> | any;
     placeholder?: string;
     disabled?: boolean;
     showStartDate?: boolean;
@@ -27,6 +30,7 @@ interface CampaignSelectorProps {
     open?: boolean; // NEW
     setOpen?: (val: boolean) => void; // NEW
     url?: string;
+    isClinic?: boolean;
 }
 
 const CampaignSelector: React.FC<CampaignSelectorProps> = ({
@@ -41,6 +45,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     open,
     setOpen,
     url,
+    isClinic = false,
 }) => {
     const { data } = useCampaignsList(url);
 
@@ -54,6 +59,9 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
     const [tempStartDate, setTempStartDate] = useState(selectedStartDate);
     const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
+
+    console.log(data);
+    console.log(url);
 
     const filteredCampaigns =
         campaigns &&
@@ -74,7 +82,6 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
         onInputChange?.(value);
     };
 
-
     const handleCancel = () => {
         actualSetOpen(false);
         setSearchTerm("");
@@ -83,7 +90,7 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
         setIsEditMode(false);
     };
 
-    const handleAssign = async() => {
+    const handleAssign = async () => {
         await onCampaignSelect(tempSelectedCampaign, tempStartDate);
         actualSetOpen(false);
         setSearchTerm("");
@@ -103,13 +110,12 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
         setTempSelectedCampaign(campaign);
     };
 
-
     useEffect(() => {
         if (data) {
-            if (url) {
-                setCampaigns(data?.data);
-            } else {
+            if (isClinic) {
                 setCampaigns(data?.data?.data ?? []);
+            } else {
+                setCampaigns(data?.data);
             }
         }
     }, [data]);

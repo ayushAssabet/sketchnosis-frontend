@@ -270,6 +270,7 @@ export const ClinicListTableHeading = ({
                                 mutate();
                                 setOpen(false);
                             }}
+                            isClinic
                             showStartDate={false}
                             onUnassign={
                                 editingCampaign

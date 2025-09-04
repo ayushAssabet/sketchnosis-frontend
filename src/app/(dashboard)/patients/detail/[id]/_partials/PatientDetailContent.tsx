@@ -187,6 +187,7 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
                         ? () => handleDeleteCampaign(editingCampaign.id)
                         : undefined
                 }
+                isClinic
                 url={
                     user?.clinicId
                         ? `${BACKEND_HOST}/v1/clinics/campaign/${user?.clinicId}?limit=100`

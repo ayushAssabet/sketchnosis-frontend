@@ -138,6 +138,7 @@ const ClinicCampaignList = ({
                 onUnassign={
                     editingCampaign ? () => handleDeleteCampaign(editingCampaign.id) : undefined
                 }
+                isClinic
                 url={`${BACKEND_HOST}/v1/campaign?limit=100`}
             />
         </div>

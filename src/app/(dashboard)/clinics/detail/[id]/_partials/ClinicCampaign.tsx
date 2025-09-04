@@ -43,10 +43,10 @@ const ClinicCampaignCard: React.FC<AssignedCampaignCardProps> = ({
     console.log(campaign);
 
     return (
-        <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+        <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
             {/* Campaign Header */}
-            <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
+            <div className="flex justify-between w-auto relative">
+                <div className="">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                         {campaign?.name}
                     </h3>
@@ -94,7 +94,7 @@ const ClinicCampaignCard: React.FC<AssignedCampaignCardProps> = ({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex items-center space-x-2 ml-4">
+                <div className="flex items-center space-x-2 ml-4 absolute top-2 right-2">
                     {/* {onEdit && (
                         <Button
                             variant="outline"

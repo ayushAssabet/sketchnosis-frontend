@@ -43,9 +43,9 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
     console.log(campaign);
 
     return (
-        <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+        <div className="bg-white border border-gray-200 rounded-lg p-2 shadow-sm">
             {/* Campaign Header */}
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex items-start justify-between relative">
                 <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                         {campaign?.name}
@@ -54,15 +54,9 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
                     {/* Campaign Tags */}
                     <div className="flex items-center space-x-2 mb-3">
                         {campaign.areaOfConcerns?.map((concern, index) => (
-                            <Badge
-                                key={index}
-                            >
-                                {concern.name}
-                            </Badge>
+                            <Badge key={index}>{concern.name}</Badge>
                         ))}
                     </div>
-
-                    
 
                     {/* Campaign Duration and Type */}
                     <div className="flex items-center space-x-4 mb-4">
@@ -94,7 +88,7 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex items-center space-x-2 ml-4">
+                <div className="flex items-center space-x-2 ml-4 absolute top-2 right-2">
                     {/* {onEdit && (
                         <Button
                             variant="outline"
