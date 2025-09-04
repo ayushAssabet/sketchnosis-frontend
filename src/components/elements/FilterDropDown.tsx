@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { useGetCategoriesList } from "@/features/categories/useGetCategories";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { mutate } from "swr";
+import { BACKEND_HOST } from "@/utils/constants";
 
 interface Category {
     id: string;
@@ -25,7 +26,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
-    const { data } = useGetCategoriesList();
+    const { data } = useGetCategoriesList(`${BACKEND_HOST}/v1/area-of-concern`);
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);

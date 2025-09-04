@@ -5,8 +5,9 @@ import React, {
   useCallback,
   InputHTMLAttributes,
 } from "react";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "../ui/button";
 
 interface DebouncedSearchProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> {
@@ -21,7 +22,7 @@ interface DebouncedSearchProps
 export const DebouncedSearch: React.FC<DebouncedSearchProps> = ({
   mutate,
   placeholder = "Search",
-  debounceMs = 500,
+  debounceMs = 800,
   minCharacters = 1,
   className = "",
   searchKey , 
@@ -93,25 +94,45 @@ export const DebouncedSearch: React.FC<DebouncedSearchProps> = ({
     }
   };
 
+  const handleClearFilter = () => {
+      setSearchTerm('')
+      router.push(window.location.pathname);
+  }
+
+  useEffect(() => {
+    if(searchParams.get(searchKey)){
+      setSearchTerm(searchParams.get(searchKey))
+    }
+  },[])
+
   return (
-    <div className={`search-field relative ${className}`}>
-      <input
-        name="q"
-        type="text"
-        value={searchTerm}
-        onChange={handleInputChange}
-        onKeyPress={handleKeyPress}
-        className="bg-gray-50 border border-gray-200 pl-8 pr-1 px-2 rounded-lg min-w-[300px] text-sm min-h-9 font-poppins"
-        placeholder={placeholder}
-        disabled={isLoading}
-        {...props}
-      />
-      <Search
-        size={14}
-        className={`absolute top-1/2 left-3 -translate-y-1/2 ${
-          isLoading ? "text-blue-500 animate-pulse" : "text-gray-400"
-        }`}
-      />
+    <div className="flex gap-4">
+      <div className={`search-field relative ${className}`}>
+        <input
+          name="q"
+          type="text"
+          value={searchTerm}
+          onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
+          className="bg-gray-50 border border-gray-200 pl-8 pr-1 px-2 rounded-lg min-w-[300px] text-sm min-h-9 font-poppins"
+          placeholder={placeholder}
+          disabled={isLoading}
+          {...props}
+        />
+        <Search
+          size={14}
+          className={`absolute top-1/2 left-3 -translate-y-1/2 ${
+            isLoading ? "text-blue-500 animate-pulse" : "text-gray-400"
+          }`}
+        />
+      </div>
+      {
+        searchParams.toString() != '' && 
+        <Button className="bg-red-400" onClick={handleClearFilter}>
+          <X />
+          Clear Filter
+        </Button>
+      }
     </div>
   );
 };

@@ -9,15 +9,16 @@ import { useContext } from "react";
 import { IllustrationContext } from "@/contexts/IllustrationContextProvider";
 import { appRoutes } from "@/lib/routes";
 import { mutate } from "swr";
+import { useGetAllIllustration } from "@/features/illustrations/useGetIllustrationDetail";
 
 const IllustrationContent: React.FC = () => {
-    const { mutateIllustration, illustration , meta ,isLoading } =
-        useContext(IllustrationContext);
+
+    const { mutate , data , isLoading } = useGetAllIllustration(); 
 
     return (
         <>
             <div className="flex justify-between items-center">
-                <DebouncedSearch mutate={mutateIllustration} key={'name'} />
+                <DebouncedSearch mutate={mutate} searchKey={'name'} />
                 <div className="space-x-5">
                     <AppAddButton
                         href={appRoutes.ILLUSTRATIONS_ACTION_PAGE}
@@ -26,17 +27,17 @@ const IllustrationContent: React.FC = () => {
                     <FilterDropdown />
                 </div>
             </div>
-            <IllustrationList illustrationList={illustration ?? []} isLoading={isLoading} mutate={mutateIllustration} />
+            <IllustrationList illustrationList={data?.data?.data ?? []} isLoading={isLoading} mutate={mutate} />
             <div className="flex items-center justify-between mt-12">
                 <Pagination
-                    currentPage={meta?.currentPage}
-                    totalPages={meta?.lastPage}
-                    mutate={mutateIllustration}
+                    currentPage={data?.data?.meta?.currentPage}
+                    totalPages={data?.data?.meta?.lastPage}
+                    mutate={mutate}
                 />
                 <PageSelector
-                    currentCount={meta?.currentPage}
-                    totalCount={meta?.currentPage}
-                    mutate={mutateIllustration}
+                    currentCount={data?.data?.meta?.currentPage}
+                    totalCount={data?.data?.meta?.currentPage}
+                    mutate={mutate}
                 />
             </div>
         </>

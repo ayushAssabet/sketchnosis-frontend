@@ -128,18 +128,7 @@ export const PatientListTableHeading = ({
         },
         {
             accessorKey: "campaign",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    className="text-xs uppercase !hover:bg-transparent !px-0"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Campaign
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-            ),
+            header: "campaign",
             cell: ({ row }) => {
                 const campaigns = row.original?.patientCampaigns || [];
 
@@ -252,20 +241,7 @@ export const PatientListTableHeading = ({
             ? [
                   {
                       accessorKey: "clinic",
-                      header: ({ column }: { column: any }) => (
-                          <Button
-                              variant="ghost"
-                              className="text-xs uppercase !hover:bg-transparent !px-0"
-                              onClick={() =>
-                                  column.toggleSorting(
-                                      column.getIsSorted() === "asc"
-                                  )
-                              }
-                          >
-                              Clinic
-                              <ArrowUpDown className="ml-1 h-4 w-4" />
-                          </Button>
-                      ),
+                      header: "clinic",
                       cell: ({ row }: { row: any }) => (
                           <div className="capitalize">
                               {row?.original?.clinic?.name ? (
@@ -283,18 +259,7 @@ export const PatientListTableHeading = ({
 
         {
             accessorKey: "areaOfConcerns",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    className="text-xs uppercase !hover:bg-transparent !px-0"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Area of Concern
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-            ),
+            header: "areaOfConcerns",
             cell: ({ row }) => {
                 const categories = row.original?.areaOfConcerns || [];
 
@@ -346,54 +311,21 @@ export const PatientListTableHeading = ({
         },
         {
             accessorKey: "email",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    className="text-xs uppercase !hover:bg-transparent !px-0"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Email
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-            ),
+            header: "email",
             cell: ({ row }) => (
                 <div className="lowercase">{row.original?.email ?? "-"}</div>
             ),
         },
         {
             accessorKey: "phone",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    className="text-xs uppercase !hover:bg-transparent !px-0"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Phone
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-            ),
+            header: "phone",
             cell: ({ row }) => (
                 <div className="lowercase">{row.original?.phone ?? "-"}</div>
             ),
         },
         {
             accessorKey: "gender",
-            header: ({ column }) => (
-                <Button
-                    variant="ghost"
-                    className="text-xs uppercase !hover:bg-transparent !px-0"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Gender
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-            ),
+            header: "gender",
             cell: ({ row }) => (
                 <div className="lowercase">{row.original?.gender ?? "-"}</div>
             ),
