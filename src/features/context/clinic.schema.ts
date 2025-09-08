@@ -22,7 +22,7 @@ export const clinicSchema = z.object({
         .optional(),
     phone: z
         .string()
-        .regex(/^\d+$/, "Phone number must contain only digits")
+        // .regex(/^\d+$/, "Phone number must contain only digits")
         .min(10, "Phone number must be at least 10 digits")
         .optional(),
     logo: z

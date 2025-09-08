@@ -25,6 +25,9 @@ import CampaignSelector from "@/components/elements/SelectCampaignDialog";
 import { useClinicCampaign } from "@/features/clinicCampaign/useClinicCampaign";
 import { useSearchParams } from "next/navigation";
 import { BACKEND_HOST } from "@/utils/constants";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
+import { hasPermission } from "@/helpers/permission.helper";
+import { permissions } from "@/utils/permissions";
 
 export const ClinicListTableHeading = ({
     onDelete,
@@ -35,6 +38,16 @@ export const ClinicListTableHeading = ({
 }): ColumnDef<any>[] => {
     const { addClinicCampaign } = useClinicCampaign(mutate);
     const searchParams = useSearchParams();
+    const { data: permissionData } = useGetAllPermissionsByUserId();
+    const canUpdate = hasPermission(
+        [permissions.EDIT_CLINIC],
+        permissionData?.data
+    );
+    const canDelete = hasPermission(
+        [permissions.DELETE_CAMPAIGN],
+        permissionData?.data
+    );
+
     return [
         {
             accessorKey: "id",
@@ -345,15 +358,6 @@ export const ClinicListTableHeading = ({
             enableHiding: false,
             header: "Actions",
             cell: ({ row }) => {
-                const handleDelete = () => {
-                    if (
-                        confirm("Are you sure you want to delete this clinic?")
-                    ) {
-                        // 🔥 Call your deleteClinic function here
-                        console.log("Delete clinic with ID:", row.original?.id);
-                    }
-                };
-
                 return (
                     <div className="space-x-1">
                         <TooltipProvider>
@@ -376,42 +380,47 @@ export const ClinicListTableHeading = ({
                                 <TooltipContent>View Detail</TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
-
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href={
-                                            appRoutes.CLINIC_ACTION_PAGE +
-                                            `?update=${row.original?.id}`
-                                        }
-                                    >
-                                        <Button
-                                            variant="ghost"
-                                            className="!px-2 cursor-pointer text-green-500"
+                        {canUpdate && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={
+                                                appRoutes.CLINIC_ACTION_PAGE +
+                                                `?update=${row.original?.id}`
+                                            }
                                         >
-                                            <Edit />
-                                        </Button>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent>Edit Detail</TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
+                                            <Button
+                                                variant="ghost"
+                                                className="!px-2 cursor-pointer text-green-500"
+                                            >
+                                                <Edit />
+                                            </Button>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent>Edit Detail</TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
 
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <DeleteButtonWithConfirmDialog
-                                        title="Delete Clinic?"
-                                        description={`This will permanently delete "${row.original?.name}".`}
-                                        onConfirm={() =>
-                                            onDelete(row.original?.id)
-                                        }
-                                    />
-                                </TooltipTrigger>
-                                <TooltipContent>Delete Clinic</TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
+                        {canDelete && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <DeleteButtonWithConfirmDialog
+                                            title="Delete Clinic?"
+                                            description={`This will permanently delete "${row.original?.name}".`}
+                                            onConfirm={() =>
+                                                onDelete(row.original?.id)
+                                            }
+                                        />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        Delete Clinic
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
                     </div>
                 );
             },

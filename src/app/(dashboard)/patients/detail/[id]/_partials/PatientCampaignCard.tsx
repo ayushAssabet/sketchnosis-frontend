@@ -43,9 +43,9 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
     console.log(campaign);
 
     return (
-        <div className="bg-white border border-gray-200 rounded-lg p-2 shadow-sm">
+        <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
             {/* Campaign Header */}
-            <div className="flex items-start justify-between relative">
+            <div className="flex items-start justify-between relative ">
                 <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                         {campaign?.name}
@@ -118,38 +118,3 @@ const PatientCampaignCard: React.FC<AssignedCampaignCardProps> = ({
 
 export default PatientCampaignCard;
 
-// // Example usage component
-// const AssignedCampaignExample = () => {
-//   const sampleCampaign = {
-//     id: "1",
-//     name: "Heart Health Awareness Campaign",
-//     description: "Take a moment for your heart! This campaign shares easy-to-understand tips, visuals, and facts about keeping your heart healthy. Learn about steps to watch for, lifestyle changes you can make, and how to care for your heart – all through simple illustrations and guides.",
-//     numberOfDays: 120,
-//     repeatType: "daily",
-//     status: "active",
-//     areaOfConcerns: [
-//       { id: "1", name: "Cardiology" }
-//     ]
-//   };
-
-//   const handleEdit = () => {
-//     console.log("Edit campaign clicked");
-//   };
-
-//   const handleDelete = () => {
-//     console.log("Delete campaign clicked");
-//   };
-
-//   return (
-//     <div className="p-6 bg-gray-50 min-h-screen">
-//       <AssignedCampaignCard
-//         campaign={sampleCampaign}
-//         startDate="2025-01-15"
-//         onEdit={handleEdit}
-//         onDelete={handleDelete}
-//       />
-//     </div>
-//   );
-// };
-
-// export default AssignedCampaignExample;

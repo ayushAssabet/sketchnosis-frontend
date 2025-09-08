@@ -15,7 +15,7 @@ type Submenu = {
     href: string;
     label: string;
     active?: boolean;
-    hasPermisson? :boolean
+    hasPermisson?: boolean;
 };
 
 type Menu = {
@@ -24,7 +24,7 @@ type Menu = {
     active?: boolean;
     icon: LucideIcon;
     submenus?: Submenu[];
-    hasPermission? : string[]
+    hasPermission?: string[];
 };
 
 type Group = {
@@ -41,7 +41,6 @@ export function getMenuList(): Group[] {
                     href: appRoutes.DASHBOARD_INDEX_PAGE,
                     label: "Dashboard",
                     icon: LayoutGrid,
-
                 },
             ],
         },
@@ -52,7 +51,7 @@ export function getMenuList(): Group[] {
                     href: appRoutes.CATEGORY_INDEX_PAGE,
                     label: "Area of Concerns",
                     icon: Shapes,
-                    hasPermission : [permissions.VIEW_CATEGORY]
+                    hasPermission: [permissions.VIEW_CATEGORY],
                 },
             ],
         },
@@ -63,7 +62,7 @@ export function getMenuList(): Group[] {
                     href: appRoutes.CLINIC_INDEX_PAGE,
                     label: "Clinics",
                     icon: PlusSquare,
-                    hasPermission : [permissions.VIEW_CLINIC]
+                    hasPermission: [permissions.VIEW_CLINIC],
                 },
             ],
         },
@@ -74,7 +73,7 @@ export function getMenuList(): Group[] {
                     href: appRoutes.PATIENT_INDEX_PAGE,
                     label: "Patients",
                     icon: Users,
-                    hasPermission : [permissions.VIEW_PATIENT]
+                    hasPermission: [permissions.VIEW_PATIENT],
                 },
             ],
         },
@@ -85,7 +84,7 @@ export function getMenuList(): Group[] {
                     href: appRoutes.CAMPAIGN_INDEX_PAGE,
                     label: "Campaigns",
                     icon: Megaphone,
-                    hasPermission : [permissions.VIEW_CAMPAIGN]
+                    hasPermission: [permissions.VIEW_CAMPAIGN],
                 },
             ],
         },
@@ -96,7 +95,7 @@ export function getMenuList(): Group[] {
                     href: appRoutes.ILLUSTRATIONS_INDEX_PAGE,
                     label: "Illustrations",
                     icon: Palette,
-                    hasPermission : [permissions.VIEW_ILLUSTRATION]
+                    hasPermission: [permissions.VIEW_ILLUSTRATION],
                 },
             ],
         },
@@ -107,7 +106,18 @@ export function getMenuList(): Group[] {
                     href: appRoutes.PERMISSION_MANAGEMENT_INDEX_PAGE,
                     label: "Access Management",
                     icon: Shield,
-                    hasPermission : [permissions.VIEW_ADMIN]
+                    hasPermission: [permissions.VIEW_ADMIN],
+                },
+            ],
+        },
+        {
+            groupLabel: "",
+            menus: [
+                {
+                    href: appRoutes.ADMIN_MANAGEMENT_INDEX_PAGE,
+                    label: "Admin Management",
+                    icon: Shield,
+                    hasPermission: [permissions.VIEW_ADMIN],
                 },
             ],
         },

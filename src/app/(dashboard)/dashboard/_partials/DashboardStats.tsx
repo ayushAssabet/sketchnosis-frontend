@@ -55,7 +55,7 @@ const DashboardStats = () => {
                     title="SMS Devlivery Rate"
                     color="pink"
                     icon={MessageCircleMore}
-                    stats={data?.smsSuccessRate}
+                    stats={`${data?.smsSuccessRate}%`}
                 />
                 <KPICard
                     title="Today's Campaign"

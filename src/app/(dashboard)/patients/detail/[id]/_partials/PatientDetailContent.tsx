@@ -80,7 +80,7 @@ const PatientDetailProfileContent = ({ id }: { id: string }) => {
                     },
                 ]}
             >
-                <CommonContainer title="campaign-list-section">
+                <CommonContainer title="Patient Detail">
                     <div className="py-10 px-12">
                         <PatientDetailProfileHeader entity={data?.data} />
 

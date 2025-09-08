@@ -12,13 +12,14 @@ export const appRoutes = {
 
     DASHBOARD_INDEX_PAGE: "/dashboard",
 
-    FORGOT_PASSWORD_INDEX_PAGE: '/auth/reset-password',
+    FORGOT_PASSWORD_INDEX_PAGE: "/auth/reset-password",
 
     ILLUSTRATIONS_INDEX_PAGE: "/illustrations",
 
     PATIENT_INDEX_PAGE: "/patients",
     PATIENT_DETAIL_PAGE: "/patients/detail/:id",
     PERMISSION_MANAGEMENT_INDEX_PAGE: "/access",
+    ADMIN_MANAGEMENT_INDEX_PAGE: "/access/user",
 
     // action pages
     CLINIC_ACTION_PAGE: "/clinics/action",
@@ -29,10 +30,10 @@ export const appRoutes = {
     USER_PROFILE_INDEX: "/account/profile",
     USER_CHANGE_PASSWORD_INDEX: "/account/change-password",
 
-    INVITATION_SUCCESS_INDEX_PAGE : '/invite/success',
+    INVITATION_SUCCESS_INDEX_PAGE: "/invite/success",
 
-    POLICY : '/view/policy',
-    TERMS : '/view/terms',
+    POLICY: "/view/policy",
+    TERMS: "/view/terms",
 
-    FORBIDDEN_PAGE : '/forbidden'
+    FORBIDDEN_PAGE: "/forbidden",
 };

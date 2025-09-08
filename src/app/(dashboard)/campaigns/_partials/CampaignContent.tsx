@@ -10,9 +10,18 @@ import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
 import CampaignList from "./CampaignList";
 import { useCampaignsList } from "@/features/campaigns/hooks/useGetCampaigns";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
+import { hasPermission } from "@/helpers/permission.helper";
+import { permissions } from "@/utils/permissions";
 
 const CampaignContent: React.FC = () => {
     const { data, isLoading, mutate } = useCampaignsList();
+
+    const { data: permissionData } = useGetAllPermissionsByUserId();
+    const canAdd = hasPermission(
+        [permissions.EDIT_CLINIC],
+        permissionData?.data
+    );
 
     return (
         <div>
@@ -27,14 +36,20 @@ const CampaignContent: React.FC = () => {
                         <div className="flex justify-between items-center">
                             <DebouncedSearch mutate={mutate} searchKey="name" />
                             <div className="space-x-5">
-                                <AppAddButton
-                                    href={appRoutes.CAMPAIGN_ACTION_PAGE}
-                                    title="Add Campaign"
-                                />
-                                <FilterDropdown mutate={mutate}/>
+                                {canAdd && (
+                                    <AppAddButton
+                                        href={appRoutes.CAMPAIGN_ACTION_PAGE}
+                                        title="Add Campaign"
+                                    />
+                                )}
+                                <FilterDropdown mutate={mutate} />
                             </div>
                         </div>
-                        <CampaignList CampaignList={data?.data?.data ?? []} isLoading={isLoading} mutate={mutate} />
+                        <CampaignList
+                            CampaignList={data?.data?.data ?? []}
+                            isLoading={isLoading}
+                            mutate={mutate}
+                        />
                         <div className="flex items-center justify-between mt-12">
                             <Pagination
                                 currentPage={data?.data?.meta.currentPage}

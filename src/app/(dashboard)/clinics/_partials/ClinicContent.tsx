@@ -10,10 +10,17 @@ import PageSelector from "@/components/elements/PageSelector";
 import { useGetClinicList } from "@/features/context/useGetClinic";
 import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
+import { hasPermission } from "@/helpers/permission.helper";
+import { permissions } from "@/utils/permissions";
 
 const ClinicContent: React.FC = () => {
-    
     const { data, isLoading, mutate } = useGetClinicList();
+    const { data: permissionData } = useGetAllPermissionsByUserId();
+    const canAdd = hasPermission(
+        [permissions.ADD_CLINIC],
+        permissionData?.data
+    );
 
     return (
         <div>
@@ -31,15 +38,21 @@ const ClinicContent: React.FC = () => {
                                 placeholder="Search Clinic"
                                 searchKey="name"
                             />
-                            <div className="space-x-5">
-                                <AppAddButton
-                                    href={appRoutes.CLINIC_ACTION_PAGE}
-                                    title="Add Clinic"
-                                />
-                                <FilterDropdown mutate={mutate} />
-                            </div>
+                            {canAdd && (
+                                <div className="space-x-5">
+                                    <AppAddButton
+                                        href={appRoutes.CLINIC_ACTION_PAGE}
+                                        title="Add Clinic"
+                                    />
+                                    <FilterDropdown mutate={mutate} />
+                                </div>
+                            )}
                         </div>
-                        <ClinicList clinicList={data?.data?.data ?? []} isLoading={isLoading} mutate={mutate} />
+                        <ClinicList
+                            clinicList={data?.data?.data ?? []}
+                            isLoading={isLoading}
+                            mutate={mutate}
+                        />
                         <div className="flex items-center justify-between mt-12">
                             <Pagination
                                 currentPage={data?.data?.meta?.currentPage}

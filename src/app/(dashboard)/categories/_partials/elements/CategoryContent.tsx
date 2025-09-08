@@ -3,8 +3,6 @@
 import { appRoutes } from "@/lib/routes";
 import AppAddButton from "@/components/elements/AddButton";
 import { DebouncedSearch } from "@/components/elements/DebouncedSearch";
-import Pagination from "@/components/elements/Pagination";
-import PageSelector from "@/components/elements/PageSelector";
 import CommonContainer from "@/components/elements/CommonContainer";
 import PrivateView from "@/views/PrivateView";
 import CategoryList from "./CategoryList";
@@ -12,11 +10,19 @@ import { useGetCategoriesList } from "@/features/categories/useGetCategories";
 import { useEffect, useState } from "react";
 import CategoryActionModal from "../actions/CategoryActionModal";
 import { categoryInterface } from "@/interface/category.interface";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
+import { permissions } from "@/utils/permissions";
+import { hasPermission } from "@/helpers/permission.helper";
 
 const CategoryContent: React.FC = () => {
     const { data, isLoading, mutate } = useGetCategoriesList();
     const [showActionModal, setShowActionModal] = useState<boolean>(false);
     const [editItem, setEditItem] = useState<categoryInterface | null>();
+    
+    
+    const { data : permissionData } = useGetAllPermissionsByUserId()
+    const canAdd = hasPermission([permissions.ADD_CATEGORY] , permissionData?.data)
+    
 
     useEffect(() => {
         if (!showActionModal) {
@@ -24,7 +30,6 @@ const CategoryContent: React.FC = () => {
         }
     }, [showActionModal]);
 
-    console.log(data)
 
     return (
         <div>
@@ -37,7 +42,7 @@ const CategoryContent: React.FC = () => {
                     },
                 ]}
             >
-                <CommonContainer title="clinic-list-section">
+                <CommonContainer title="area-of-concern-list-section">
                     <>
                         <div className="flex justify-between items-center">
                             <DebouncedSearch
@@ -46,10 +51,13 @@ const CategoryContent: React.FC = () => {
                                 searchKey="name"
                             />
                             <div className="space-x-5">
-                                <AppAddButton
-                                    title="Add Area of Concern"
-                                    onClick={() => setShowActionModal(true)}
-                                />
+                                {
+                                    canAdd && 
+                                    <AppAddButton
+                                        title="Add Area of Concern"
+                                        onClick={() => setShowActionModal(true)}
+                                    />
+                                }
                             </div>
                         </div>
                         <CategoryList
@@ -58,18 +66,6 @@ const CategoryContent: React.FC = () => {
                             setEditItem={setEditItem}
                             mutate={mutate}
                         />
-                        {/* <div className="flex items-center justify-between mt-12">
-                            <Pagination
-                                currentPage={data?.data?.currentPage}
-                                totalPages={data?.data?.lastPage}
-                                onPageChange={() => {}}
-                            />
-                            <PageSelector
-                                currentCount={data?.data?.perPage}
-                                totalCount={data?.data?.total}
-                                onCountChange={() => {}}
-                            />
-                        </div> */}
 
                         <CategoryActionModal
                             editItem={editItem}

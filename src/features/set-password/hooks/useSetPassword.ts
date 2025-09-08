@@ -16,7 +16,7 @@ interface FormErrors {
     confirmPassword?: string;
 }
 
-export const useChangePassword = (token: string) => {
+export const useChangePassword = (token: string , isAdmin : boolean) => {
     const { showToast } = useToast();
     const router = useRouter();
     const [formData, setFormData] = useState<ChangePasswordFormData>({
@@ -29,23 +29,28 @@ export const useChangePassword = (token: string) => {
 
     const validateField = (
         name: keyof ChangePasswordFormData,
-        value: string
+        value: string,
+        nextFormData: ChangePasswordFormData
     ) => {
         try {
+            setErrors((prev) => ({ ...prev, [name]: undefined }));
+
             changePasswordBase
                 .pick({ newPassword: true, confirmPassword: true })
                 .parse({
-                    newPassword: formData.newPassword,
-                    confirmPassword: value,
+                    newPassword: nextFormData.newPassword,
+                    confirmPassword: nextFormData.confirmPassword,
                 });
-
-            setErrors((prev) => ({ ...prev, [name]: undefined }));
         } catch (error) {
             if (error instanceof z.ZodError) {
-                setErrors((prev) => ({
-                    ...prev,
-                    [name]: error.errors[0]?.message,
-                }));
+                const firstError = error.errors[0];
+                if (firstError?.path[0]) {
+                    setErrors((prev) => ({
+                        ...prev,
+                        [firstError.path[0] as keyof FormErrors]:
+                            firstError.message,
+                    }));
+                }
             }
         }
     };
@@ -53,8 +58,10 @@ export const useChangePassword = (token: string) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
-
-        validateField(name as keyof ChangePasswordFormData, value);
+        validateField(name as keyof ChangePasswordFormData, value, {
+            ...formData,
+            [name]: value,
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -68,7 +75,7 @@ export const useChangePassword = (token: string) => {
             setErrors({});
 
             const res = await fetch(
-                `${BACKEND_HOST}/v1/password/set/${token}`,
+                `${BACKEND_HOST}/v1/password/set/${token}${isAdmin ? '?isAdmin=true' : ''}`,
                 {
                     method: "POST",
                     headers: {
@@ -81,6 +88,8 @@ export const useChangePassword = (token: string) => {
                 }
             );
             const data = await res.json();
+            if(!res.ok) throw new Error(data?.message || 'Something went wrong');
+            
             showToast({
                 variant: "success",
                 description: data?.message,

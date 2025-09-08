@@ -2,7 +2,6 @@
 
 import DataTable from "@/components/common/DataTable/DataTable";
 import { ClinicInterface } from "@/interface/clinic.interface";
-import { useClinic } from "@/features/context/useClinicActions";
 import { PatientListTableHeading } from "./PatientsListTableHeading";
 import { usePatient } from "@/features/patients/usePatientAction";
 
@@ -16,6 +15,7 @@ const PatientList = ({
     mutate: () => Promise<void>;
 }) => {
     const { deletePatient } = usePatient(mutate);
+    
     return (
         <div className="min-h-[60vh]">
             <DataTable

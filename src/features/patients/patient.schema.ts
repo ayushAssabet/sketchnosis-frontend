@@ -16,9 +16,9 @@ export const patientSchema = z
         phone: z
             .string()
             .min(1, "Phone number is required")
-            .refine((val) => /^\d+$/.test(val), {
-                message: "Phone number must contain only digits",
-            })
+            // .refine((val) => /^\d+$/.test(val), {
+            //     message: "Phone number must contain only digits",
+            // })
             .refine((val) => val.length >= 10, {
                 message: "Phone number must be at least 10 digits",
             }),

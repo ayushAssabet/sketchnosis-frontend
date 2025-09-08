@@ -2,6 +2,7 @@ import LoadingButton from "@/components/elements/LoadingButton";
 import AsyncSearchableDropdown from "@/components/elements/SearchableCategorySelect";
 import AppDropZone from "@/components/forms/DropZone";
 import AppInputField from "@/components/forms/InputField";
+import PhoneInputField from "@/components/forms/PhoneField";
 import AppTextArea from "@/components/forms/TextArea";
 import { Button } from "@/components/ui/button";
 import { useClinicActionForm } from "@/features/context/useClinicActionForm";
@@ -20,7 +21,7 @@ const ClinicActionForm: React.FC<{
     const searchParams = useSearchParams();
     const clinicId = searchParams.get("update");
 
-    const { formData, handleChange, errors, setFormData, validateForm } =
+    const { formData, handleChange, errors, setFormData, validateForm , handlePhoneChange } =
         useClinicActionForm();
 
     const { addClinic, updateClinic, isAddingClinic, isUpdatingClinic } =
@@ -152,20 +153,19 @@ const ClinicActionForm: React.FC<{
                     variant="dashboard"
                     required
                 />
-                <AppInputField
+                <PhoneInputField 
                     id="phone"
                     name="phone"
                     className=" text-sm"
                     label="Contact Person Number"
-                    type="number"
                     value={formData?.phone ?? ""}
-                    onChange={handleChange}
+                    onChange={handlePhoneChange}
                     placeholder="Eg: 9745716809 "
                     error={errors?.phone}
                     disabled={isAddingClinic || isUpdatingClinic}
                     variant="dashboard"
                     required
-                    readonly={isUpdate}
+                    readOnly={isUpdate}
                 />
                 <div className="col-span-2">
                     <AppTextArea

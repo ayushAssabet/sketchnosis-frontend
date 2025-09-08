@@ -1,31 +1,43 @@
 "use client";
 
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { FormEvent, useEffect, useMemo } from "react";
+
 import LoadingButton from "@/components/elements/LoadingButton";
 import AsyncSearchableDropdown from "@/components/elements/SearchableCategorySelect";
 import AppInputField from "@/components/forms/InputField";
 import AppTextArea from "@/components/forms/TextArea";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import PhoneInputField from "@/components/forms/PhoneField";
+
+import { appRoutes } from "@/lib/routes";
+import { BACKEND_HOST } from "@/utils/constants";
+
 import { usePatient } from "@/features/patients/usePatientAction";
 import { usePatientActionForm } from "@/features/patients/usePatientActionForm";
 import { useGetPatientDetail } from "@/features/patients/useGetPatient";
-import { appRoutes } from "@/lib/routes";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useMemo } from "react";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/features/login/context/AuthContextProvider";
-import { BACKEND_HOST } from "@/utils/constants";
 
 const PatientActionForm: React.FC<{
     isUpdate: boolean;
 }> = ({ isUpdate }) => {
     const searchParams = useSearchParams();
     const patientId = searchParams.get("update");
-    
+
     const { user } = useAuth();
 
-    const { formData, handleChange, errors, setFormData, validateForm } =
-        usePatientActionForm();
+    const {
+        formData,
+        handleChange,
+        errors,
+        setFormData,
+        validateForm,
+        handleGenderChange,
+        handlePhoneChange,
+        handleAreaOfConcernsChange,
+    } = usePatientActionForm();
 
     const { addPatient, updatePatient, isAddingPatient, isUpdatingPatient } =
         usePatient();
@@ -36,9 +48,7 @@ const PatientActionForm: React.FC<{
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("submitting");
         const result = validateForm();
-        console.log(result);
         if (!result.success) return;
         isUpdate ? updatePatient(patientId!, formData!) : addPatient(formData!);
     };
@@ -53,36 +63,6 @@ const PatientActionForm: React.FC<{
             ) ?? []
         );
     }, [data]);
-
-    const handleAreaOfConcernsChange = (
-        selected: { label: string; value: string }[]
-    ) => {
-        console.log(selected);
-        setFormData((prev) => ({
-            ...prev,
-            areaOfConcernIds: selected.map((item) => item.value),
-        }));
-    };
-
-    const handleGenderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = e.target.value as unknown as "male" | "female" | "other";
-        setFormData((prev) => ({
-            ...prev,
-            gender: value,
-        }));
-    };
-
-    const handleCampaignSelect = (campaign: any, startDate?: string) => {
-        setFormData((prev) => ({
-            ...prev,
-            campaign: [
-                {
-                    id: campaign?.id || null,
-                    startDate: startDate || null,
-                },
-            ],
-        }));
-    };
 
     useEffect(() => {
         if (data?.data && patientId) {
@@ -101,6 +81,8 @@ const PatientActionForm: React.FC<{
             });
         }
     }, [data, setFormData]);
+
+    console.log(formData);
 
     return (
         <>
@@ -153,20 +135,19 @@ const PatientActionForm: React.FC<{
                     readonly={isUpdate}
                 />
 
-                <AppInputField
+                <PhoneInputField
                     id="phone"
                     name="phone"
                     className="text-sm"
                     label="Phone Number"
-                    type="tel"
                     value={formData?.phone ?? ""}
-                    onChange={handleChange}
+                    onChange={handlePhoneChange}
                     placeholder="Eg: 9745716809"
                     error={errors?.phone}
                     disabled={isAddingPatient || isUpdatingPatient}
                     variant="dashboard"
                     required
-                    readonly={isUpdate}
+                    readOnly={isUpdate}
                 />
 
                 <AppInputField

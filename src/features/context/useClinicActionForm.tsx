@@ -26,6 +26,13 @@ export const useClinicActionForm = (data? : ClinicFormData | null) => {
         setFormData((prev) =>({...prev , [id] : id == 'phone' ? value.toString() : value}) )
     }
 
+    const handlePhoneChange = (value : string | undefined) => {
+        setFormData((prev) => ({
+            ...prev,
+            phone : value || ''
+        }));
+    }
+
     const validateForm = () => {
         try {
         const validated = clinicSchema.parse(formData);
@@ -51,6 +58,7 @@ export const useClinicActionForm = (data? : ClinicFormData | null) => {
         handleChange,
         errors , 
         setErrors,
-        validateForm
+        validateForm,
+        handlePhoneChange
     }
 }

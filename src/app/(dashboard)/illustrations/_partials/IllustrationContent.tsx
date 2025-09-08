@@ -5,29 +5,40 @@ import FilterDropdown from "@/components/elements/FilterDropDown";
 import Pagination from "@/components/elements/Pagination";
 import PageSelector from "@/components/elements/PageSelector";
 import IllustrationList from "./IllustrationsList";
-import { useContext } from "react";
-import { IllustrationContext } from "@/contexts/IllustrationContextProvider";
 import { appRoutes } from "@/lib/routes";
-import { mutate } from "swr";
 import { useGetAllIllustration } from "@/features/illustrations/useGetIllustrationDetail";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
+import { permissions } from "@/utils/permissions";
+import { hasPermission } from "@/helpers/permission.helper";
 
 const IllustrationContent: React.FC = () => {
+    const { mutate, data, isLoading } = useGetAllIllustration();
 
-    const { mutate , data , isLoading } = useGetAllIllustration(); 
+    const { data: permissionData } = useGetAllPermissionsByUserId();
+    const canAdd = hasPermission(
+        [permissions.ADD_ILLUSTRATION],
+        permissionData?.data
+    );
 
     return (
         <>
             <div className="flex justify-between items-center">
-                <DebouncedSearch mutate={mutate} searchKey={'name'} />
+                <DebouncedSearch mutate={mutate} searchKey={"name"} />
                 <div className="space-x-5">
-                    <AppAddButton
-                        href={appRoutes.ILLUSTRATIONS_ACTION_PAGE}
-                        title="Add illustration"
-                    />
+                    {canAdd && (
+                        <AppAddButton
+                            href={appRoutes.ILLUSTRATIONS_ACTION_PAGE}
+                            title="Add illustration"
+                        />
+                    )}
                     <FilterDropdown />
                 </div>
             </div>
-            <IllustrationList illustrationList={data?.data?.data ?? []} isLoading={isLoading} mutate={mutate} />
+            <IllustrationList
+                illustrationList={data?.data?.data ?? []}
+                isLoading={isLoading}
+                mutate={mutate}
+            />
             <div className="flex items-center justify-between mt-12">
                 <Pagination
                     currentPage={data?.data?.meta?.currentPage}

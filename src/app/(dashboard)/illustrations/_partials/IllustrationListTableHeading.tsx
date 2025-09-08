@@ -25,6 +25,9 @@ import { IllustrationPreviewDialog } from "./IllustrationPreviewDialog";
 import StatusDropdown from "@/components/elements/ChangeStatus";
 import { BACKEND_HOST } from "@/utils/constants";
 import { useSearchParams } from "next/navigation";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
+import { hasPermission } from "@/helpers/permission.helper";
+import { permissions } from "@/utils/permissions";
 
 export const IllustrationListTableHeading = ({
     onDelete,
@@ -34,6 +37,16 @@ export const IllustrationListTableHeading = ({
     changeStatus: (url: string) => void;
 }): ColumnDef<any>[] => {
     const searchParams = useSearchParams();
+
+    const { data: permissionData } = useGetAllPermissionsByUserId();
+    const canUpdate = hasPermission(
+        [permissions.EDIT_ILLUSTRATION],
+        permissionData?.data
+    );
+    const canDelete = hasPermission(
+        [permissions.DELETE_ILLUSTRATION],
+        permissionData?.data
+    );
     return [
         {
             id: "select",
@@ -198,6 +211,16 @@ export const IllustrationListTableHeading = ({
                 console.log(row);
                 return (
                     <div className="space-x-1 flex">
+                        {canUpdate && (
+                            <StatusDropdown
+                                currentStatus={row?.original?.isPublished}
+                                onChange={() =>
+                                    changeStatus(
+                                        `${BACKEND_HOST}/v1/illustration/${row?.original?.id}`
+                                    )
+                                }
+                            />
+                        )}
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
@@ -207,48 +230,46 @@ export const IllustrationListTableHeading = ({
                                 <TooltipContent>View Detail</TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
-
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href={
-                                            appRoutes.ILLUSTRATIONS_ACTION_PAGE +
-                                            `?update=${row.original?.id}`
-                                        }
-                                    >
-                                        <Button
-                                            variant="ghost"
-                                            className="!px-2 cursor-pointer text-green-500"
+                        {canUpdate && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={
+                                                appRoutes.ILLUSTRATIONS_ACTION_PAGE +
+                                                `?update=${row.original?.id}`
+                                            }
                                         >
-                                            <Edit />
-                                        </Button>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent>Edit</TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-
-                        {/* <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <DeleteButtonWithConfirmDialog
-                                        title="Delete Illustration?"
-                                        description={`This will permanently delete "${row.original?.title}".`}
-                                        onConfirm={() => onDelete(row.original?.id)}
-                                    />
-                                </TooltipTrigger>
-                                <TooltipContent>Delete Clinic</TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider> */}
-                        <StatusDropdown
-                            currentStatus={row?.original?.isPublished}
-                            onChange={() =>
-                                changeStatus(
-                                    `${BACKEND_HOST}/v1/illustration/${row?.original?.id}`
-                                )
-                            }
-                        />
+                                            <Button
+                                                variant="ghost"
+                                                className="!px-2 cursor-pointer text-green-500"
+                                            >
+                                                <Edit />
+                                            </Button>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent>Edit</TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
+                        {canDelete && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <DeleteButtonWithConfirmDialog
+                                            title="Delete Illustration?"
+                                            description={`This will permanently delete "${row.original?.title}".`}
+                                            onConfirm={() =>
+                                                onDelete(row.original?.id)
+                                            }
+                                        />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        Delete Clinic
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
                     </div>
                 );
             },

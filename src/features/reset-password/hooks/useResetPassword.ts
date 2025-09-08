@@ -40,9 +40,8 @@ export const useResetPassword = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-
         validateField(name as keyof resetPasswordFormData, value);
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -74,7 +73,7 @@ export const useResetPassword = () => {
                 });
                 setErrors(fieldErrors);
             } else {
-                console.error(error)
+                console.error(error);
                 showToast({
                     variant: "destructive",
                     description: error?.message,

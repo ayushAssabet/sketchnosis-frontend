@@ -6,8 +6,10 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useGetAllPermissionsByUserId } from "@/features/access/hooks/usePermissions";
+import { hasPermission } from "@/helpers/permission.helper";
 import { categoryInterface } from "@/interface/category.interface";
-import { Checkbox } from "@radix-ui/react-checkbox";
+import { permissions } from "@/utils/permissions";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -20,6 +22,15 @@ export const CategoryListTableHeading = ({
     onEdit: (value: categoryInterface) => void;
 }): ColumnDef<any>[] => {
     const searchParams = useSearchParams();
+    const { data: permissionData } = useGetAllPermissionsByUserId();
+    const canUpdate = hasPermission(
+        [permissions.EDIT_CATEGORY],
+        permissionData?.data
+    );
+    const canDelete = hasPermission(
+        [permissions.DELETE_CATEGORY],
+        permissionData?.data
+    );
     return [
         // {
         //   id: "select",
@@ -109,52 +120,52 @@ export const CategoryListTableHeading = ({
             enableHiding: false,
             header: "Actions",
             cell: ({ row }) => {
-                const handleDelete = () => {
-                    if (
-                        confirm("Are you sure you want to delete this clinic?")
-                    ) {
-                        console.log("Delete clinic with ID:", row.original?.id);
-                    }
-                };
-
                 return (
                     <div className="space-x-1">
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        variant="ghost"
-                                        className="!px-2 cursor-pointer text-green-500"
-                                        onClick={(e) =>
-                                            onEdit({
-                                                name: row.original.name,
-                                                description:
-                                                    row?.original?.description,
-                                                id: row?.original?.id,
-                                            })
-                                        }
-                                    >
-                                        <Edit />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>Edit Category</TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <DeleteButtonWithConfirmDialog
-                                        title="Delete Category?"
-                                        description={`This will permanently delete "${row.original?.name}".`}
-                                        onConfirm={() =>
-                                            onDelete(row.original?.id)
-                                        }
-                                    />
-                                </TooltipTrigger>
-                                <TooltipContent>Delete Category</TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
+                        {canUpdate && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            className="!px-2 cursor-pointer text-green-500"
+                                            onClick={(e) =>
+                                                onEdit({
+                                                    name: row.original.name,
+                                                    description:
+                                                        row?.original
+                                                            ?.description,
+                                                    id: row?.original?.id,
+                                                })
+                                            }
+                                        >
+                                            <Edit />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        Edit Category
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
+                        {canDelete && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <DeleteButtonWithConfirmDialog
+                                            title="Delete Category?"
+                                            description={`This will permanently delete "${row.original?.name}".`}
+                                            onConfirm={() =>
+                                                onDelete(row.original?.id)
+                                            }
+                                        />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        Delete Category
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
                     </div>
                 );
             },

@@ -5,9 +5,10 @@ import AppInputField from "@/components/forms/InputField";
 import AppButton from "@/components/elements/AppButton";
 import { useChangePassword } from "@/features/set-password/hooks/useSetPassword";
 
-const ChagePasswordForm: React.FC<{ token: string; title: string | null }> = ({
+const ChagePasswordForm: React.FC<{ token: string; title: string | null ; isAdmin : boolean }> = ({
     token,
     title,
+    isAdmin
 }) => {
     const {
         handleSubmit,
@@ -16,7 +17,7 @@ const ChagePasswordForm: React.FC<{ token: string; title: string | null }> = ({
         errors,
         isSubmitting,
         disableSubmit,
-    } = useChangePassword(token);
+    } = useChangePassword(token , isAdmin);
 
     return (
         <form onSubmit={handleSubmit} className="min-w-[536px] space-y-14">

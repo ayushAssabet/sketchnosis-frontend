@@ -106,6 +106,8 @@ export const usePatient = (
           body: updateData,
         });
 
+        console.log(response)
+
         showToast({
           variant: "success",
           title: response.message || "Patient updated successfully",

@@ -31,6 +31,7 @@ export const IllustrationAvatarWrapper = ({ row }: { row: any }) => {
                 <AvatarImage
                     src={imageUrl}
                     alt={`${row.original?.title || "Clinic"} logo`}
+                    className="object-contain"
                 />
             )}
             <AvatarFallback className="bg-gray-300">

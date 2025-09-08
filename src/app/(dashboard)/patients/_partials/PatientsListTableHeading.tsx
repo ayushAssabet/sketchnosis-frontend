@@ -41,10 +41,19 @@ export const PatientListTableHeading = ({
     const { addPatientCampaign } = usePatientCampaign();
 
     const { user } = useAuth();
-    const searchParams = useSearchParams()
+    const searchParams = useSearchParams();
 
     const isViewClinc = hasPermission(
         [permissions.VIEW_CLINIC],
+        permissionData?.data
+    );
+
+    const canUpdate = hasPermission(
+        [permissions.EDIT_PATIENT],
+        permissionData?.data
+    );
+    const canDelete = hasPermission(
+        [permissions.DELETE_PATIENT],
         permissionData?.data
     );
 
@@ -83,7 +92,12 @@ export const PatientListTableHeading = ({
                 );
                 return (
                     <div className="capitalize" data-attr={row?.index}>
-                        {currentIndex + 1 + (searchParams.get('offSet') ? (parseInt(searchParams.get('offSet')) - 1) * 10 : 0)}
+                        {currentIndex +
+                            1 +
+                            (searchParams.get("offSet")
+                                ? (parseInt(searchParams.get("offSet")) - 1) *
+                                  10
+                                : 0)}
                     </div>
                 );
             },
@@ -225,7 +239,7 @@ export const PatientListTableHeading = ({
                                       }
                                     : undefined
                             }
-                            isClinic={true}
+                            isClinic={false}
                             url={
                                 user?.clinicId
                                     ? `${BACKEND_HOST}/v1/clinics/campaign/${user?.clinicId}?limit=100`
@@ -336,7 +350,7 @@ export const PatientListTableHeading = ({
             header: "Actions",
             cell: ({ row }) => {
                 return (
-                <div className="space-x-1">
+                    <div className="space-x-1">
                         <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger asChild>
@@ -384,20 +398,24 @@ export const PatientListTableHeading = ({
                             </TooltipProvider>
                         )}
 
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <DeleteButtonWithConfirmDialog
-                                        title="Delete Patient?"
-                                        description={`This will permanently delete "${row.original?.firstName}".`}
-                                        onConfirm={() =>
-                                            onDelete(row.original?.id)
-                                        }
-                                    />
-                                </TooltipTrigger>
-                                <TooltipContent>Delete Patient</TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
+                        {canDelete && (
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <DeleteButtonWithConfirmDialog
+                                            title="Delete Patient?"
+                                            description={`This will permanently delete "${row.original?.firstName}".`}
+                                            onConfirm={() =>
+                                                onDelete(row.original?.id)
+                                            }
+                                        />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        Delete Patient
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        )}
                     </div>
                 );
             },
