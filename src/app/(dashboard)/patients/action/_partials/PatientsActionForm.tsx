@@ -19,6 +19,7 @@ import { usePatient } from "@/features/patients/usePatientAction";
 import { usePatientActionForm } from "@/features/patients/usePatientActionForm";
 import { useGetPatientDetail } from "@/features/patients/useGetPatient";
 import { useAuth } from "@/features/login/context/AuthContextProvider";
+import { useGetClinicList } from "@/features/context/useGetClinic";
 
 const PatientActionForm: React.FC<{
     isUpdate: boolean;
@@ -37,7 +38,8 @@ const PatientActionForm: React.FC<{
         handleGenderChange,
         handlePhoneChange,
         handleAreaOfConcernsChange,
-    } = usePatientActionForm();
+        handleClinicChange
+    } = usePatientActionForm(user.role);
 
     const { addPatient, updatePatient, isAddingPatient, isUpdatingPatient } =
         usePatient();
@@ -46,12 +48,16 @@ const PatientActionForm: React.FC<{
         searchParams?.get("update")
     );
 
+    const { data : clinicData } = useGetClinicList(`${BACKEND_HOST}/v1/clinics?limit=100`);
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const result = validateForm();
         if (!result.success) return;
         isUpdate ? updatePatient(patientId!, formData!) : addPatient(formData!);
     };
+
+   
 
     const defaultCategories = useMemo(() => {
         return (
@@ -71,7 +77,6 @@ const PatientActionForm: React.FC<{
                 lastName: data?.data?.lastName,
                 email: data?.data?.email,
                 phone: data?.data?.phone,
-                address: data?.data?.address,
                 areaOfConcernIds: data?.data?.areaOfConcerns?.map(
                     (concern: Record<string, any>) => concern.id
                 ),
@@ -120,19 +125,16 @@ const PatientActionForm: React.FC<{
                     required
                 />
 
-                <AppInputField
-                    id="email"
-                    name="email"
-                    className="text-sm"
-                    label="Email Address"
-                    type="email"
-                    value={formData?.email ?? ""}
-                    onChange={handleChange}
-                    placeholder="Eg: john.doe@example.com"
-                    error={errors?.email}
-                    disabled={isAddingPatient || isUpdatingPatient}
-                    variant="dashboard"
-                    readonly={isUpdate}
+                <AsyncSearchableDropdown
+                    defaultOption={defaultCategories}
+                    onSelectionChange={handleAreaOfConcernsChange}
+                    error={errors?.areaOfConcernIds}
+                    required
+                    url={
+                        user?.clinicId
+                            ? `${BACKEND_HOST}/v1/clinics/areaOfConcerns/${user?.clinicId}`
+                            : undefined
+                    }
                 />
 
                 <PhoneInputField
@@ -151,17 +153,18 @@ const PatientActionForm: React.FC<{
                 />
 
                 <AppInputField
-                    id="address"
-                    name="address"
+                    id="email"
+                    name="email"
                     className="text-sm"
-                    label="Address"
-                    type="text"
-                    value={formData?.address ?? ""}
+                    label="Email Address"
+                    type="email"
+                    value={formData?.email ?? ""}
                     onChange={handleChange}
-                    placeholder="Eg: 13th Street"
-                    error={errors?.address}
+                    placeholder="Eg: john.doe@example.com"
+                    error={errors?.email}
                     disabled={isAddingPatient || isUpdatingPatient}
                     variant="dashboard"
+                    readonly={isUpdate}
                 />
 
                 <AppInputField
@@ -176,13 +179,12 @@ const PatientActionForm: React.FC<{
                     max={new Date().toISOString().split("T")[0]}
                     disabled={isAddingPatient || isUpdatingPatient}
                     variant="dashboard"
-                    required
                 />
 
                 <div className="">
                     <Label className="block text-medium font-medium text-gray-700 mb-2 pt-1">
                         Gender
-                        <span className="text-red-500">*</span>
+                        {/* <span className="text-red-500">*</span> */}
                     </Label>
                     <select
                         id="gender"
@@ -191,7 +193,6 @@ const PatientActionForm: React.FC<{
                         onChange={handleGenderChange}
                         className="px-3 py-2 h-[42px] border w-full border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                         disabled={isAddingPatient || isUpdatingPatient}
-                        required
                     >
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
@@ -205,17 +206,37 @@ const PatientActionForm: React.FC<{
                     )}
                 </div>
 
-                <AsyncSearchableDropdown
-                    defaultOption={defaultCategories}
-                    onSelectionChange={handleAreaOfConcernsChange}
-                    error={errors?.areaOfConcernIds}
-                    required
-                    url={
-                        user?.clinicId
-                            ? `${BACKEND_HOST}/v1/clinics/areaOfConcerns/${user?.clinicId}`
-                            : undefined
-                    }
-                />
+                {
+                    user.role === 'super-admin' && 
+                    <div className="">
+                        <Label className="block text-medium font-medium text-gray-700 mb-2 pt-1">
+                            Clinic
+                            <span className="text-red-500">*</span>
+                        </Label>
+                        <select
+                            id="clinic"
+                            name="clinic"
+                            value={formData.clinicId}
+                            onChange={handleClinicChange}
+                            className="px-3 py-2 h-[42px] border w-full border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                            disabled={isAddingPatient || isUpdatingPatient}
+                            required
+                        >
+                            <option value="">Select Clinic</option>
+                            {clinicData?.data?.data?.map((clinic: any) => (
+                                <option key={clinic.id} value={clinic.id}>
+                                    {clinic.name}
+                                </option>
+                            ))}
+                        </select>
+                        {errors?.clinicId && (
+                            <span className="text-red-500 text-xs">
+                                {errors.clinicId}
+                            </span>
+                        )}
+                    </div>
+                }
+
 
                 {/* <CampaignSelector
                     selectedCampaign={

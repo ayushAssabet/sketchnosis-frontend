@@ -239,7 +239,7 @@ export const PatientListTableHeading = ({
                                       }
                                     : undefined
                             }
-                            isClinic={false}
+                            isClinic={user?.role != 'admin'}
                             url={
                                 user?.clinicId
                                     ? `${BACKEND_HOST}/v1/clinics/campaign/${user?.clinicId}?limit=100`

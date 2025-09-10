@@ -17,7 +17,7 @@ const ChangePasswordContent: React.FC = () => {
                     { title: "Profile", href: appRoutes.USER_PROFILE_INDEX },
                 ]}
             >
-                <CommonContainer title="campaign-list-section">
+                <CommonContainer title="change-password-section">
                     <Tabs defaultValue="security" className="w-full">
                         <TabsList className="flex gap-6 bg-white mb-4">
                             {/* <Link href={appRoutes.USER_PROFILE_INDEX}>

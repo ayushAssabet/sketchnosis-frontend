@@ -1,18 +1,21 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { ZodError } from "zod";
-import { PatientFormData, patientSchema } from "./patient.schema";
+import { PatientFormData, getPatientSchema } from "./patient.schema";
 
-export const usePatientActionForm = (data?: PatientFormData | null) => {
-    const [formData, setFormData] = useState<Partial<PatientFormData>>({
+export const usePatientActionForm = (
+    role: "super-admin" | "clinic" | "admin",
+    data?: PatientFormData | null
+) => {
+    const [formData, setFormData] = useState<Partial<Record<string,any>>>({
         firstName: "",
         lastName: "",
         email: "",
         phone: "",
-        address: "",
         areaOfConcernIds: [],
         dob: "",
         gender: null,
         description: "",
+        clinicId : ''
     });
 
     const [errors, setErrors] = useState<Record<string, any>>({});
@@ -31,8 +34,6 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
         }));
     };
 
-
-
     const handleAreaOfConcernsChange = (
         selected: { label: string; value: string }[]
     ) => {
@@ -43,12 +44,12 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
         }));
     };
 
-    const handlePhoneChange = (value : string | undefined) => {
+    const handlePhoneChange = (value: string | undefined) => {
         setFormData((prev) => ({
             ...prev,
-            phone : value || ''
+            phone: value || "",
         }));
-    }
+    };
 
     const handleGenderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value as unknown as "male" | "female" | "other";
@@ -58,38 +59,20 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
         }));
     };
 
-    const handleCampaignSelect = (campaign: any, startDate?: string) => {
+    const handleClinicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value as unknown as string;
         setFormData((prev) => ({
             ...prev,
-            campaign: [
-                {
-                    id: campaign?.id || null,
-                    startDate: startDate || null,
-                },
-            ],
+            clinicId: value,
         }));
     };
 
-    // const handleCampaignDateSelect = (
-    //   e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    // ) => {
-    //   const { value, id } = e.currentTarget;
-    //   if (id == "startDate") {
-    //     setFormData((prev) => ({
-    //       ...prev,
-    //       campaign: [
-    //         {
-    //           id: prev.campaign[0]?.id || null,
-    //           startDate: value || null,
-    //         },
-    //       ],
-    //     }));
-    //   }
-    // };
+    console.log(formData)
+
 
     const validateForm = () => {
         try {
-            const validated = patientSchema.parse(formData);
+            const validated = getPatientSchema(role).parse(formData);
             console.log(validated);
             setErrors({});
             return { success: true, data: validated };
@@ -113,8 +96,9 @@ export const usePatientActionForm = (data?: PatientFormData | null) => {
         errors,
         setErrors,
         validateForm,
-        handlePhoneChange , 
+        handlePhoneChange,
         handleGenderChange,
-        handleAreaOfConcernsChange
+        handleAreaOfConcernsChange,
+        handleClinicChange,
     };
 };

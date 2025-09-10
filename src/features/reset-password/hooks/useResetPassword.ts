@@ -56,6 +56,9 @@ export const useResetPassword = () => {
                 body: JSON.stringify({
                     email: formData.email,
                 }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
             const data = await res.json();
             showToast({

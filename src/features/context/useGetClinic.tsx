@@ -4,13 +4,13 @@ import { BACKEND_HOST } from "@/utils/constants";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 
-export const useGetClinicList = () => {
+export const useGetClinicList = (url? : string) => {
     const searchParams = useSearchParams();
-
-    const { data, isLoading, mutate } = useSWR(
-        `${BACKEND_HOST}/v1/clinics${
+    const defaultUrl = `${BACKEND_HOST}/v1/clinics${
             searchParams?.toString() == "" ? "" : `?${searchParams?.toString()}`
-        }`,
+        }`
+    const { data, isLoading, mutate } = useSWR(
+        url ?? defaultUrl,
         defaultFetcher
     );
 

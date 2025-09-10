@@ -112,11 +112,12 @@ const CampaignSelector: React.FC<CampaignSelectorProps> = ({
 
     useEffect(() => {
         if (data) {
-            if (isClinic) {
-                setCampaigns(data?.data?.data ?? []);
-            } else {
-                setCampaigns(data?.data);
-            }
+            // if (isClinic) {
+            //     setCampaigns(data?.data?.data ?? []);
+            // } else {
+            //     setCampaigns(data?.data);
+            // }
+            setCampaigns(data?.data?.data ?? data?.data ?? []);
         }
     }, [data]);
 

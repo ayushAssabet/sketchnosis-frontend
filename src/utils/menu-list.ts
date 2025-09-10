@@ -116,7 +116,7 @@ export function getMenuList(): Group[] {
                 {
                     href: appRoutes.ADMIN_MANAGEMENT_INDEX_PAGE,
                     label: "Admin Management",
-                    icon: Shield,
+                    icon: Users,
                     hasPermission: [permissions.VIEW_ADMIN],
                 },
             ],

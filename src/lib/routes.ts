@@ -19,7 +19,7 @@ export const appRoutes = {
     PATIENT_INDEX_PAGE: "/patients",
     PATIENT_DETAIL_PAGE: "/patients/detail/:id",
     PERMISSION_MANAGEMENT_INDEX_PAGE: "/access",
-    ADMIN_MANAGEMENT_INDEX_PAGE: "/access/user",
+    ADMIN_MANAGEMENT_INDEX_PAGE: "/admin/user",
 
     // action pages
     CLINIC_ACTION_PAGE: "/clinics/action",

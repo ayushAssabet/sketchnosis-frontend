@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import clsx from "clsx";
 
 interface PhoneInputFieldProps {
@@ -19,7 +19,7 @@ interface PhoneInputFieldProps {
     defaultCountryCode?: string | any;
     countries?: string[] | any;
     international?: boolean;
-    readOnly? : boolean
+    readOnly?: boolean;
 }
 
 const PhoneInputField: React.FC<PhoneInputFieldProps> = ({
@@ -34,11 +34,18 @@ const PhoneInputField: React.FC<PhoneInputFieldProps> = ({
     required = false,
     className = "",
     variant = "app",
-    defaultCountryCode = "US", // Default to US, you can change this
-    countries, // Array of country codes to limit selection
-    international = true , 
-    readOnly
+    defaultCountryCode = "US",
+    countries,
+    international = true,
+    readOnly = false,
 }) => {
+    // Only prevent onChange when readOnly, but allow normal interaction
+    const handleChange = (newValue: string | undefined) => {
+        if (!readOnly && !disabled) {
+            onChange(newValue);
+        }
+    };
+
     return (
         <div className={`form-field ${className}`}>
             <label
@@ -54,7 +61,7 @@ const PhoneInputField: React.FC<PhoneInputFieldProps> = ({
                     id={id}
                     name={name}
                     value={value}
-                    onChange={onChange}
+                    onChange={handleChange}
                     placeholder={placeholder}
                     disabled={disabled}
                     defaultCountry={defaultCountryCode}
@@ -63,10 +70,27 @@ const PhoneInputField: React.FC<PhoneInputFieldProps> = ({
                     className={clsx(
                         "phone-input-field",
                         error ? "phone-input-error" : "",
-                        variant === "dashboard" ? "phone-input-dashboard" : "phone-input-app"
+                        variant === "dashboard"
+                            ? "phone-input-dashboard"
+                            : "phone-input-app",
+                        readOnly && "phone-input-readonly"
                     )}
-                    readOnly={readOnly}
+                    style={{
+                        opacity: disabled ? 0.6 : 1,
+                        pointerEvents: readOnly ? 'none' : 'auto',
+                    }}
                 />
+                
+                {/* Only show overlay for readOnly, not disabled */}
+                {readOnly && !disabled && (
+                    <div
+                        className="absolute inset-0 cursor-default"
+                        style={{
+                            backgroundColor: 'transparent',
+                            zIndex: 1,
+                        }}
+                    />
+                )}
             </div>
 
             {/* Error Message */}
@@ -75,10 +99,6 @@ const PhoneInputField: React.FC<PhoneInputFieldProps> = ({
                     {error}
                 </p>
             )}
-
-            <style jsx>{`
-                
-            `}</style>
         </div>
     );
 };
