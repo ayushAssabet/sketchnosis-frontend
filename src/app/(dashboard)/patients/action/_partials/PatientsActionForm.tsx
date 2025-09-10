@@ -38,7 +38,7 @@ const PatientActionForm: React.FC<{
         handleGenderChange,
         handlePhoneChange,
         handleAreaOfConcernsChange,
-        handleClinicChange
+        handleClinicChange,
     } = usePatientActionForm(user.role);
 
     const { addPatient, updatePatient, isAddingPatient, isUpdatingPatient } =
@@ -48,7 +48,9 @@ const PatientActionForm: React.FC<{
         searchParams?.get("update")
     );
 
-    const { data : clinicData } = useGetClinicList(`${BACKEND_HOST}/v1/clinics?limit=100`);
+    const { data: clinicData } = useGetClinicList(
+        `${BACKEND_HOST}/v1/clinics?limit=100`
+    );
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -56,8 +58,6 @@ const PatientActionForm: React.FC<{
         if (!result.success) return;
         isUpdate ? updatePatient(patientId!, formData!) : addPatient(formData!);
     };
-
-   
 
     const defaultCategories = useMemo(() => {
         return (
@@ -192,7 +192,9 @@ const PatientActionForm: React.FC<{
                         value={formData?.gender ?? ""}
                         onChange={handleGenderChange}
                         className="px-3 py-2 h-[42px] border w-full border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                        disabled={isAddingPatient || isUpdatingPatient}
+                        disabled={
+                            isAddingPatient || isUpdatingPatient || isUpdate
+                        }
                     >
                         <option value="">Select Gender</option>
                         <option value="male">Male</option>
@@ -206,8 +208,7 @@ const PatientActionForm: React.FC<{
                     )}
                 </div>
 
-                {
-                    user.role === 'super-admin' && 
+                {user.role === "super-admin" && (
                     <div className="">
                         <Label className="block text-medium font-medium text-gray-700 mb-2 pt-1">
                             Clinic
@@ -235,8 +236,7 @@ const PatientActionForm: React.FC<{
                             </span>
                         )}
                     </div>
-                }
-
+                )}
 
                 {/* <CampaignSelector
                     selectedCampaign={
