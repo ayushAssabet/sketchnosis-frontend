@@ -21,6 +21,7 @@ export const campaignSchema = z
         selectedDays: z.array(z.string()).optional(),
         images: z.record(z.any()).optional(),
     })
+    .passthrough()
     .superRefine((data, ctx) => {
         const { repeatType, numberOfWeeks, numberOfDays } = data;
 
@@ -60,6 +61,46 @@ export const campaignSchema = z
                     });
                 }
             }
+        }
+    })
+    .superRefine((data, ctx) => {
+        console.log(data);
+        const {
+            repeatType,
+            numberOfWeeks,
+            numberOfDays,
+            selectedDays,
+            scheduleImages
+        } : any = data;
+
+        console.log(selectedDays, scheduleImages);
+
+        console.log(
+            parseInt(numberOfWeeks ?? "0") * selectedDays?.length !=
+                scheduleImages?.length,
+            numberOfWeeks,
+            selectedDays,
+            scheduleImages?.length
+        );
+        if (
+            repeatType == "weekly" &&
+            parseInt(numberOfWeeks ?? "0") * selectedDays?.length !=
+                scheduleImages?.length
+        ) {
+            ctx.addIssue({
+                path: ["repeatTypeDaysValidate"],
+                message: "Please Select All Image to justify Number of Days",
+                code: z.ZodIssueCode.custom,
+            });
+        } else if (
+            repeatType == "daily" &&
+            parseInt(numberOfDays ?? "0") != scheduleImages?.length
+        ) {
+            ctx.addIssue({
+                path: ["repeatTypeDaysValidate"],
+                message: "Please Select All Image to justify Number of Days",
+                code: z.ZodIssueCode.custom,
+            });
         }
     });
 

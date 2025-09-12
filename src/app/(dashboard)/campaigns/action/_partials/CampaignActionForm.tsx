@@ -68,7 +68,7 @@ const CampaignActionForm: React.FC<{
             dailyImages
         );
         console.log(campaignPayload);
-        const result = validateForm(campaignPayload);
+        const result = validateForm({...campaignPayload});
         if (!result.success) return;
 
         isUpdate
@@ -84,40 +84,6 @@ const CampaignActionForm: React.FC<{
             areaOfConcernIds: selected.map((item) => item.value),
         }));
     };
-
-    // const handleDayToggle = (day: string) => {
-    //     setSelectedDays((prev) =>
-    //         prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
-    //     );
-    // };
-
-    // const handleDayToggle = (day: string) => {
-    //     setSelectedDays((prev) => {
-    //         const isCurrentlySelected = prev.includes(day);
-
-    //         if (isCurrentlySelected) {
-    //             // Day is being removed - also remove its image
-    //             if (formData.repeatType === "weekly") {
-    //                 setWeeklyImages((prevImages) => {
-    //                     const updatedImages = { ...prevImages };
-    //                     delete updatedImages[day]; // Remove the image for this day
-    //                     return updatedImages;
-    //                 });
-    //             } else {
-    //                 setDailyImages((prevImages) => {
-    //                     const updatedImages = { ...prevImages };
-    //                     delete updatedImages[`day${day}`]; // Remove the image for this day
-    //                     return updatedImages;
-    //                 });
-    //             }
-    //             // Remove day from selected days
-    //             return prev.filter((d) => d !== day);
-    //         } else {
-    //             // Day is being added
-    //             return [...prev, day];
-    //         }
-    //     });
-    // };
 
     const handleDayToggle = (day: string) => {
         console.log(weeklyImages);
@@ -453,6 +419,11 @@ const CampaignActionForm: React.FC<{
                     handleOpenIllustrationDialog,
                     days,
                 })}
+                {errors?.repeatTypeDaysValidate && (
+                    <span className="text-red-500">
+                        {errors?.repeatTypeDaysValidate}
+                    </span>
+                )}
 
                 {/* Action Buttons */}
                 <div className="flex justify-end space-x-4 pt-6 ml-auto w-fit">
