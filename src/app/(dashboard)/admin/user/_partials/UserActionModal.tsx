@@ -13,6 +13,7 @@ export const CreateUserDialog = ({ isOpen, onClose, mutate }) => {
     handleChange,
     handleSubmit,
     handleCancel,
+    isSubmitting
   } = useRoleUserForm(addUser , onClose);
 
 
@@ -22,7 +23,7 @@ export const CreateUserDialog = ({ isOpen, onClose, mutate }) => {
         <DialogHeader>
           <DialogTitle>Create New User</DialogTitle>
         </DialogHeader>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <AppInputField 
               id="email"
@@ -40,8 +41,11 @@ export const CreateUserDialog = ({ isOpen, onClose, mutate }) => {
             <Button variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button onClick={handleSubmit} disabled={!email.trim() || error !== ""}>
-              Create User
+            <Button type="submit" disabled={!email.trim() || error !== "" || isSubmitting}>
+              {
+                isSubmitting ? 'Creating User ...' :
+                'Create User'
+              }
             </Button>
           </div>
         </form>

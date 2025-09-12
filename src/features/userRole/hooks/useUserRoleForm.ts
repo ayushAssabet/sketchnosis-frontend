@@ -7,6 +7,7 @@ const emailSchema = z.string().email("Invalid email address");
 export const useRoleUserForm = (onSubmit: (user: { email: string }) => void, onClose: () => void) => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting , setIsSubmitting] = useState(false)
 
   const validateEmail = useCallback((value: string) => {
     try {
@@ -26,9 +27,12 @@ export const useRoleUserForm = (onSubmit: (user: { email: string }) => void, onC
     if (error) validateEmail(value); // revalidate on change
   }, [error, validateEmail]);
 
-  const handleSubmit = useCallback(async() => {
+  const handleSubmit = useCallback(async(e) => {
+    e.preventDefault();
+    setIsSubmitting(true)
     if (validateEmail(email)) {
       await onSubmit({ email });
+      setIsSubmitting(false)
       resetForm();
       onClose();
     }
@@ -51,5 +55,6 @@ export const useRoleUserForm = (onSubmit: (user: { email: string }) => void, onC
     handleSubmit,
     handleCancel,
     resetForm,
+    isSubmitting
   };
 };
